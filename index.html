@@ -15,11 +15,13 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
+            /* Updated to lead with Apple's SF Pro fonts */
+            font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background: var(--bg); 
             color: #fff; 
             overflow-x: hidden; 
             scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
         }
 
         /* --- LIQUID GRADIENT BACKGROUND --- */
@@ -42,7 +44,8 @@
         /* --- NAVIGATION --- */
         nav {
             position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
-            backdrop-filter: blur(20px); background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.5);
             display: flex; justify-content: space-between; align-items: center; z-index: 1000;
             border-bottom: 1px solid var(--glass-border);
         }
@@ -63,7 +66,7 @@
         .project-link { text-decoration: none; color: inherit; display: block; margin-bottom: 4rem; }
         
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px);
+            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid var(--glass-border); border-radius: 24px;
             padding: 4rem; transition: transform 0.4s ease, border-color 0.4s ease;
         }
@@ -80,17 +83,18 @@
         .project-link:hover img { opacity: 1; transform: scale(1.05); }
 
         /* --- TYPOGRAPHY & TAGS --- */
-        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; }
         .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
         .metric-wrap { display: flex; gap: 2rem; margin-top: 2rem; }
         .metric { font-size: 0.9rem; color: #888; }
-        .metric strong { display: block; font-size: 2rem; color: #fff; }
+        .metric strong { display: block; font-size: 2rem; color: #fff; font-weight: 700; }
 
         .tag { padding: 5px 15px; border: 1px solid #444; border-radius: 20px; font-size: 0.8rem; color: #aaa; margin-right: 10px; display: inline-block; margin-bottom: 10px;}
 
         /* --- INDUSTRY 4.0 SECTION --- */
         .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2rem; color: #fff; max-width: 900px; margin: 0 auto; line-height: 1.4; font-weight: 600; }
+        /* Changed font-weight from 600 to 400 (normal) */
+        .i4-section p { font-size: 2rem; color: #fff; max-width: 900px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
         .highlight { color: var(--accent); }
 
         @media (max-width: 900px) {
