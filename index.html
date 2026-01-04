@@ -3,202 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andile Brian | Industrial Engineering & Industry 4.0</title>
+    <title>Andile Maphumulo | Systems Optimization Engineer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --accent: #0071e3; 
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --accent: #0071e3; /* Apple Blue */
             --bg: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
             background: var(--bg); 
             color: #fff; 
-            line-height: 1.6;
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND DYNAMICS --- */
-        .liquid-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, #1a1a1a 0%, #000 100%);
+        /* --- LIQUID GRADIENT BACKGROUND --- */
+        .gradient-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
             z-index: -1;
         }
         .blob {
-            position: absolute; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 113, 227, 0.15) 0%, transparent 70%);
-            filter: blur(60px); animation: drift 25s infinite alternate ease-in-out;
+            position: absolute; width: 500px; height: 500px;
+            background: linear-gradient(135deg, rgba(0, 113, 227, 0.2) 0%, rgba(118, 255, 3, 0.1) 100%);
+            filter: blur(80px); border-radius: 50%; animation: move 20s infinite alternate;
         }
-        @keyframes drift { from { transform: translate(-10%, -10%); } to { transform: translate(30%, 20%); } }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 1.2rem 8%;
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            background: rgba(0,0,0,0.7); display: flex; justify-content: space-between; 
-            align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border);
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
+            backdrop-filter: blur(20px); background: rgba(0,0,0,0.5);
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
         }
-        nav h1 { font-size: 0.9rem; font-weight: 700; letter-spacing: 2px; color: #eee; }
-        nav ul { display: flex; gap: 2.5rem; list-style: none; }
-        nav a { color: #888; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: 0.3s; }
+        nav h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; }
+        nav ul { display: flex; gap: 2rem; list-style: none; }
+        nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
         nav a:hover { color: #fff; }
 
-        /* --- HERO SECTION --- */
-        header { 
-            min-height: 90vh; display: flex; flex-direction: column; 
-            justify-content: center; padding: 0 10%; margin-top: 50px;
-        }
-        .hero-tag { color: var(--accent); font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 1px; }
-        .hero-h1 { 
-            font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; max-width: 900px;
-            background: linear-gradient(180deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            line-height: 1.1; margin-bottom: 2rem;
-        }
-        .hero-bio { 
-            font-size: 1.15rem; color: #aaa; max-width: 800px; margin-bottom: 2.5rem; 
-            line-height: 1.8; opacity: 0.9;
-        }
+        /* --- HERO --- */
+        header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%; }
+        .hero-h1 { font-size: 5rem; font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; opacity: 0; animation: fadeIn 1.5s forwards 0.5s; }
+        .hero-sub { font-size: 1.2rem; color: #888; max-width: 800px; margin-bottom: 2rem; opacity: 0; animation: fadeIn 1.5s forwards 0.8s; line-height: 1.6; }
 
-        /* --- PHILOSOPHY STRIP --- */
-        .philosophy {
-            padding: 8rem 10%; text-align: center; border-top: 1px solid #111;
-        }
-        .philosophy h2 { 
-            font-size: clamp(1.5rem, 4vw, 2.8rem); font-weight: 600; color: #fff; 
-            max-width: 1000px; margin: 0 auto; line-height: 1.3;
-        }
-        .highlight { color: var(--accent); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- PROJECT GRID --- */
-        .container { padding: 4rem 10%; }
+        /* --- GLASS CARDS & CLICKABLE LINKS --- */
+        .container { padding: 5rem 10%; }
         .project-link { text-decoration: none; color: inherit; display: block; margin-bottom: 4rem; }
         
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
-            border-radius: 28px; padding: 4rem; transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
-            position: relative; overflow: hidden;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 4rem; transition: transform 0.4s ease, border-color 0.4s ease;
         }
-        .project-link:hover .glass-card { 
-            transform: scale(1.02) translateY(-10px); 
-            background: rgba(255,255,255,0.08); 
-            border-color: rgba(0, 113, 227, 0.4);
-        }
-
-        .card-content { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
-        .img-slot { 
-            width: 100%; height: 450px; background: #0a0a0a; border-radius: 18px; 
-            overflow: hidden; border: 1px solid #222;
-        }
-        .img-slot img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; opacity: 0.6; }
-        .project-link:hover img { transform: scale(1.05); opacity: 0.9; }
-
-        .project-info h3 { font-size: 2.2rem; margin-bottom: 1.2rem; }
-        .project-info p { color: #888; font-size: 1.05rem; margin-bottom: 2rem; }
         
-        .stats { display: flex; gap: 2.5rem; }
-        .stat-item { font-size: 0.8rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
-        .stat-item span { display: block; font-size: 1.8rem; color: #fff; font-weight: 700; margin-bottom: 4px; }
-
-        .view-cta { 
-            margin-top: 2rem; display: flex; align-items: center; 
-            gap: 10px; color: var(--accent); font-weight: 600; 
+        .project-link:hover .glass-card { 
+            transform: scale(1.02); 
+            border-color: rgba(255,255,255,0.4); 
+            background: rgba(255, 255, 255, 0.12);
         }
 
-        @media (max-width: 1000px) {
-            .card-content { grid-template-columns: 1fr; }
+        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .img-slot { width: 100%; height: 400px; background: #111; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--glass-border); }
+        .img-slot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.4s; }
+        .project-link:hover img { opacity: 1; transform: scale(1.05); }
+
+        /* --- TYPOGRAPHY & TAGS --- */
+        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
+        .metric-wrap { display: flex; gap: 2rem; margin-top: 2rem; }
+        .metric { font-size: 0.9rem; color: #888; }
+        .metric strong { display: block; font-size: 2rem; color: #fff; }
+
+        .tag { padding: 5px 15px; border: 1px solid #444; border-radius: 20px; font-size: 0.8rem; color: #aaa; margin-right: 10px; display: inline-block; margin-bottom: 10px;}
+
+        /* --- INDUSTRY 4.0 SECTION --- */
+        .i4-section { text-align: center; margin: 8rem 0; }
+        .i4-section p { font-size: 2rem; color: #fff; max-width: 900px; margin: 0 auto; line-height: 1.4; font-weight: 600; }
+        .highlight { color: var(--accent); }
+
+        @media (max-width: 900px) {
             .hero-h1 { font-size: 3rem; }
-            .img-slot { height: 300px; }
+            .project-grid { grid-template-columns: 1fr; }
+            .img-slot { height: 250px; }
+            .glass-card { padding: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="liquid-bg"><div class="blob"></div></div>
+    <div class="gradient-bg">
+        <div class="blob"></div>
+    </div>
 
     <nav>
         <h1>ANDILE BRIAN</h1>
         <ul>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="mailto:contact@andilebrian.online">Contact</a></li>
+            <li><a href="#engineering">Engineering</a></li>
+            <li><a href="#digital">Industry 4.0</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
-    <header id="about">
-        <div class="hero-tag">INDUSTRIAL ENGINEERING HONOURS</div>
+    <header>
         <h1 class="hero-h1">Efficiency driven by Innovation.</h1>
-        <p class="hero-bio">
-            A forward-thinking Industrial Engineering Graduate and Honours Candidate driven by efficiency and innovation. 
-            I am a certified Six Sigma Yellow Belt with hands-on experience in fast-paced production environments. 
-            I bridge the gap between theoretical optimization and real-world application, utilizing data-driven strategies to enhance efficiency, 
-            reduce waste, and streamline manufacturing workflows.
-        </p>
+        <p class="hero-sub">A forward-thinking Industrial Engineering Graduate and Honours Candidate driven by efficiency and innovation. Certified Six Sigma Yellow Belt bridging the gap between theoretical optimization and real-world application.</p>
+        <div style="margin-top: 20px;">
+            <span class="tag">Six Sigma Yellow Belt</span>
+            <span class="tag">PowerBI Developer</span>
+            <span class="tag">Process Engineer</span>
+        </div>
     </header>
 
-    <section class="philosophy">
-        <h2>
-            Traditional engineering defines the floor, but <span class="highlight">Industry 4.0</span> defines the future. 
-            I am a proactive architect of <span class="highlight">intelligent systems</span>, thinking beyond the curriculum to integrate 
-            real-time data into industrial logic.
-        </h2>
-    </section>
-
-    <div class="container" id="projects">
+    <div class="container" id="engineering">
         
         <a href="rail.html" class="project-link">
             <div class="glass-card">
-                <div class="card-content">
-                    <div class="project-info">
-                        <div class="hero-tag" style="color: #666;">CASE STUDY 01</div>
-                        <h3>Rail Manufacturing Optimization</h3>
-                        <p>Leveraging DMAIC and MODAPTS at Gibela Rail to resolve high-risk ergonomic bottlenecks and streamline Car Body Shell assembly.</p>
-                        <div class="stats">
-                            <div class="stat-item"><span>64%</span> Cycle Time</div>
-                            <div class="stat-item"><span>100%</span> Compliance</div>
+                <div class="project-grid">
+                    <div>
+                        <span class="badge">Six Sigma Project</span>
+                        <h2>Rail Manufacturing Optimization</h2>
+                        <p style="color: #aaa;">Optimized Car Body Shell assembly at Gibela Rail by eliminating critical bottlenecks through DMAIC and MODAPTS analysis.</p>
+                        
+                        <div class="metric-wrap">
+                            <div class="metric"><strong>64%</strong> Cycle Time</div>
+                            <div class="metric"><strong>69%</strong> Labor Cost</div>
+                            <div class="metric"><strong>+27</strong> Ergo Score</div>
                         </div>
-                        <div class="view-cta">Explore Project <i class="fa-solid fa-arrow-right"></i></div>
                     </div>
                     <div class="img-slot">
-                        <img src="images/gibela-hero.jpg" alt="Rail Assembly Optimization">
+                        <img src="gibela-hero.jpg" alt="Rail Project">
                     </div>
                 </div>
             </div>
         </a>
 
+        <div class="i4-section">
+            <p>“Traditional engineering defines the floor, but <span class="highlight">Industry 4.0</span> defines the future. I am a proactive architect of <span class="highlight">intelligent systems</span>.”</p>
+        </div>
+
         <a href="dashboard.html" class="project-link">
-            <div class="glass-card">
-                <div class="card-content">
+            <div class="glass-card" id="digital">
+                <div class="project-grid">
                     <div class="img-slot">
-                        <img src="images/dashboard-hero.jpg" alt="Business Intelligence Dashboard">
+                        <img src="dashboard-hero.jpg" alt="BI Dashboard">
                     </div>
-                    <div class="project-info">
-                        <div class="hero-tag" style="color: #666;">CASE STUDY 02</div>
-                        <h3>Poultry Enterprise BI Dashboard</h3>
-                        <p>Designing custom Business Intelligence tools that allow small-scale enterprises to leverage Industry 4.0 data management and compete in high-volume markets.</p>
-                        <div class="stats">
-                            <div class="stat-item"><span>DAX</span> Modeling</div>
-                            <div class="stat-item"><span>Live</span> Inventory</div>
-                        </div>
-                        <div class="view-cta">View Dashboard Logic <i class="fa-solid fa-arrow-right"></i></div>
+                    <div>
+                        <span class="badge">Business Intelligence</span>
+                        <h2>Poultry Enterprise BI Dashboard</h2>
+                        <p style="color: #aaa;">Developed a custom Business Intelligence tool to assist local SMEs in leveraging data management and competing in high-volume markets.</p>
+                        <ul style="margin-top: 1.5rem; color: #888; list-style: none;">
+                            <li>• Automated Data Cleaning</li>
+                            <li>• Real-time Sales Trends</li>
+                            <li>• Predictive Stock Models</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </a>
+
+        <div class="glass-card">
+            <div class="project-grid">
+                <div>
+                    <span class="badge">Sustainable Design</span>
+                    <h2>RollerX: Global Innovation</h2>
+                    <p style="color: #aaa;">Engineered a 100% recyclable water accessibility solution with a focus on inclusivity and DFM.</p>
+                    <div class="metric-wrap">
+                        <div class="metric"><strong>382</strong> Units/Hour</div>
+                        <div class="metric"><strong>100%</strong> Recyclable</div>
+                    </div>
+                </div>
+                <div class="img-slot">
+                    <img src="rollerx-design.jpg" alt="RollerX Project">
+                </div>
+            </div>
+        </div>
 
     </div>
 
-    <footer style="padding: 6rem 10%; text-align: center; background: rgba(255,255,255,0.02);">
-        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Let's Build the Future.</h2>
-        <p style="color: #666; margin-bottom: 3rem;">Based in Gauteng, South Africa. Specializing in Systems Optimization.</p>
-        <div style="display: flex; justify-content: center; gap: 2rem;">
-            <a href="https://automania.co.za" style="color: #fff;"><i class="fa-solid fa-car"></i> Automania</a>
-            <a href="#" style="color: #fff;"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
-            <a href="#" style="color: #fff;"><i class="fa-solid fa-envelope"></i> Email</a>
+    <footer id="contact" style="padding: 5rem 10%; text-align: center; border-top: 1px solid #222;">
+        <h2>Ready to optimize?</h2>
+        <p style="color: #888; margin-bottom: 2rem;">Currently available for Process Engineering and Industrial Optimization roles.</p>
+        <p><strong>Location:</strong> Gauteng, South Africa</p>
+        <div style="margin-top: 2rem; font-size: 1.5rem;">
+            <a href="https://automania.co.za" style="color: #fff; margin: 0 1rem;"><i class="fa-solid fa-car"></i></a>
+            <a href="#" style="color: #fff; margin: 0 1rem;"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" style="color: #fff; margin: 0 1rem;"><i class="fa-brands fa-github"></i></a>
         </div>
     </footer>
 
