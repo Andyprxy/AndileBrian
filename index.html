@@ -27,8 +27,17 @@
         .blob { position: absolute; width: 500px; height: 500px; background: linear-gradient(135deg, rgba(0, 113, 227, 0.2) 0%, rgba(118, 255, 3, 0.1) 100%); filter: blur(80px); border-radius: 50%; animation: move 20s infinite alternate; }
         @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
 
-        nav { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); }
+        /* --- FIXED NAVIGATION --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; 
+            align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); 
+        }
         nav h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; }
+        nav ul { display: flex; gap: 2rem; list-style: none; }
+        nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; cursor: pointer; }
+        nav a:hover { color: #fff; }
 
         header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%; }
         .hero-h1 { font-size: 5rem; font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; }
@@ -44,6 +53,7 @@
         }
         .project-link:hover .glass-card { transform: scale(1.01); border-color: rgba(255,255,255,0.4); }
 
+        /* --- ASYMMETRIC GRID SYSTEM --- */
         .project-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
         .reverse { grid-template-columns: 1fr 1.2fr; }
 
@@ -68,7 +78,6 @@
         .w-chart-header { font-size: 9px; font-weight: 600; color: #888; border-bottom: 1px solid #f0f3f5; padding-bottom: 5px; }
         .w-visual { flex: 1; display: flex; align-items: flex-end; gap: 4px; }
         .w-bar { flex: 1; background: #0071e3; border-radius: 2px 2px 0 0; opacity: 0.15; transition: 0.3s; }
-        .project-link:hover .w-bar { opacity: 0.6; }
 
         h2 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; }
         .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
@@ -79,7 +88,7 @@
         .highlight { color: var(--accent); }
 
         .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2.2rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
+        .i4-section p { font-size: 2.2rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; }
 
         @media (max-width: 1100px) {
             .project-grid, .reverse { grid-template-columns: 1fr; }
@@ -144,7 +153,7 @@
                                 </div>
                                 <div class="w-main-chart">
                                     <div class="w-chart-header">LIVE SALES ACTIVITY</div>
-                                    <div class="w-visual"><div class="w-bar" style="height: 30%;"></div><div class="w-bar" style="height: 50%;"></div><div class="w-bar" style="height: 80%;"></div><div class="w-bar" style="height: 90%;"></div></div>
+                                    <div class="w-visual"><div class="w-bar" style="height: 30%;"></div><div class="w-bar" style="height: 50%;"></div><div class="w-bar" style="height: 80%;"></div><div class="w-bar" style="height: 60%;"></div></div>
                                 </div>
                             </div>
                         </div>
@@ -181,6 +190,7 @@
 
     <footer id="contact" style="padding: 5rem 10%; text-align: center; border-top: 1px solid #222;">
         <h2>Ready to optimize?</h2>
+        <p style="color: #888; margin-top: 1rem;">Available for Industrial & Process Engineering roles.</p>
         <div style="margin-top: 2rem; font-size: 1.5rem;">
             <a href="https://automania.co.za" style="color: #fff; margin: 0 1.5rem;"><i class="fa-solid fa-car"></i></a>
             <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
