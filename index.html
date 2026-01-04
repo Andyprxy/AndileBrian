@@ -15,7 +15,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
+            font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background: var(--bg); 
             color: #fff; 
             overflow-x: hidden; 
@@ -56,7 +56,7 @@
         /* --- HERO --- */
         header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%; }
         .hero-h1 { font-size: 5rem; font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; opacity: 0; animation: fadeIn 1.5s forwards 0.5s; }
-        .hero-sub { font-size: 1.2rem; color: #888; max-width: 850px; margin-bottom: 2rem; opacity: 0; animation: fadeIn 1.5s forwards 0.8s; line-height: 1.7; font-weight: 400; }
+        .hero-sub { font-size: 1.2rem; color: #888; max-width: 850px; margin-bottom: 2rem; opacity: 0; animation: fadeIn 1.5s forwards 0.8s; line-height: 1.7; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -76,7 +76,7 @@
             background: rgba(255, 255, 255, 0.12);
         }
 
-        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .project-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
         
         .img-slot { 
             width: 100%; height: 450px; background: #0a0a0a; border-radius: 16px; 
@@ -84,7 +84,7 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        /* --- WHITE THEME DASHBOARD UI --- */
+        /* --- WHITE THEME DASHBOARD UI (CSS) --- */
         .white-db {
             width: 95%; height: 90%; background: #f4f7f9; border-radius: 12px;
             display: grid; grid-template-columns: 80px 1fr; overflow: hidden; color: #333;
@@ -116,7 +116,7 @@
 
         /* --- INDUSTRY 4.0 SECTION --- */
         .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2.2rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
+        .i4-section p { font-size: 2rem; color: #fff; max-width: 900px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
 
         @media (max-width: 1100px) {
             .project-grid { grid-template-columns: 1fr; }
@@ -141,7 +141,7 @@
 
     <header>
         <h1 class="hero-h1">Efficiency driven by Innovation.</h1>
-        <p class="hero-sub">A forward-thinking Industrial Engineering Graduate and Honours Candidate driven by efficiency and innovation. I am a certified Six Sigma Yellow Belt with hands-on experience in fast-paced production environments, utilizing data-driven strategies to streamline manufacturing workflows.</p>
+        <p class="hero-sub">A forward-thinking Industrial Engineering Graduate and Honours Candidate driven by efficiency and innovation. Certified Six Sigma Yellow Belt bridging the gap between theoretical optimization and real-world application.</p>
         <div style="margin-top: 20px;">
             <span class="tag">Six Sigma Yellow Belt</span>
             <span class="tag">PowerBI Developer</span>
@@ -240,8 +240,8 @@
         <p><strong>Location:</strong> Gauteng, South Africa</p>
         <div style="margin-top: 2rem; font-size: 1.5rem;">
             <a href="https://automania.co.za" style="color: #fff; margin: 0 1.5rem;"><i class="fa-solid fa-car"></i></a>
-            <a href="https://linkedin.com/in/yourprofile" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="https://github.com/yourprofile" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-github"></i></a>
+            <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-github"></i></a>
         </div>
     </footer>
 
