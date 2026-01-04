@@ -23,77 +23,63 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* --- LIQUID BACKGROUND --- */
         .gradient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%); z-index: -1; }
         .blob { position: absolute; width: 500px; height: 500px; background: linear-gradient(135deg, rgba(0, 113, 227, 0.2) 0%, rgba(118, 255, 3, 0.1) 100%); filter: blur(80px); border-radius: 50%; animation: move 20s infinite alternate; }
         @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
 
-        /* --- FIXED NAVIGATION --- */
-        nav { 
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; 
-            align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); 
-        }
+        /* --- NAVIGATION --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); }
         nav h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; }
         nav ul { display: flex; gap: 2rem; list-style: none; }
         nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
         nav a:hover { color: #fff; }
 
+        /* --- HERO --- */
         header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%; }
-        .hero-h1 { font-size: 5rem; font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; }
+        .hero-h1 { font-size: clamp(3rem, 8vw, 5rem); font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; }
         .hero-sub { font-size: 1.2rem; color: #888; max-width: 850px; line-height: 1.7; font-weight: 400; }
 
+        /* --- LANDSCAPE SPLIT-TEXT CARDS --- */
         .container { padding: 5rem 10%; }
-        .project-link { text-decoration: none; color: inherit; display: block; margin-bottom: 4rem; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 24px; padding: 4rem; margin-bottom: 4rem; }
         
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 24px;
-            padding: 4rem; transition: transform 0.4s ease, border-color 0.4s ease;
-        }
-        .project-link:hover .glass-card { transform: scale(1.01); border-color: rgba(255,255,255,0.4); }
+        .split-header { margin-bottom: 2.5rem; }
+        .split-header h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .split-header p { color: #aaa; line-height: 1.6; max-width: 800px; font-size: 1.1rem; }
 
-        /* --- ASYMMETRIC GRID WITH SPLIT TEXT --- */
-        .project-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
-        .reverse { grid-template-columns: 1fr 1.2fr; }
+        .landscape-figure { width: 100%; height: 400px; background: #0a0a0a; border-radius: 16px; border: 1px solid var(--glass-border); margin: 2.5rem 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .landscape-figure img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
 
-        .img-slot { width: 100%; height: 450px; background: #0a0a0a; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; }
+        .split-footer { display: grid; grid-template-columns: 1fr 1.5fr; gap: 4rem; align-items: start; padding-top: 1rem; border-top: 1px solid #222; }
 
-        /* --- WHITE THEME DASHBOARD UI --- */
-        .white-db {
-            width: 95%; height: 90%; background: #f4f7f9; border-radius: 12px;
-            display: grid; grid-template-columns: 80px 1fr; overflow: hidden; color: #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .w-side { background: #fff; border-right: 1px solid #e1e8ed; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .w-side-item { height: 12px; width: 100%; background: #f0f3f5; border-radius: 4px; }
-        .w-side-item.active { background: #0071e3; opacity: 0.1; border: 1px solid #0071e3; }
-        .w-content { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
-        .w-top-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .w-kpi { background: #fff; border-radius: 8px; padding: 12px; border: 1px solid #e1e8ed; }
-        .w-kpi-label { font-size: 8px; text-transform: uppercase; color: #888; font-weight: 600; }
-        .w-kpi-val { font-size: 16px; font-weight: 700; color: #1d1d1f; margin-top: 4px; display: block; }
-        .w-kpi-trend { font-size: 8px; color: #34c759; font-weight: 600; margin-top: 2px; }
-        .w-main-chart { background: #fff; border-radius: 8px; border: 1px solid #e1e8ed; flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .w-chart-header { font-size: 9px; font-weight: 600; color: #888; border-bottom: 1px solid #f0f3f5; padding-bottom: 5px; }
-        .w-visual { flex: 1; display: flex; align-items: flex-end; gap: 4px; }
-        .w-bar { flex: 1; background: #0071e3; border-radius: 2px 2px 0 0; opacity: 0.15; transition: 0.3s; }
+        /* --- DASHBOARD DESIGN --- */
+        .white-db-landscape { width: 96%; height: 85%; background: #f4f7f9; border-radius: 12px; display: grid; grid-template-columns: 80px 1fr; overflow: hidden; color: #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .w-side { background: #fff; border-right: 1px solid #e1e8ed; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .w-side-item { height: 12px; background: #f0f3f5; border-radius: 4px; }
+        .w-side-item.active { background: #0071e3; opacity: 0.15; border: 1px solid #0071e3; }
+        .w-content { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .w-top-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .w-kpi { background: #fff; border-radius: 10px; padding: 15px; border: 1px solid #e1e8ed; }
+        .w-kpi-label { font-size: 9px; text-transform: uppercase; color: #888; font-weight: 700; }
+        .w-kpi-val { font-size: 18px; font-weight: 700; color: #1d1d1f; margin-top: 5px; display: block; }
+        .w-kpi-trend { font-size: 9px; color: #34c759; font-weight: 600; }
 
-        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; }
-        .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
-        .metric-wrap { display: flex; gap: 2rem; margin: 1.5rem 0; }
-        .metric { font-size: 0.9rem; color: #888; }
-        .metric strong { display: block; font-size: 2rem; color: #fff; font-weight: 700; }
-        .tag { padding: 5px 15px; border: 1px solid #444; border-radius: 20px; font-size: 0.8rem; color: #aaa; margin-right: 10px; display: inline-block; margin-bottom: 10px;}
-        .highlight { color: var(--accent); }
+        /* --- TYPOGRAPHY --- */
+        .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; }
+        .metric-wrap { display: flex; gap: 3rem; }
+        .metric { font-size: 0.85rem; color: #666; font-weight: 600; text-transform: uppercase; }
+        .metric strong { display: block; font-size: 2.5rem; color: #fff; font-weight: 700; }
+        .technical-detail { color: #888; line-height: 1.8; font-size: 1rem; }
 
-        .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2.2rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; }
+        .footer-cta { background: rgba(255,255,255,0.03); padding: 6rem 10%; text-align: center; border-top: 1px solid #222; }
+        .footer-cta h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .footer-cta p { color: #aaa; max-width: 700px; margin: 0 auto 3rem auto; line-height: 1.8; }
 
-        @media (max-width: 1100px) {
-            .project-grid, .reverse { grid-template-columns: 1fr; }
+        @media (max-width: 900px) {
+            .split-footer { grid-template-columns: 1fr; gap: 2rem; }
             .hero-h1 { font-size: 3.5rem; }
-            .img-slot { height: 350px; }
+            .landscape-figure { height: 250px; }
         }
     </style>
 </head>
@@ -111,99 +97,87 @@
 
     <header>
         <h1 class="hero-h1">Efficiency driven by Innovation.</h1>
-        <p class="hero-sub">A forward-thinking Industrial Engineering Graduate and Honours Candidate driven by efficiency and innovation. I am a certified Six Sigma Yellow Belt with hands-on experience in fast-paced production environments.</p>
-        <div style="margin-top: 20px;">
-            <span class="tag">Six Sigma Yellow Belt</span><span class="tag">PowerBI Developer</span><span class="tag">Process Engineer</span>
-        </div>
+        <p class="hero-sub">Industrial Engineering Honours Candidate specializing in the intersection of traditional Lean Manufacturing and Business Intelligence.</p>
     </header>
 
     <div class="container" id="engineering">
         
-        <a href="rail.html" class="project-link">
-            <div class="glass-card">
-                <div class="project-grid">
-                    <div>
-                        <span class="badge">Six Sigma Project</span>
-                        <h2>Rail Manufacturing Optimization</h2>
-                        <p style="color: #aaa; line-height: 1.6;">Optimized Car Body Shell assembly at Gibela Rail by eliminating critical ergonomic bottlenecks through <strong>DMAIC</strong> and <strong>MODAPTS</strong> analysis.</p>
-                        
-                        <div class="metric-wrap">
-                            <div class="metric"><strong>64%</strong> Cycle Time</div>
-                            <div class="metric"><strong>69%</strong> Labor Cost</div>
-                            <div class="metric"><strong>+27</strong> Ergo Score</div>
-                        </div>
-
-                        <p style="color: #666; font-size: 0.95rem; line-height: 1.6; border-top: 1px solid #222; padding-top: 1.5rem;">Designed a "Rollable Guide System" with <strong>SolidWorks</strong> and FEA validation, utilizing decommissioned materials to resolve safety risks while bypassing <strong>CAPEX constraints</strong>.</p>
-                    </div>
-                    <div class="img-slot"><img src="gibela-hero.jpg" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"></div>
-                </div>
+        <div class="glass-card">
+            <div class="split-header">
+                <span class="badge">Six Sigma Project</span>
+                <h2>Rail Manufacturing Optimization</h2>
+                <p>Optimized Car Body Shell assembly at Gibela Rail by eliminating critical ergonomic bottlenecks through DMAIC and MODAPTS analysis.</p>
             </div>
-        </a>
 
-        <div class="i4-section">
-            <p>“Traditional engineering defines the floor, but <span class="highlight">Industry 4.0</span> defines the future. I am a proactive architect of <span class="highlight">intelligent systems</span>.”</p>
+            <div class="landscape-figure">
+                <img src="gibela-hero.jpg" alt="Gibela Project Visualization">
+            </div>
+
+            <div class="split-footer">
+                <div class="metric-wrap">
+                    <div class="metric"><strong>64%</strong> Cycle Time</div>
+                    <div class="metric"><strong>69%</strong> Labor Cost</div>
+                </div>
+                <p class="technical-detail">
+                    Engineered a custom "Rollable Guide System" validated through <strong>SolidWorks FEA</strong>. By utilizing decommissioned materials, the solution successfully resolved safety risks while bypassing additional <strong>CAPEX constraints</strong>.
+                </p>
+            </div>
         </div>
 
-        <a href="dashboard.html" class="project-link">
-            <div class="glass-card">
-                <div class="project-grid reverse">
-                    <div class="img-slot">
-                        <div class="white-db">
-                            <div class="w-side"><div class="w-side-item active"></div><div class="w-side-item"></div><div class="w-side-item"></div></div>
-                            <div class="w-content">
-                                <div class="w-top-row">
-                                    <div class="w-kpi"><div class="w-kpi-label">Revenue</div><span class="w-kpi-val">R 450,200</span><div class="w-kpi-trend">↑ 12.5%</div></div>
-                                    <div class="w-kpi"><div class="w-kpi-label">Orders</div><span class="w-kpi-val">14</span><div class="w-kpi-trend" style="color:#0071e3">Processed</div></div>
-                                    <div class="w-kpi"><div class="w-kpi-label">Stock Level</div><span class="w-kpi-val">84%</span><div class="w-kpi-trend">Healthy</div></div>
-                                </div>
-                                <div class="w-main-chart">
-                                    <div class="w-chart-header">LIVE SALES ACTIVITY</div>
-                                    <div class="w-visual"><div class="w-bar" style="height: 30%;"></div><div class="w-bar" style="height: 50%;"></div><div class="w-bar" style="height: 80%;"></div><div class="w-bar" style="height: 60%;"></div></div>
-                                </div>
+        <div class="glass-card">
+            <div class="split-header">
+                <span class="badge">Business Intelligence</span>
+                <h2>Poultry Enterprise BI Dashboard</h2>
+                <p>Developed a full-scale Business Intelligence tool to assist local SMEs in competing through data-driven inventory and sales management.</p>
+            </div>
+
+            <div class="landscape-figure">
+                <div class="white-db-landscape">
+                    <div class="w-side"><div class="w-side-item active"></div><div class="w-side-item"></div><div class="w-side-item"></div></div>
+                    <div class="w-content">
+                        <div class="w-top-row">
+                            <div class="w-kpi"><div class="w-kpi-label">Revenue</div><span class="w-kpi-val">R 450,200</span><div class="w-kpi-trend">↑ 12.5%</div></div>
+                            <div class="w-kpi"><div class="w-kpi-label">Orders</div><span class="w-kpi-val">14</span><div class="w-kpi-trend" style="color:#0071e3">Processed</div></div>
+                            <div class="w-kpi"><div class="w-kpi-label">Stock Level</div><span class="w-kpi-val">84%</span><div class="w-kpi-trend">Healthy</div></div>
+                        </div>
+                        <div style="flex:1; background:#fff; border:1px solid #e1e8ed; border-radius:10px; padding:15px; display:flex; flex-direction:column; gap:10px;">
+                            <div style="font-size:9px; font-weight:700; color:#888;">LIVE SALES ACTIVITY</div>
+                            <div style="flex:1; display:flex; align-items:flex-end; gap:8px;">
+                                <div style="flex:1; background:#0071e3; opacity:0.2; height:40%;"></div>
+                                <div style="flex:1; background:#0071e3; opacity:0.4; height:70%;"></div>
+                                <div style="flex:1; background:#0071e3; opacity:0.3; height:50%;"></div>
+                                <div style="flex:1; background:#0071e3; opacity:0.6; height:90%;"></div>
+                                <div style="flex:1; background:#0071e3; opacity:0.2; height:60%;"></div>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <span class="badge">Business Intelligence</span>
-                        <h2>Poultry Enterprise BI Dashboard</h2>
-                        <p style="color: #aaa; line-height: 1.6;">Developed a full-scale Business Intelligence tool to assist local SMEs in competing through data-driven inventory and sales management.</p>
-                        
-                        <ul style="margin-top: 1.5rem; color: #666; list-style: none; font-size: 0.95rem; border-top: 1px solid #222; padding-top: 1.5rem;">
-                            <li>• Automated Power Query ETL Pipelines</li>
-                            <li>• Real-time Sales Trend Visualization</li>
-                            <li>• Predictive Stock Rotation Models</li>
-                        </ul>
-                    </div>
                 </div>
             </div>
-        </a>
 
-        <div class="glass-card">
-            <div class="project-grid">
-                <div>
-                    <span class="badge">Sustainable Design</span>
-                    <h2>RollerX: Global Innovation</h2>
-                    <p style="color: #aaa; line-height: 1.6;">Engineered a 100% recyclable water accessibility solution focusing on inclusivity and <strong>DFM</strong> (Design for Manufacturing).</p>
-                    <div class="metric-wrap">
-                        <div class="metric"><strong>382</strong> Units/Hour</div>
-                        <div class="metric"><strong>100%</strong> Recyclable</div>
-                    </div>
-                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6; border-top: 1px solid #222; padding-top: 1.5rem;">Optimized injection molding simulations to reach peak production rates and analyzed life-cycle sustainability.</p>
+            <div class="split-footer">
+                <div class="metric-wrap">
+                    <div class="metric"><strong>Live</strong> Transparency</div>
+                    <div class="metric"><strong>SME</strong> Optimized</div>
                 </div>
-                <div class="img-slot"><img src="rollerx-design.jpg" alt="RollerX CAD Design" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"></div>
+                <p class="technical-detail">
+                    Designed end-to-end <strong>PowerBI ETL pipelines</strong> leveraging Power Query for automated data cleaning. This transition from fragmented spreadsheets to real-time visualization empowered direct, data-driven stock rotation and procurement.
+                </p>
             </div>
         </div>
 
     </div>
 
-    <footer id="contact" style="padding: 5rem 10%; text-align: center; border-top: 1px solid #222;">
-        <h2>Ready to optimize?</h2>
-        <div style="margin-top: 2rem; font-size: 1.5rem;">
-            <a href="https://automania.co.za" style="color: #fff; margin: 0 1.5rem;"><i class="fa-solid fa-car"></i></a>
-            <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-github"></i></a>
+    <section class="footer-cta" id="contact">
+        <h2>Professional Engagement</h2>
+        <p>
+            I am currently seeking opportunities to join a forward-thinking engineering team. My background combines rigorous Industrial Engineering methodologies with modern data proficiency to deliver scalable operational improvements. I am prepared to contribute effectively to process optimization and manufacturing excellence roles.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 3rem; font-size: 1.5rem;">
+            <a href="https://automania.co.za" style="color: #fff;"><i class="fa-solid fa-car"></i></a>
+            <a href="#" style="color: #fff;"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" style="color: #fff;"><i class="fa-brands fa-github"></i></a>
         </div>
-    </footer>
+    </section>
 
 </body>
 </html>
