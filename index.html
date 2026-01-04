@@ -58,7 +58,7 @@
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- GLASS CARDS & CLICKABLE LINKS --- */
+        /* --- GLASS CARDS --- */
         .container { padding: 5rem 10%; }
         .project-link { text-decoration: none; color: inherit; display: block; margin-bottom: 4rem; }
         
@@ -76,55 +76,48 @@
 
         .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         
-        /* --- IMAGE SLOT STYLES --- */
         .img-slot { 
             width: 100%; height: 400px; background: #0a0a0a; border-radius: 16px; 
             overflow: hidden; position: relative; border: 1px solid var(--glass-border); 
             display: flex; align-items: center; justify-content: center;
         }
-        .img-slot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.4s; }
-        .project-link:hover img { opacity: 1; transform: scale(1.05); }
 
-        /* --- MANUAL DASHBOARD DESIGN (CSS) --- */
-        .db-ui {
-            width: 90%; height: 85%; background: rgba(255,255,255,0.03); 
-            border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
-            display: grid; grid-template-columns: 60px 1fr; gap: 10px; padding: 10px;
+        /* --- WHITE THEME DASHBOARD UI (CSS) --- */
+        .white-db {
+            width: 95%; height: 90%; background: #f4f7f9; border-radius: 12px;
+            display: grid; grid-template-columns: 80px 1fr; overflow: hidden; color: #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .db-side { background: rgba(255,255,255,0.05); border-radius: 8px; }
-        .db-main { display: grid; grid-template-rows: auto 1fr; gap: 10px; }
-        .db-top { display: flex; gap: 10px; }
-        .db-card { 
-            flex: 1; background: rgba(255,255,255,0.05); border-radius: 8px; 
-            padding: 10px; font-size: 10px; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .db-card span { display: block; font-size: 16px; font-weight: bold; color: var(--accent); margin-top: 5px;}
-        .db-graph { 
-            background: linear-gradient(180deg, rgba(0, 113, 227, 0.1), transparent); 
-            border-radius: 8px; border: 1px solid rgba(0, 113, 227, 0.2);
-            position: relative; display: flex; align-items: flex-end; padding: 10px; gap: 5px;
-        }
-        .bar { flex: 1; background: var(--accent); border-radius: 2px 2px 0 0; opacity: 0.6; }
+        .w-side { background: #fff; border-right: 1px solid #e1e8ed; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+        .w-side-item { height: 12px; width: 100%; background: #f0f3f5; border-radius: 4px; }
+        .w-side-item.active { background: #0071e3; opacity: 0.1; border: 1px solid #0071e3; }
+        
+        .w-content { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
+        .w-top-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .w-kpi { background: #fff; border-radius: 8px; padding: 12px; border: 1px solid #e1e8ed; }
+        .w-kpi-label { font-size: 8px; text-transform: uppercase; color: #888; letter-spacing: 0.5px; font-weight: 600; }
+        .w-kpi-val { font-size: 16px; font-weight: 700; color: #1d1d1f; margin-top: 4px; display: block; }
+        .w-kpi-trend { font-size: 8px; color: #34c759; font-weight: 600; margin-top: 2px; }
+
+        .w-main-chart { background: #fff; border-radius: 8px; border: 1px solid #e1e8ed; flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .w-chart-header { font-size: 9px; font-weight: 600; color: #888; border-bottom: 1px solid #f0f3f5; padding-bottom: 5px; }
+        .w-visual { flex: 1; display: flex; align-items: flex-end; gap: 4px; padding-bottom: 5px; }
+        .w-bar { flex: 1; background: #0071e3; border-radius: 2px 2px 0 0; opacity: 0.15; transition: 0.3s; }
+        .project-link:hover .w-bar { opacity: 0.6; }
 
         /* --- TYPOGRAPHY & TAGS --- */
-        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; }
         .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
         .metric-wrap { display: flex; gap: 2rem; margin-top: 2rem; }
         .metric { font-size: 0.9rem; color: #888; }
-        .metric strong { display: block; font-size: 2rem; color: #fff; }
-
+        .metric strong { display: block; font-size: 2rem; color: #fff; font-weight: 700; }
         .tag { padding: 5px 15px; border: 1px solid #444; border-radius: 20px; font-size: 0.8rem; color: #aaa; margin-right: 10px; display: inline-block; margin-bottom: 10px;}
-
-        /* --- INDUSTRY 4.0 SECTION --- */
-        .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2rem; color: #fff; max-width: 900px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
         .highlight { color: var(--accent); }
 
         @media (max-width: 900px) {
             .hero-h1 { font-size: 3rem; }
             .project-grid { grid-template-columns: 1fr; }
             .img-slot { height: 250px; }
-            .glass-card { padding: 2rem; }
         }
     </style>
 </head>
@@ -138,7 +131,6 @@
         <h1>ANDILE BRIAN</h1>
         <ul>
             <li><a href="#engineering">Engineering</a></li>
-            <li><a href="#digital">Industry 4.0</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
@@ -162,7 +154,6 @@
                         <span class="badge">Six Sigma Project</span>
                         <h2>Rail Manufacturing Optimization</h2>
                         <p style="color: #aaa;">Optimized Car Body Shell assembly at Gibela Rail by eliminating critical bottlenecks through DMAIC and MODAPTS analysis.</p>
-                        
                         <div class="metric-wrap">
                             <div class="metric"><strong>64%</strong> Cycle Time</div>
                             <div class="metric"><strong>69%</strong> Labor Cost</div>
@@ -170,34 +161,52 @@
                         </div>
                     </div>
                     <div class="img-slot">
-                        <img src="gibela-hero.jpg" alt="Rail Project">
+                        <img src="gibela-hero.jpg" alt="Rail Project" style="width:100%; height:100%; object-fit:cover; opacity:0.7;">
                     </div>
                 </div>
             </div>
         </a>
 
-        <div class="i4-section">
-            <p>“Traditional engineering defines the floor, but <span class="highlight">Industry 4.0</span> defines the future. I am a proactive architect of <span class="highlight">intelligent systems</span>.”</p>
-        </div>
-
         <a href="dashboard.html" class="project-link">
-            <div class="glass-card" id="digital">
+            <div class="glass-card">
                 <div class="project-grid">
                     <div class="img-slot">
-                        <div class="db-ui">
-                            <div class="db-side"></div>
-                            <div class="db-main">
-                                <div class="db-top">
-                                    <div class="db-card">Revenue <span>R450k</span></div>
-                                    <div class="db-card">Orders <span>+12%</span></div>
-                                    <div class="db-card">Stock <span>84%</span></div>
+                        <div class="white-db">
+                            <div class="w-side">
+                                <div class="w-side-item active"></div>
+                                <div class="w-side-item"></div>
+                                <div class="w-side-item"></div>
+                                <div class="w-side-item"></div>
+                            </div>
+                            <div class="w-content">
+                                <div class="w-top-row">
+                                    <div class="w-kpi">
+                                        <div class="w-kpi-label">Revenue</div>
+                                        <span class="w-kpi-val">R 450,200</span>
+                                        <div class="w-kpi-trend">↑ 12.5%</div>
+                                    </div>
+                                    <div class="w-kpi">
+                                        <div class="w-kpi-label">Orders</div>
+                                        <span class="w-kpi-val">14</span>
+                                        <div class="w-kpi-trend" style="color:#0071e3">Processed by AI</div>
+                                    </div>
+                                    <div class="w-kpi">
+                                        <div class="w-kpi-label">Stock Level</div>
+                                        <span class="w-kpi-val">84%</span>
+                                        <div class="w-kpi-trend">Healthy</div>
+                                    </div>
                                 </div>
-                                <div class="db-graph">
-                                    <div class="bar" style="height: 40%;"></div>
-                                    <div class="bar" style="height: 70%;"></div>
-                                    <div class="bar" style="height: 55%;"></div>
-                                    <div class="bar" style="height: 90%;"></div>
-                                    <div class="bar" style="height: 65%;"></div>
+                                <div class="w-main-chart">
+                                    <div class="w-chart-header">LIVE SALES ACTIVITY</div>
+                                    <div class="w-visual">
+                                        <div class="w-bar" style="height: 30%;"></div>
+                                        <div class="w-bar" style="height: 50%;"></div>
+                                        <div class="w-bar" style="height: 40%;"></div>
+                                        <div class="w-bar" style="height: 80%;"></div>
+                                        <div class="w-bar" style="height: 60%;"></div>
+                                        <div class="w-bar" style="height: 90%;"></div>
+                                        <div class="w-bar" style="height: 70%;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,9 +216,9 @@
                         <h2>Poultry Enterprise BI Dashboard</h2>
                         <p style="color: #aaa;">Developed a custom Business Intelligence tool to assist local SMEs in leveraging data management and competing in high-volume markets.</p>
                         <ul style="margin-top: 1.5rem; color: #888; list-style: none;">
-                            <li>• Automated Data Cleaning</li>
-                            <li>• Real-time Sales Trends</li>
-                            <li>• Predictive Stock Models</li>
+                            <li>• Automated Data Cleaning via Power Query</li>
+                            <li>• Real-time Sales Trend Visualization</li>
+                            <li>• Predictive Stock Rotation Models</li>
                         </ul>
                     </div>
                 </div>
@@ -228,7 +237,7 @@
                     </div>
                 </div>
                 <div class="img-slot">
-                    <img src="rollerx-design.jpg" alt="RollerX Project">
+                    <img src="rollerx-design.jpg" alt="RollerX Project" style="width:100%; height:100%; object-fit:cover; opacity:0.7;">
                 </div>
             </div>
         </div>
