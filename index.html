@@ -9,13 +9,13 @@
         :root {
             --glass: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.15);
-            --accent: #0071e3; /* Apple Blue */
+            --accent: #0071e3;
             --bg: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            font-family: "SF Pro Display", -apple-system, sans-serif; 
             background: var(--bg); 
             color: #fff; 
             overflow-x: hidden; 
@@ -23,133 +23,81 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- LIQUID GRADIENT BACKGROUND --- */
-        .gradient-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
-            z-index: -1;
-        }
-        .blob {
-            position: absolute; width: 500px; height: 500px;
-            background: linear-gradient(135deg, rgba(0, 113, 227, 0.2) 0%, rgba(118, 255, 3, 0.1) 100%);
-            filter: blur(80px); border-radius: 50%; animation: move 20s infinite alternate;
-        }
+        .gradient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%); z-index: -1; }
+        .blob { position: absolute; width: 500px; height: 500px; background: linear-gradient(135deg, rgba(0, 113, 227, 0.2) 0%, rgba(118, 255, 3, 0.1) 100%); filter: blur(80px); border-radius: 50%; animation: move 20s infinite alternate; }
+        @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
 
-        @keyframes move {
-            from { transform: translate(-10%, -10%); }
-            to { transform: translate(20%, 20%); }
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            background: rgba(0,0,0,0.5);
-            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
-            border-bottom: 1px solid var(--glass-border);
-        }
+        nav { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; backdrop-filter: blur(20px); background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); }
         nav h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; }
-        nav ul { display: flex; gap: 2rem; list-style: none; }
-        nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-        nav a:hover { color: #fff; }
 
-        /* --- HERO --- */
         header { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%; }
-        .hero-h1 { font-size: 5rem; font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; opacity: 0; animation: fadeIn 1.5s forwards 0.5s; }
-        .hero-sub { font-size: 1.2rem; color: #888; max-width: 850px; margin-bottom: 2rem; opacity: 0; animation: fadeIn 1.5s forwards 0.8s; line-height: 1.7; }
+        .hero-h1 { font-size: 5rem; font-weight: 700; background: linear-gradient(to bottom, #fff 40%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.5rem; }
+        .hero-sub { font-size: 1.2rem; color: #888; max-width: 850px; line-height: 1.7; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* --- GLASS CARDS --- */
         .container { padding: 5rem 10%; }
         .project-link { text-decoration: none; color: inherit; display: block; margin-bottom: 4rem; }
         
         .glass-card {
-            background: var(--glass); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 24px;
+            background: var(--glass); backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border); border-radius: 32px;
             padding: 4rem; transition: transform 0.4s ease, border-color 0.4s ease;
         }
-        
-        .project-link:hover .glass-card { 
-            transform: scale(1.02); 
-            border-color: rgba(255,255,255,0.4); 
-            background: rgba(255, 255, 255, 0.12);
-        }
+        .project-link:hover .glass-card { transform: scale(1.01); border-color: rgba(255,255,255,0.4); }
 
-        .project-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
-        
-        .img-slot { 
-            width: 100%; height: 450px; background: #0a0a0a; border-radius: 16px; 
-            overflow: hidden; position: relative; border: 1px solid var(--glass-border); 
-            display: flex; align-items: center; justify-content: center;
-        }
+        /* --- THE ASYMMETRIC GRID FROM YOUR SCREENSHOTS --- */
+        .project-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+        .reverse { grid-template-columns: 1fr 1.2fr; } /* Swaps weight for Block 2 */
 
-        /* --- WHITE THEME DASHBOARD UI (CSS) --- */
-        .white-db {
-            width: 95%; height: 90%; background: #f4f7f9; border-radius: 12px;
-            display: grid; grid-template-columns: 80px 1fr; overflow: hidden; color: #333;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .w-side { background: #fff; border-right: 1px solid #e1e8ed; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .w-side-item { height: 12px; width: 100%; background: #f0f3f5; border-radius: 4px; }
-        .w-side-item.active { background: #0071e3; opacity: 0.1; border: 1px solid #0071e3; }
-        .w-content { padding: 15px; display: flex; flex-direction: column; gap: 15px; }
-        .w-top-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .w-kpi { background: #fff; border-radius: 8px; padding: 12px; border: 1px solid #e1e8ed; }
-        .w-kpi-label { font-size: 8px; text-transform: uppercase; color: #888; font-weight: 600; }
-        .w-kpi-val { font-size: 16px; font-weight: 700; color: #1d1d1f; margin-top: 4px; display: block; }
-        .w-kpi-trend { font-size: 8px; color: #34c759; font-weight: 600; margin-top: 2px; }
-        .w-main-chart { background: #fff; border-radius: 8px; border: 1px solid #e1e8ed; flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .w-chart-header { font-size: 9px; font-weight: 600; color: #888; border-bottom: 1px solid #f0f3f5; padding-bottom: 5px; }
-        .w-visual { flex: 1; display: flex; align-items: flex-end; gap: 4px; }
-        .w-bar { flex: 1; background: #0071e3; border-radius: 2px 2px 0 0; opacity: 0.15; transition: 0.3s; }
+        .img-slot { width: 100%; height: 480px; background: #0a0a0a; border-radius: 20px; overflow: hidden; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; }
+
+        /* --- DASHBOARD DESIGN (FROM SCREENSHOT) --- */
+        .white-db { width: 92%; height: 88%; background: #f8fafc; border-radius: 12px; display: grid; grid-template-columns: 75px 1fr; overflow: hidden; color: #333; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .w-side { background: #fff; border-right: 1px solid #edf2f7; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
+        .w-dot { height: 10px; width: 100%; background: #f1f5f9; border-radius: 4px; }
+        .w-dot.active { background: #0071e3; opacity: 0.15; border: 1px solid #0071e3; }
+        .w-content { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+        .w-top-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .w-kpi { background: #fff; border-radius: 10px; padding: 15px; border: 1px solid #edf2f7; }
+        .w-label { font-size: 8px; text-transform: uppercase; color: #94a3b8; font-weight: 700; letter-spacing: 0.5px; }
+        .w-val { font-size: 18px; font-weight: 700; color: #1e293b; margin: 4px 0; display: block; }
+        .w-trend { font-size: 8px; color: #10b981; font-weight: 600; }
+        .w-chart { background: #fff; border-radius: 10px; border: 1px solid #edf2f7; flex: 1; padding: 20px; position: relative; display: flex; flex-direction: column; }
+        .w-chart-title { font-size: 9px; font-weight: 700; color: #94a3b8; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; margin-bottom: 15px; }
+        .w-visual { flex: 1; display: flex; align-items: flex-end; gap: 6px; }
+        .w-bar { flex: 1; background: #0071e3; border-radius: 3px 3px 0 0; opacity: 0.1; transition: 0.4s; }
         .project-link:hover .w-bar { opacity: 0.6; }
 
-        /* --- TYPOGRAPHY & TAGS --- */
-        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; }
-        .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
-        .metric-wrap { display: flex; gap: 2rem; margin-top: 2rem; }
-        .metric { font-size: 0.9rem; color: #888; }
-        .metric strong { display: block; font-size: 2rem; color: #fff; font-weight: 700; }
-        .tag { padding: 5px 15px; border: 1px solid #444; border-radius: 20px; font-size: 0.8rem; color: #aaa; margin-right: 10px; display: inline-block; margin-bottom: 10px;}
-        .highlight { color: var(--accent); }
+        h2 { font-size: 3rem; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+        .badge { display: inline-block; padding: 8px 16px; border-radius: 8px; background: #0071e3; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.5px; }
+        .metric-wrap { display: flex; gap: 3rem; margin: 2.5rem 0; }
+        .metric { font-size: 0.9rem; color: #666; font-weight: 500; }
+        .metric strong { display: block; font-size: 2.5rem; color: #fff; font-weight: 700; margin-bottom: 5px; }
+        .tag { padding: 6px 18px; border: 1px solid #333; border-radius: 20px; font-size: 0.85rem; color: #999; margin: 5px; display: inline-block; }
 
-        /* --- INDUSTRY 4.0 SECTION --- */
-        .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2rem; color: #fff; max-width: 900px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
+        .i4-section { text-align: center; margin: 10rem 0; }
+        .i4-section p { font-size: 2.4rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; }
+        .highlight { color: #0071e3; }
 
         @media (max-width: 1100px) {
-            .project-grid { grid-template-columns: 1fr; }
+            .project-grid, .reverse { grid-template-columns: 1fr; gap: 3rem; }
             .hero-h1 { font-size: 3.5rem; }
-            .img-slot { height: 350px; }
+            .img-slot { height: 320px; }
         }
     </style>
 </head>
 <body>
-
-    <div class="gradient-bg">
-        <div class="blob"></div>
-    </div>
-
-    <nav>
-        <h1>ANDILE BRIAN</h1>
-        <ul>
-            <li><a href="#engineering">Engineering</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+    <div class="gradient-bg"><div class="blob"></div></div>
+    <nav><h1>ANDILE BRIAN</h1></nav>
 
     <header>
         <h1 class="hero-h1">Efficiency driven by Innovation.</h1>
-        <p class="hero-sub">A forward-thinking Industrial Engineering Graduate and Honours Candidate driven by efficiency and innovation. Certified Six Sigma Yellow Belt bridging the gap between theoretical optimization and real-world application.</p>
-        <div style="margin-top: 20px;">
-            <span class="tag">Six Sigma Yellow Belt</span>
-            <span class="tag">PowerBI Developer</span>
-            <span class="tag">Process Engineer</span>
+        <p class="hero-sub">Industrial Engineering Honours Candidate specializing in the intersection of traditional Lean Manufacturing and Business Intelligence.</p>
+        <div style="margin-top: 30px;">
+            <span class="tag">Six Sigma Yellow Belt</span><span class="tag">PowerBI Developer</span><span class="tag">Process Engineer</span>
         </div>
     </header>
 
-    <div class="container" id="engineering">
+    <div class="container">
         
         <a href="rail.html" class="project-link">
             <div class="glass-card">
@@ -157,17 +105,15 @@
                     <div>
                         <span class="badge">Six Sigma Project</span>
                         <h2>Rail Manufacturing Optimization</h2>
-                        <p style="color: #aaa; line-height: 1.6;">Optimized Car Body Shell assembly at Gibela Rail by eliminating critical ergonomic bottlenecks through <strong>DMAIC</strong> and <strong>MODAPTS</strong> analysis. Engineered a "Rollable Guide System" with <strong>SolidWorks</strong> and FEA validation, utilizing decommissioned materials to resolve safety risks while bypassing <strong>CAPEX constraints</strong>.</p>
-                        
+                        <p style="color: #999; line-height: 1.8; font-size: 1.1rem;">Optimized the Car Body Shell assembly at Gibela Rail by eliminating critical bottlenecks through DMAIC and MODAPTS analysis.</p>
                         <div class="metric-wrap">
                             <div class="metric"><strong>64%</strong> Cycle Time</div>
                             <div class="metric"><strong>69%</strong> Labor Cost</div>
                             <div class="metric"><strong>+27</strong> Ergo Score</div>
                         </div>
+                        <p style="color: #666; font-size: 1rem;">Designed a "Rollable Guide System" using SolidWorks and FEA, utilizing decommissioned materials to avoid additional CAPEX expenditure.</p>
                     </div>
-                    <div class="img-slot">
-                        <img src="gibela-hero.jpg" alt="Rail Assembly Optimization" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
-                    </div>
+                    <div class="img-slot"><img src="gibela-hero.jpg" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"></div>
                 </div>
             </div>
         </a>
@@ -178,24 +124,20 @@
 
         <a href="dashboard.html" class="project-link">
             <div class="glass-card">
-                <div class="project-grid">
+                <div class="project-grid reverse">
                     <div class="img-slot">
                         <div class="white-db">
-                            <div class="w-side">
-                                <div class="w-side-item active"></div>
-                                <div class="w-side-item"></div>
-                                <div class="w-side-item"></div>
-                            </div>
+                            <div class="w-side"><div class="w-dot active"></div><div class="w-dot"></div><div class="w-dot"></div></div>
                             <div class="w-content">
                                 <div class="w-top-row">
-                                    <div class="w-kpi"><div class="w-kpi-label">Revenue</div><span class="w-kpi-val">R 450,200</span><div class="w-kpi-trend">↑ 12.5%</div></div>
-                                    <div class="w-kpi"><div class="w-kpi-label">Orders</div><span class="w-kpi-val">14</span><div class="w-kpi-trend" style="color:#0071e3">Processed</div></div>
-                                    <div class="w-kpi"><div class="w-kpi-label">Stock Level</div><span class="w-kpi-val">84%</span><div class="w-kpi-trend">Healthy</div></div>
+                                    <div class="w-kpi"><div class="w-label">Total Revenue</div><span class="w-val">R 450,200</span><div class="w-trend">↑ 12.5% vs last month</div></div>
+                                    <div class="w-kpi"><div class="w-label">Pending Orders</div><span class="w-val">14</span><div class="w-trend" style="color:#0071e3">Processed by AI</div></div>
+                                    <div class="w-kpi"><div class="w-label">Stock Level</div><span class="w-val">84%</span><div class="w-trend">Healthy</div></div>
                                 </div>
-                                <div class="w-main-chart">
-                                    <div class="w-chart-header">LIVE SALES ACTIVITY</div>
+                                <div class="w-chart">
+                                    <div class="w-chart-title">LIVE SALES ACTIVITY</div>
                                     <div class="w-visual">
-                                        <div class="w-bar" style="height: 30%;"></div><div class="w-bar" style="height: 50%;"></div><div class="w-bar" style="height: 80%;"></div><div class="w-bar" style="height: 60%;"></div><div class="w-bar" style="height: 90%;"></div>
+                                        <div class="w-bar" style="height: 35%;"></div><div class="w-bar" style="height: 60%;"></div><div class="w-bar" style="height: 45%;"></div><div class="w-bar" style="height: 90%;"></div><div class="w-bar" style="height: 70%;"></div><div class="w-bar" style="height: 50%;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -204,9 +146,9 @@
                     <div>
                         <span class="badge">Business Intelligence</span>
                         <h2>Poultry Enterprise BI Dashboard</h2>
-                        <p style="color: #aaa; line-height: 1.6;">Designed end-to-end <strong>PowerBI</strong> tools for SMEs to leverage automated data cleaning and real-time inventory tracking, enabling small-scale operations to compete in high-volume markets.</p>
-                        <ul style="margin-top: 1.5rem; color: #888; list-style: none;">
-                            <li>• Automated Power Query ETL Pipelines</li>
+                        <p style="color: #999; line-height: 1.8; font-size: 1.1rem;">Developed a full-scale Business Intelligence tool to assist local SMEs in competing through data-driven inventory and sales management.</p>
+                        <ul style="margin-top: 1.5rem; color: #666; list-style: none; font-size: 1rem;">
+                            <li>• Automated Data Cleaning via Power Query</li>
                             <li>• Real-time Sales Trend Visualization</li>
                             <li>• Predictive Stock Rotation Models</li>
                         </ul>
@@ -215,35 +157,10 @@
             </div>
         </a>
 
-        <div class="glass-card">
-            <div class="project-grid">
-                <div>
-                    <span class="badge">Sustainable Design</span>
-                    <h2>RollerX: Global Innovation</h2>
-                    <p style="color: #aaa; line-height: 1.6;">Engineered a 100% recyclable water accessibility solution focusing on inclusivity and <strong>DFM</strong> (Design for Manufacturing). Optimized injection molding simulations to reach peak production rates.</p>
-                    <div class="metric-wrap">
-                        <div class="metric"><strong>382</strong> Units/Hour</div>
-                        <div class="metric"><strong>100%</strong> Recyclable</div>
-                    </div>
-                </div>
-                <div class="img-slot">
-                    <img src="rollerx-design.jpg" alt="RollerX CAD Design" style="width:100%; height:100%; object-fit:cover; opacity:0.8;">
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <footer id="contact" style="padding: 5rem 10%; text-align: center; border-top: 1px solid #222;">
-        <h2>Ready to optimize?</h2>
-        <p style="color: #888; margin-bottom: 2rem;">Available for Industrial & Process Engineering roles.</p>
-        <p><strong>Location:</strong> Gauteng, South Africa</p>
-        <div style="margin-top: 2rem; font-size: 1.5rem;">
-            <a href="https://automania.co.za" style="color: #fff; margin: 0 1.5rem;"><i class="fa-solid fa-car"></i></a>
-            <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
-            <a href="#" style="color: #fff; margin: 0 1.5rem;"><i class="fa-brands fa-github"></i></a>
-        </div>
+    <footer style="padding: 5rem 10%; text-align: center; border-top: 1px solid #222;">
+        <p style="color: #666;">andilebrian.online | Industrial & Process Engineering</p>
     </footer>
-
 </body>
 </html>
