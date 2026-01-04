@@ -27,7 +27,13 @@
         .blob { position: absolute; width: 500px; height: 500px; background: linear-gradient(135deg, rgba(0, 113, 227, 0.2) 0%, rgba(118, 255, 3, 0.1) 100%); filter: blur(80px); border-radius: 50%; animation: move 20s infinite alternate; }
         @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
 
-        nav { position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); }
+        /* --- FIXED NAVIGATION --- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 5%; 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            background: rgba(0,0,0,0.5); display: flex; justify-content: space-between; 
+            align-items: center; z-index: 1000; border-bottom: 1px solid var(--glass-border); 
+        }
         nav h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: 1px; }
         nav ul { display: flex; gap: 2rem; list-style: none; }
         nav a { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
@@ -47,13 +53,13 @@
         }
         .project-link:hover .glass-card { transform: scale(1.01); border-color: rgba(255,255,255,0.4); }
 
-        /* --- ASYMMETRIC GRID SYSTEM --- */
+        /* --- ASYMMETRIC GRID WITH SPLIT TEXT --- */
         .project-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
         .reverse { grid-template-columns: 1fr 1.2fr; }
 
         .img-slot { width: 100%; height: 450px; background: #0a0a0a; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; }
 
-        /* --- WHITE THEME DASHBOARD UI (CSS) --- */
+        /* --- WHITE THEME DASHBOARD UI --- */
         .white-db {
             width: 95%; height: 90%; background: #f4f7f9; border-radius: 12px;
             display: grid; grid-template-columns: 80px 1fr; overflow: hidden; color: #333;
@@ -72,18 +78,17 @@
         .w-chart-header { font-size: 9px; font-weight: 600; color: #888; border-bottom: 1px solid #f0f3f5; padding-bottom: 5px; }
         .w-visual { flex: 1; display: flex; align-items: flex-end; gap: 4px; }
         .w-bar { flex: 1; background: #0071e3; border-radius: 2px 2px 0 0; opacity: 0.15; transition: 0.3s; }
-        .project-link:hover .w-bar { opacity: 0.6; }
 
         h2 { font-size: 2.5rem; margin-bottom: 1.5rem; font-weight: 600; }
         .badge { display: inline-block; padding: 6px 12px; border-radius: 6px; background: var(--accent); font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 1rem; }
-        .metric-wrap { display: flex; gap: 2rem; margin-top: 2rem; }
+        .metric-wrap { display: flex; gap: 2rem; margin: 1.5rem 0; }
         .metric { font-size: 0.9rem; color: #888; }
         .metric strong { display: block; font-size: 2rem; color: #fff; font-weight: 700; }
         .tag { padding: 5px 15px; border: 1px solid #444; border-radius: 20px; font-size: 0.8rem; color: #aaa; margin-right: 10px; display: inline-block; margin-bottom: 10px;}
         .highlight { color: var(--accent); }
 
         .i4-section { text-align: center; margin: 8rem 0; }
-        .i4-section p { font-size: 2.2rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; letter-spacing: -0.02em; }
+        .i4-section p { font-size: 2.2rem; color: #fff; max-width: 1000px; margin: 0 auto; line-height: 1.4; font-weight: 400; }
 
         @media (max-width: 1100px) {
             .project-grid, .reverse { grid-template-columns: 1fr; }
@@ -120,10 +125,15 @@
                     <div>
                         <span class="badge">Six Sigma Project</span>
                         <h2>Rail Manufacturing Optimization</h2>
-                        <p style="color: #aaa; line-height: 1.6;">Optimized Car Body Shell assembly at Gibela Rail by eliminating critical ergonomic bottlenecks through <strong>DMAIC</strong> and <strong>MODAPTS</strong> analysis. Engineered a "Rollable Guide System" with <strong>SolidWorks</strong> and FEA validation, utilizing decommissioned materials to resolve safety risks while bypassing <strong>CAPEX constraints</strong>.</p>
+                        <p style="color: #aaa; line-height: 1.6;">Optimized Car Body Shell assembly at Gibela Rail by eliminating critical ergonomic bottlenecks through <strong>DMAIC</strong> and <strong>MODAPTS</strong> analysis.</p>
+                        
                         <div class="metric-wrap">
-                            <div class="metric"><strong>64%</strong> Cycle Time</div><div class="metric"><strong>69%</strong> Labor Cost</div><div class="metric"><strong>+27</strong> Ergo Score</div>
+                            <div class="metric"><strong>64%</strong> Cycle Time</div>
+                            <div class="metric"><strong>69%</strong> Labor Cost</div>
+                            <div class="metric"><strong>+27</strong> Ergo Score</div>
                         </div>
+
+                        <p style="color: #666; font-size: 0.95rem; line-height: 1.6; border-top: 1px solid #222; padding-top: 1.5rem;">Designed a "Rollable Guide System" with <strong>SolidWorks</strong> and FEA validation, utilizing decommissioned materials to resolve safety risks while bypassing <strong>CAPEX constraints</strong>.</p>
                     </div>
                     <div class="img-slot"><img src="gibela-hero.jpg" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"></div>
                 </div>
@@ -148,7 +158,7 @@
                                 </div>
                                 <div class="w-main-chart">
                                     <div class="w-chart-header">LIVE SALES ACTIVITY</div>
-                                    <div class="w-visual"><div class="w-bar" style="height: 30%;"></div><div class="w-bar" style="height: 50%;"></div><div class="w-bar" style="height: 80%;"></div><div class="w-bar" style="height: 60%;"></div><div class="w-bar" style="height: 90%;"></div></div>
+                                    <div class="w-visual"><div class="w-bar" style="height: 30%;"></div><div class="w-bar" style="height: 50%;"></div><div class="w-bar" style="height: 80%;"></div><div class="w-bar" style="height: 60%;"></div></div>
                                 </div>
                             </div>
                         </div>
@@ -157,8 +167,9 @@
                         <span class="badge">Business Intelligence</span>
                         <h2>Poultry Enterprise BI Dashboard</h2>
                         <p style="color: #aaa; line-height: 1.6;">Developed a full-scale Business Intelligence tool to assist local SMEs in competing through data-driven inventory and sales management.</p>
-                        <ul style="margin-top: 1.5rem; color: #888; list-style: none;">
-                            <li>• Automated Data Cleaning via Power Query</li>
+                        
+                        <ul style="margin-top: 1.5rem; color: #666; list-style: none; font-size: 0.95rem; border-top: 1px solid #222; padding-top: 1.5rem;">
+                            <li>• Automated Power Query ETL Pipelines</li>
                             <li>• Real-time Sales Trend Visualization</li>
                             <li>• Predictive Stock Rotation Models</li>
                         </ul>
@@ -167,17 +178,19 @@
             </div>
         </a>
 
-        <div class="glass-card" id="rollerx">
+        <div class="glass-card">
             <div class="project-grid">
                 <div>
                     <span class="badge">Sustainable Design</span>
                     <h2>RollerX: Global Innovation</h2>
-                    <p style="color: #aaa; line-height: 1.6;">Engineered a 100% recyclable water accessibility solution focusing on inclusivity and <strong>DFM</strong> (Design for Manufacturing). Optimized injection molding simulations to reach peak production rates.</p>
+                    <p style="color: #aaa; line-height: 1.6;">Engineered a 100% recyclable water accessibility solution focusing on inclusivity and <strong>DFM</strong> (Design for Manufacturing).</p>
                     <div class="metric-wrap">
-                        <div class="metric"><strong>382</strong> Units/Hour</div><div class="metric"><strong>100%</strong> Recyclable</div>
+                        <div class="metric"><strong>382</strong> Units/Hour</div>
+                        <div class="metric"><strong>100%</strong> Recyclable</div>
                     </div>
+                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6; border-top: 1px solid #222; padding-top: 1.5rem;">Optimized injection molding simulations to reach peak production rates and analyzed life-cycle sustainability.</p>
                 </div>
-                <div class="img-slot"><img src="rollerx-design.jpg" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"></div>
+                <div class="img-slot"><img src="rollerx-design.jpg" alt="RollerX CAD Design" style="width:100%; height:100%; object-fit:cover; opacity:0.8;"></div>
             </div>
         </div>
 
