@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Projects | Brian Maphumulo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
+        .glass-panel:hover { transform: translateY(-5px); background: rgba(30, 41, 59, 0.9); border-color: rgba(56, 189, 248, 0.3); }
+        /* Responsive number size */
+        .project-number { font-size: 3rem; font-weight: 800; opacity: 0.05; position: absolute; top: 10px; right: 20px; }
+        @media (min-width: 768px) { .project-number { font-size: 4rem; } }
+    </style>
+</head>
+<body class="antialiased min-h-screen selection:bg-blue-500 selection:text-white">
+
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-5xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="font-bold text-lg md:text-xl tracking-tight text-white truncate">BRIAN MAPHUMULO</a>
+            <div class="flex space-x-4 md:space-x-6 text-xs md:text-sm font-medium">
+                <a href="index.html" class="text-slate-400 hover:text-white transition">Home</a>
+                <a href="projects.html" class="text-white">Projects</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-28 md:pt-32 pb-8 md:pb-12 px-4 md:px-6 text-center">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4">The Engineering Series</h1>
+        <p class="text-sm md:text-base text-slate-400 max-w-xl mx-auto">
+            A curated collection of projects applying Industrial Engineering principles to modern digital problems.
+        </p>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 md:px-6 pb-24 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+
+        <a href="series1.html" class="glass-panel p-6 md:p-8 rounded-2xl relative group cursor-pointer block">
+            <span class="project-number">01</span>
+            <div class="inline-block px-3 py-1 mb-4 text-[10px] md:text-xs font-semibold tracking-wider text-blue-400 uppercase bg-blue-900/20 rounded-full">
+                Data Analysis
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-blue-400 transition">Poultry BI Dashboard</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                A DMAIC pilot project utilizing Power BI and DAX to visualize live inventory and sales for a poultry operation.
+            </p>
+            <div class="text-blue-400 text-sm font-semibold flex items-center">
+                Read Case Study &rarr;
+            </div>
+        </a>
+
+        <div class="glass-panel p-6 md:p-8 rounded-2xl relative opacity-60">
+            <span class="project-number">02</span>
+            <div class="inline-block px-3 py-1 mb-4 text-[10px] md:text-xs font-semibold tracking-wider text-purple-400 uppercase bg-purple-900/20 rounded-full">
+                Quality Engineering
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">SANS Standard Workflow</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Digitizing ISO compliance and implementing a Feedback Interceptor system for service auditing.
+            </p>
+            <div class="text-slate-500 text-sm font-semibold flex items-center">
+                Coming Soon...
+            </div>
+        </div>
+
+        <div class="glass-panel p-6 md:p-8 rounded-2xl relative opacity-60">
+            <span class="project-number">03</span>
+            <div class="inline-block px-3 py-1 mb-4 text-[10px] md:text-xs font-semibold tracking-wider text-orange-400 uppercase bg-orange-900/20 rounded-full">
+                Operations
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Legacy VBA Systems</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Reducing cycle time and eliminating non-value-added steps through Excel automation.
+            </p>
+            <div class="text-slate-500 text-sm font-semibold flex items-center">
+                Coming Soon...
+            </div>
+        </div>
+
+        <div class="glass-panel p-6 md:p-8 rounded-2xl relative opacity-60">
+            <span class="project-number">04</span>
+            <div class="inline-block px-3 py-1 mb-4 text-[10px] md:text-xs font-semibold tracking-wider text-emerald-400 uppercase bg-emerald-900/20 rounded-full">
+                Systems Engineering
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Digital Orchestration</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                Using n8n and Webhooks to create "Digital SOPs" that enforce business logic automatically.
+            </p>
+            <div class="text-slate-500 text-sm font-semibold flex items-center">
+                Coming Soon...
+            </div>
+        </div>
+
+        <div class="glass-panel p-6 md:p-8 rounded-2xl relative opacity-60 md:col-span-2">
+            <span class="project-number">05</span>
+            <div class="inline-block px-3 py-1 mb-4 text-[10px] md:text-xs font-semibold tracking-wider text-red-400 uppercase bg-red-900/20 rounded-full">
+                Advanced Manufacturing
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Computer Vision & IoT</h2>
+            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                From Arduino sensors to YOLO AI object detection for automated visual inspection on the shop floor.
+            </p>
+            <div class="text-slate-500 text-sm font-semibold flex items-center">
+                Coming Soon...
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>
