@@ -25,7 +25,7 @@
 
     <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800">
         <div class="max-w-4xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-            <a href="index.html" class="font-bold text-lg md:text-xl tracking-tight text-white">AUTOMANIA</a>
+            <a href="index.html" class="font-bold text-lg md:text-xl tracking-tight text-white hover:text-purple-400 transition">AUTOMANIA</a>
             <div class="text-[10px] md:text-xs font-mono text-slate-400 uppercase tracking-widest">Engineering Report P-02</div>
         </div>
     </nav>
@@ -78,8 +78,6 @@
 
         <div class="mt-12">
             <h3 class="text-xs font-mono text-slate-500 uppercase mb-8 tracking-widest">The PDCA Cycle Implementation</h3>
-            
-            
 
             <div class="pdca-step">
                 <div class="pdca-dot bg-blue-500"></div>
@@ -96,9 +94,10 @@
                 <p class="text-slate-300 leading-relaxed text-sm md:text-base">
                     Upon issuing a Concrete Cube Test Report, the system triggers a feedback request. This is not just a survey; it is a <strong>Digital Audit Trail</strong>.
                 </p>
-                <div class="mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                    <div class="aspect-video bg-slate-700/50 rounded flex items-center justify-center text-slate-500 text-xs">
-                        
+                
+                <div class="mt-4 bg-slate-800/50 p-2 rounded-lg border border-slate-700">
+                    <div class="aspect-video bg-slate-700/50 rounded flex items-center justify-center overflow-hidden">
+                        <img src="series2-lab.jpg" alt="Civil Engineering Lab Environment" class="w-full h-full object-cover rounded">
                     </div>
                     <p class="text-xs text-center text-slate-500 mt-2">Figure 1: The testing environment where compliance is critical.</p>
                 </div>
@@ -121,25 +120,33 @@
                 <div class="pdca-dot bg-emerald-500"></div>
                 <h3 class="text-xl md:text-2xl font-bold text-white mb-2">4. Act (Corrective Action)</h3>
                 <p class="text-slate-300 leading-relaxed text-sm md:text-base mb-6">
-                    The system automates the <strong>Corrective Action Preventative Action (CAPA)</strong> workflow:
+                    The system automates the <strong>Corrective Action Preventative Action (CAPA)</strong> workflow, splitting feedback into two streams:
                 </p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-red-900/10 border border-red-500/20 p-4 rounded-xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="bg-red-900/10 border border-red-500/20 p-4 rounded-xl flex flex-col h-full">
                         <div class="text-red-400 font-bold mb-2">Negative Feedback (Risk)</div>
-                        <p class="text-xs text-slate-400">
+                        <p class="text-xs text-slate-400 mb-4 flex-grow">
                             <strong>Action:</strong> Routed instantly to the Quality Manager.
-                            <br><strong>Outcome:</strong> Immediate root cause analysis. The issue is fixed internally <em>before</em> it becomes a permanent audit finding or public bad review.
+                            <br><strong>Outcome:</strong> Immediate root cause analysis.
                         </p>
+                        <div class="bg-black/40 rounded-lg overflow-hidden border border-red-500/10">
+                            <img src="series2-negative.jpg" alt="Negative Feedback Workflow" class="w-full h-auto object-cover">
+                        </div>
                     </div>
                     
-                    <div class="bg-emerald-900/10 border border-emerald-500/20 p-4 rounded-xl">
+                    <div class="bg-emerald-900/10 border border-emerald-500/20 p-4 rounded-xl flex flex-col h-full">
                         <div class="text-emerald-400 font-bold mb-2">Positive Feedback (Evidence)</div>
-                        <p class="text-xs text-slate-400">
-                            <strong>Action:</strong> Logged as "Evidence of Customer Satisfaction" for the next SANAS audit.
-                            <br><strong>Outcome:</strong> Verified compliance.
+                        <p class="text-xs text-slate-400 mb-4 flex-grow">
+                            <strong>Action:</strong> Logged as "Evidence of Customer Satisfaction".
+                            <br><strong>Outcome:</strong> Verified compliance for SANAS audit.
                         </p>
+                        <div class="bg-black/40 rounded-lg overflow-hidden border border-emerald-500/10">
+                            <img src="series2-positive.jpg" alt="Positive Feedback Workflow" class="w-full h-auto object-cover">
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -150,7 +157,7 @@
             <p class="text-slate-400 mb-8 max-w-lg mx-auto text-sm md:text-base">
                 We build automated Quality Management Systems that ensure ISO 17025 compliance while protecting your reputation.
             </p>
-            <a href="https://yourwebsite.com/contact" class="inline-flex items-center justify-center px-8 py-4 text-sm md:text-base font-bold text-white transition-all duration-200 bg-purple-600 rounded-full hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30">
+            <a href="mailto:contact@automania.co.za" class="inline-flex items-center justify-center px-8 py-4 text-sm md:text-base font-bold text-white transition-all duration-200 bg-purple-600 rounded-full hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30">
                 Book a Systems Consultation
             </a>
         </div>
