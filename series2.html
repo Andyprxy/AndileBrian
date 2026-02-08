@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Report: ISO 17025 Feedback Loop | Automania</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gradient-text { background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Timeline styling for PDCA */
+        .pdca-step { position: relative; padding-left: 2rem; border-left: 2px solid #334155; padding-bottom: 3rem; }
+        .pdca-step:last-child { border-left: 2px solid transparent; }
+        .pdca-dot { position: absolute; left: -9px; top: 0; width: 16px; height: 16px; border-radius: 50%; border: 4px solid #0f172a; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
+
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-4xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="font-bold text-lg md:text-xl tracking-tight text-white">AUTOMANIA</a>
+            <div class="text-[10px] md:text-xs font-mono text-slate-400 uppercase tracking-widest">Engineering Report P-02</div>
+        </div>
+    </nav>
+
+    <header class="pt-32 md:pt-40 pb-12 md:pb-20 px-4 md:px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="inline-block px-3 py-1 mb-6 text-[10px] md:text-xs font-semibold tracking-wider text-purple-400 uppercase bg-purple-400/10 rounded-full">
+                Series 2: Quality Engineering
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                ISO 17025 <br><span class="gradient-text">Audit Defense System</span>
+            </h1>
+            <p class="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Applying the PDCA Cycle to Civil Engineering Laboratories. A pilot project to digitize compliance, automate audit evidence, and intercept non-conformance risks.
+            </p>
+            
+            <div class="grid grid-cols-2 gap-4 mt-12 text-left bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Engineer</div>
+                    <div class="font-semibold text-white">Brian Maphumulo</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Compliance</div>
+                    <div class="font-semibold text-white">ISO 17025 / SANS</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Context</div>
+                    <div class="font-semibold text-white">Civil Labs (Concrete)</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">System</div>
+                    <div class="font-semibold text-purple-400">Feedback Interceptor</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 md:px-6 pb-24">
+        
+        <div class="glass-panel p-6 md:p-8 rounded-2xl mb-12 md:mb-16">
+            <h2 class="text-xl font-bold text-white mb-4">The Compliance Challenge</h2>
+            <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+                For a Civil Engineering Laboratory, accreditation is survival. Under <strong>ISO 17025</strong>, labs must demonstrate competence in testing (e.g., concrete cube crushing strength) and calibration. 
+                <br><br>
+                <strong>The Audit Gap:</strong> The standard explicitly requires a formal process for handling customer complaints and feedback. Most labs fail here, relying on ad-hoc emails that get lost before an audit.
+                <br><br>
+                <strong>The Solution:</strong> We engineered a <strong>"Feedback Interceptor"</strong>—a digital Quality Management System (QMS) that gathers audit-ready data and triggers immediate corrective action (CAPA) for bad reviews.
+            </p>
+        </div>
+
+        <div class="mt-12">
+            <h3 class="text-xs font-mono text-slate-500 uppercase mb-8 tracking-widest">The PDCA Cycle Implementation</h3>
+            
+            
+
+            <div class="pdca-step">
+                <div class="pdca-dot bg-blue-500"></div>
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">1. Plan (The Standard)</h3>
+                <p class="text-sm md:text-base text-slate-400 mb-4"><strong>Objective:</strong> Align Feedback Collection with ISO 17025.</p>
+                <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+                    The plan was to create a digital "listening post" that integrates with the lab's reporting cycle. We defined the criteria for a "Non-Conformance" (e.g., late results, incorrect calibration certificates) and designed the workflow to capture this data automatically.
+                </p>
+            </div>
+
+            <div class="pdca-step">
+                <div class="pdca-dot bg-purple-500"></div>
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">2. Do (The Interceptor)</h3>
+                <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+                    Upon issuing a Concrete Cube Test Report, the system triggers a feedback request. This is not just a survey; it is a <strong>Digital Audit Trail</strong>.
+                </p>
+                <div class="mt-4 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                    <div class="aspect-video bg-slate-700/50 rounded flex items-center justify-center text-slate-500 text-xs">
+                        
+                    </div>
+                    <p class="text-xs text-center text-slate-500 mt-2">Figure 1: The testing environment where compliance is critical.</p>
+                </div>
+            </div>
+
+            <div class="pdca-step">
+                <div class="pdca-dot bg-orange-500"></div>
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">3. Check (The Logic Gate)</h3>
+                <p class="text-sm md:text-base text-slate-400 mb-4"><strong>Innovation:</strong> Real-time Filtering.</p>
+                <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+                    The system acts as a firewall for the lab's reputation and accreditation status. It "Checks" the incoming data against the Quality Threshold:
+                </p>
+                <ul class="list-disc list-inside text-slate-300 mt-4 space-y-2 text-sm md:text-base marker:text-orange-500">
+                    <li><strong>Compliance Check:</strong> Is the client satisfied with the testing accuracy?</li>
+                    <li><strong>Service Check:</strong> Were the results delivered on time?</li>
+                </ul>
+            </div>
+
+            <div class="pdca-step">
+                <div class="pdca-dot bg-emerald-500"></div>
+                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">4. Act (Corrective Action)</h3>
+                <p class="text-slate-300 leading-relaxed text-sm md:text-base mb-6">
+                    The system automates the <strong>Corrective Action Preventative Action (CAPA)</strong> workflow:
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-red-900/10 border border-red-500/20 p-4 rounded-xl">
+                        <div class="text-red-400 font-bold mb-2">Negative Feedback (Risk)</div>
+                        <p class="text-xs text-slate-400">
+                            <strong>Action:</strong> Routed instantly to the Quality Manager.
+                            <br><strong>Outcome:</strong> Immediate root cause analysis. The issue is fixed internally <em>before</em> it becomes a permanent audit finding or public bad review.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-emerald-900/10 border border-emerald-500/20 p-4 rounded-xl">
+                        <div class="text-emerald-400 font-bold mb-2">Positive Feedback (Evidence)</div>
+                        <p class="text-xs text-slate-400">
+                            <strong>Action:</strong> Logged as "Evidence of Customer Satisfaction" for the next SANAS audit.
+                            <br><strong>Outcome:</strong> Verified compliance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-20 text-center border-t border-slate-800 pt-16">
+            <h2 class="text-2xl font-bold text-white mb-4">Is Your Lab Audit-Ready?</h2>
+            <p class="text-slate-400 mb-8 max-w-lg mx-auto text-sm md:text-base">
+                We build automated Quality Management Systems that ensure ISO 17025 compliance while protecting your reputation.
+            </p>
+            <a href="https://yourwebsite.com/contact" class="inline-flex items-center justify-center px-8 py-4 text-sm md:text-base font-bold text-white transition-all duration-200 bg-purple-600 rounded-full hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30">
+                Book a Systems Consultation
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="py-8 text-center text-slate-600 text-xs border-t border-slate-800/50">
+        <p>&copy; 2026 Automania. All Engineering Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
