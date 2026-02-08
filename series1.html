@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Report: Live Inventory Intelligence | Automania</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0; /* Slate 200 */
+        }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dmaic-step {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #334155;
+            padding-bottom: 3rem;
+        }
+        
+        .dmaic-step:last-child {
+            border-left: 2px solid transparent;
+        }
+
+        .dmaic-dot {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #38bdf8;
+            border: 4px solid #0f172a;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="font-bold text-xl tracking-tight">AUTOMANIA</div>
+            <div class="text-xs font-mono text-slate-400 uppercase tracking-widest">Engineering Report P-01</div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-20 px-6">
+        <div class="max-w-3xl mx-auto text-center">
+            <div class="inline-block px-3 py-1 mb-6 text-xs font-semibold tracking-wider text-cyan-400 uppercase bg-cyan-400/10 rounded-full">
+                Series 1: Data Analysis
+            </div>
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+                Live Inventory <br><span class="gradient-text">Intelligence Pilot</span>
+            </h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                A DMAIC study on digitizing biological inventory tracking for the poultry industry. 
+                Moving from "gut feeling" to engineered precision.
+            </p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 text-left bg-slate-800/50 p-6 rounded-2xl border border-slate-700/50">
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Engineer</div>
+                    <div class="font-semibold text-white">Brian Maphumulo</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Methodology</div>
+                    <div class="font-semibold text-white">DMAIC / Six Sigma</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Tool Stack</div>
+                    <div class="font-semibold text-white">Power BI, Excel</div>
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 uppercase">Status</div>
+                    <div class="font-semibold text-emerald-400">Pilot Complete</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-6 pb-24">
+        
+        <div class="glass-panel p-8 rounded-2xl mb-16">
+            <h2 class="text-xl font-bold text-white mb-4">Executive Summary</h2>
+            <p class="text-slate-300 leading-relaxed">
+                In the poultry industry, inventory is biological—it grows, consumes resources, and has a strict shelf-life. This pilot project successfully demonstrated that a <strong>Business Intelligence (BI) Decision Support System</strong> could aggregate siloed data streams to provide real-time visibility into stock levels, potentially reducing waste and optimizing feed conversion ratios.
+            </p>
+        </div>
+
+        <div class="mt-12">
+            <h3 class="text-sm font-mono text-slate-500 uppercase mb-8 tracking-widest">Process Breakdown</h3>
+
+            <div class="dmaic-step">
+                <div class="dmaic-dot bg-blue-500"></div>
+                <h3 class="text-2xl font-bold text-white mb-4">1. Define</h3>
+                <p class="text-slate-400 mb-4"><strong>The Hypothesis:</strong> Can a biological inventory system be digitized for real-time tracking?</p>
+                <p class="text-slate-300 leading-relaxed">
+                    The client relied on manual logs for tracking stock. The disconnect between "Coop Data" (inventory) and "Point of Sale" (revenue) created a visibility gap. The goal was to build a prototype dashboard to prove that real-time data could solve this.
+                </p>
+            </div>
+
+            <div class="dmaic-step">
+                <div class="dmaic-dot bg-indigo-500"></div>
+                <h3 class="text-2xl font-bold text-white mb-4">2. Measure</h3>
+                <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 mb-6">
+                    <div class="aspect-video bg-slate-700/50 rounded flex items-center justify-center text-slate-500 text-sm">
+                        [Insert Image: Old Excel Sheet / Paper Log]
+                    </div>
+                    <p class="text-xs text-center text-slate-500 mt-2">Figure 1: The Baseline - Disconnected Static Data</p>
+                </div>
+                <p class="text-slate-300 leading-relaxed">
+                    We audited the existing data landscape. The baseline measurement revealed:
+                </p>
+                <ul class="list-disc list-inside text-slate-300 mt-4 space-y-2 marker:text-indigo-500">
+                    <li><strong>Latency:</strong> Reporting took 3-4 days to reach management.</li>
+                    <li><strong>Fragmentation:</strong> Sales data was digital; Mortality data was analog (paper).</li>
+                </ul>
+            </div>
+
+            <div class="dmaic-step">
+                <div class="dmaic-dot bg-purple-500"></div>
+                <h3 class="text-2xl font-bold text-white mb-4">3. Analyze</h3>
+                <p class="text-slate-300 leading-relaxed">
+                    The pilot exposed critical "dirty data" issues invisible in the manual system. We found that the primary bottleneck wasn't the software logic, but the <strong>operational discipline</strong> at the coop level.
+                </p>
+                <blockquote class="border-l-4 border-purple-500 pl-4 my-6 italic text-slate-400">
+                    "The analysis proved that while the software could handle the logic, the SOPs needed to be upgraded first."
+                </blockquote>
+            </div>
+
+            <div class="dmaic-step">
+                <div class="dmaic-dot bg-emerald-500"></div>
+                <h3 class="text-2xl font-bold text-white mb-4">4. Improve (The Pilot)</h3>
+                <p class="text-slate-300 mb-6">
+                    We engineered a <strong>Power BI Decision Support System</strong> to demonstrate the "Art of the Possible."
+                </p>
+                
+                <div class="bg-slate-800/50 p-4 rounded-lg border border-slate-700 mb-6">
+                    <div class="aspect-video bg-emerald-900/20 rounded flex items-center justify-center text-emerald-500 text-sm border border-emerald-500/30">
+                        [Insert Image: Your Power BI Dashboard Screenshot]
+                    </div>
+                    <p class="text-xs text-center text-slate-500 mt-2">Figure 2: The Pilot - Live Inventory Dashboard</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-800 p-4 rounded text-center">
+                        <div class="text-emerald-400 font-bold text-xl">Unified</div>
+                        <div class="text-xs text-slate-500 uppercase">Data Model</div>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded text-center">
+                        <div class="text-emerald-400 font-bold text-xl">Dynamic</div>
+                        <div class="text-xs text-slate-500 uppercase">Visualization</div>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded text-center">
+                        <div class="text-emerald-400 font-bold text-xl">Predictive</div>
+                        <div class="text-xs text-slate-500 uppercase">Logic (DAX)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dmaic-step">
+                <div class="dmaic-dot bg-orange-500"></div>
+                <h3 class="text-2xl font-bold text-white mb-4">5. Control</h3>
+                <p class="text-slate-300 leading-relaxed">
+                    The pilot concluded with a Feasibility Report. We handed over a roadmap for future readiness, recommending that data inputs be standardized (SOPs) before scaling the tool to ensure data integrity.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="mt-20 text-center border-t border-slate-800 pt-16">
+            <h2 class="text-2xl font-bold text-white mb-4">Need a Digital Nervous System?</h2>
+            <p class="text-slate-400 mb-8 max-w-lg mx-auto">
+                Automania helps businesses bridge the gap between legacy operations and modern automation.
+            </p>
+            <a href="https://yourwebsite.com/contact" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-blue-600 rounded-full hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900">
+                Book a Consultation
+                <svg class="w-5 h-5 ml-2 -mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="py-8 text-center text-slate-600 text-sm border-t border-slate-800/50">
+        <p>&copy; 2026 Automania. All Engineering Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
