@@ -40,8 +40,10 @@
             filter: grayscale(0%);
         }
 
+        /* Prevent auto-zoom on mobile inputs */
         #user-input { font-size: 16px !important; }
 
+        /* Mobile Menu Animation */
         #mobile-menu { transition: max-height 0.3s ease-in-out; max-height: 0; overflow: hidden; }
         #mobile-menu.open { max-height: 300px; }
     </style>
@@ -292,6 +294,9 @@
     </div>
 
     <script>
+        // Generate unique Session ID for n8n memory node tracking
+        const sessionId = 'sh-' + Math.random().toString(36).substr(2, 9);
+
         function toggleMobileMenu() {
             document.getElementById('mobile-menu').classList.toggle('open');
             document.getElementById('mobile-menu').classList.toggle('py-4');
@@ -307,15 +312,17 @@
             const input = document.getElementById('user-input');
             const message = input.value;
             if (!message) return;
+            
             const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML += `<div class="flex justify-end"><div class="bg-gold text-white p-3 rounded-lg shadow-md max-w-[90%]">${message}</div></div>`;
             input.value = '';
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
             const loadingId = 'loading-' + Date.now();
             messagesDiv.innerHTML += `<div id="${loadingId}" class="flex items-start space-x-2"><div class="w-8 h-8 rounded bg-slate-700 flex items-center justify-center text-gold text-[10px] font-bold">...</div><div class="bg-slate-700 p-3 rounded-lg border border-slate-600 text-gray-400 italic">Connecting...</div></div>`;
             
             try {
-                // Environment detection: Use test webhook for local/portfolio testing, production for live site.
+                // Determine environment: Local/Portfolio site uses Test Webhook, live uses Production
                 const isTestMode = window.location.hostname === 'localhost' || 
                                  window.location.hostname === '127.0.0.1' || 
                                  window.location.hostname.includes('github.io') || 
@@ -328,7 +335,10 @@
                 const response = await fetch(webhookUrl, { 
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ chatInput: message }) 
+                    body: JSON.stringify({ 
+                        chatInput: message,
+                        sessionId: sessionId // Required for Window Buffer Memory
+                    }) 
                 });
                 
                 const data = await response.json();
