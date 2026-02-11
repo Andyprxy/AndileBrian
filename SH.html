@@ -40,10 +40,8 @@
             filter: grayscale(0%);
         }
 
-        /* Prevent auto-zoom on mobile inputs */
         #user-input { font-size: 16px !important; }
 
-        /* Mobile Menu Animation */
         #mobile-menu { transition: max-height 0.3s ease-in-out; max-height: 0; overflow: hidden; }
         #mobile-menu.open { max-height: 300px; }
     </style>
@@ -282,7 +280,7 @@
         <div id="messages" class="flex-1 p-5 overflow-y-auto bg-slate-800/50 space-y-4 text-xs">
             <div class="flex items-start space-x-2">
                 <div class="w-8 h-8 rounded bg-slate-700 flex items-center justify-center text-gold text-[10px] font-bold">S&H</div>
-                <div class="bg-slate-700 p-3 rounded-lg text-gray-200 border border-slate-600 max-w-[90%]">Welcome. How can we assist with your project today?</div>
+                <div class="bg-slate-700 p-3 rounded-lg text-gray-200 border border-slate-600 max-w-[90%]">Welcome to the S&H Digital Desk. How can we help you today?</div>
             </div>
         </div>
         <div class="p-4 bg-slate-900 border-t border-gray-800">
@@ -317,13 +315,12 @@
             messagesDiv.innerHTML += `<div id="${loadingId}" class="flex items-start space-x-2"><div class="w-8 h-8 rounded bg-slate-700 flex items-center justify-center text-gold text-[10px] font-bold">...</div><div class="bg-slate-700 p-3 rounded-lg border border-slate-600 text-gray-400 italic">Connecting...</div></div>`;
             
             try {
+                // Environment detection: Use test webhook for local/portfolio testing, production for live site.
                 const isTestMode = window.location.hostname === 'localhost' || 
                                  window.location.hostname === '127.0.0.1' || 
                                  window.location.hostname.includes('github.io') || 
                                  window.location.hostname.includes('AndileBrian.Online');
                 
-                // Communication logic: If development environment, use test webhook. 
-                // If live domain, use production webhook.
                 const webhookUrl = isTestMode 
                     ? 'https://n8n.automania.cloud/webhook-test/SH' 
                     : 'https://n8n.automania.cloud/webhook/SH';
