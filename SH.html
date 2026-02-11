@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>S&H Consulting | Turnkey Projects & Logistics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -39,18 +39,26 @@
             box-shadow: 0 0 30px rgba(184, 155, 94, 0.4);
             filter: grayscale(0%);
         }
+
+        /* Prevent auto-zoom on mobile inputs */
+        #user-input { font-size: 16px !important; }
+
+        /* Mobile Menu Animation */
+        #mobile-menu { transition: max-height 0.3s ease-in-out; max-height: 0; overflow: hidden; }
+        #mobile-menu.open { max-height: 300px; }
     </style>
 </head>
 <body class="antialiased selection:bg-slate-500 selection:text-white">
 
     <nav class="fixed top-0 left-0 right-0 z-50 glass-nav">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="toggleMobileMenu()">
                 <div class="bg-white px-2 py-1 rounded-sm">
                     <img src="sh.JPG" alt="S&H Logo" class="h-10 w-auto object-contain mix-blend-multiply">
                 </div>
                 <div class="hidden md:block h-8 w-px bg-gray-300"></div>
                 <span class="hidden md:block text-xs font-bold tracking-widest text-gray-400 uppercase">Group Holdings</span>
+                <i class="fas fa-chevron-down md:hidden text-gray-400 text-xs ml-1"></i>
             </div>
             
             <div class="hidden md:flex space-x-10 items-center text-sm font-medium text-slate-600 uppercase tracking-wide">
@@ -60,9 +68,16 @@
                 <a href="SH.html" target="_blank" class="text-gold font-bold hover:text-slate-900 transition duration-300">S&H Demo</a>
             </div>
             
-            <a href="#contact" class="border-2 border-slate-200 text-slate-700 hover:bg-gold hover:border-gold hover:text-white px-6 py-2 rounded text-xs font-bold uppercase tracking-wider transition duration-300 flex items-center gap-2">
-                Submit Mandate <i class="fas fa-arrow-right"></i>
+            <a href="#contact" class="border-2 border-slate-200 text-slate-700 hover:bg-gold hover:border-gold hover:text-white px-4 md:px-6 py-2 rounded text-[10px] md:text-xs font-bold uppercase tracking-wider transition duration-300 flex items-center gap-2">
+                Submit Mandate <i class="fas fa-arrow-right hidden md:inline"></i>
             </a>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden bg-white border-t border-gray-100 px-6 space-y-4 py-0 transition-all">
+            <a href="#divisions" onclick="toggleMobileMenu()" class="block py-3 text-sm font-bold text-slate-600 uppercase">Our Divisions</a>
+            <a href="#trust" onclick="toggleMobileMenu()" class="block py-3 text-sm font-bold text-slate-600 uppercase border-t border-gray-50">Mandates</a>
+            <a href="#projects" onclick="toggleMobileMenu()" class="block py-3 text-sm font-bold text-slate-600 uppercase border-t border-gray-50">Projects</a>
+            <a href="SH.html" onclick="toggleMobileMenu()" class="block py-3 text-sm font-bold text-gold uppercase border-t border-gray-50">S&H Demo</a>
         </div>
     </nav>
 
@@ -77,10 +92,10 @@
                     <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
                     <span class="text-xs font-bold tracking-widest uppercase text-slate-600">Turnkey Solutions Provider</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-medium mb-6 text-slate-900 leading-tight uppercase heading-font">
+                <h1 class="text-4xl md:text-7xl font-medium mb-6 text-slate-900 leading-tight uppercase heading-font">
                     Orchestrating <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-700 to-black">Excellence.</span>
                 </h1>
-                <p class="text-slate-600 text-lg mb-10 font-light max-w-lg leading-relaxed border-l-4 border-gold pl-6">
+                <p class="text-slate-600 text-base md:text-lg mb-10 font-light max-w-lg leading-relaxed border-l-4 border-gold pl-6">
                     S&H Events and Project Consulting is an Events Management company providing solutions to its clients through events planning, events management, equipment hire, facility hire, artist management and events overall management.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
@@ -166,22 +181,22 @@
             <h2 class="text-3xl md:text-4xl text-slate-900 heading-font uppercase mb-16">Past Projects & Partners</h2>
             <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20">
                 <div class="flex flex-col items-center gap-4 group">
-                    <div class="w-40 h-40 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden hover:border-gold hover:scale-110 transition-all duration-500 cursor-pointer">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden hover:border-gold hover:scale-110 transition-all duration-500 cursor-pointer">
                         <img src="g20.png" class="w-full h-full object-contain p-4" onerror="this.parentElement.innerHTML='<span class=\'text-xs p-2\'>G20 Logo</span>'">
                     </div>
-                    <span class="font-bold text-lg text-slate-800 heading-font uppercase group-hover:text-gold transition">G20 Summit</span>
+                    <span class="font-bold text-sm md:text-lg text-slate-800 heading-font uppercase group-hover:text-gold transition">G20 Summit</span>
                 </div>
                 <div class="flex flex-col items-center gap-4 group">
-                     <div class="w-40 h-40 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden hover:border-gold hover:scale-110 transition-all duration-500 cursor-pointer">
+                     <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden hover:border-gold hover:scale-110 transition-all duration-500 cursor-pointer">
                         <img src="tutkoolestkids.jfif" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<span class=\'text-xs p-2\'>Koolest Kids</span>'">
                     </div>
-                    <span class="font-bold text-lg text-slate-800 heading-font uppercase group-hover:text-gold transition">Koolest Kids</span>
+                    <span class="font-bold text-sm md:text-lg text-slate-800 heading-font uppercase group-hover:text-gold transition">Koolest Kids</span>
                 </div>
                 <div class="flex flex-col items-center gap-4 group">
-                     <div class="w-40 h-40 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden hover:border-gold hover:scale-110 transition-all duration-500 cursor-pointer">
+                     <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white border border-gray-200 shadow-lg flex items-center justify-center overflow-hidden hover:border-gold hover:scale-110 transition-all duration-500 cursor-pointer">
                         <img src="redbull.png" class="w-full h-full object-contain p-4" onerror="this.parentElement.innerHTML='<span class=\'text-xs p-2\'>Red Bull</span>'">
                     </div>
-                    <span class="font-bold text-lg text-slate-800 heading-font uppercase group-hover:text-gold transition">Red Bull</span>
+                    <span class="font-bold text-sm md:text-lg text-slate-800 heading-font uppercase group-hover:text-gold transition">Red Bull</span>
                 </div>
             </div>
         </div>
@@ -219,7 +234,7 @@
                         <img src="sh.JPG" class="h-12 filter grayscale contrast-150">
                     </div>
                     <h2 class="heading-font text-2xl uppercase tracking-widest text-white mb-4">S&H Consulting</h2>
-                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">Premier infrastructure and logistics partner for high-stakes mandates. Delivering excellence with military precision.</p>
+                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed mx-auto md:mx-0">Premier infrastructure and logistics partner for high-stakes mandates. Delivering excellence with military precision.</p>
                 </div>
                 <div>
                     <h4 class="text-gold font-bold uppercase text-xs tracking-widest mb-6">Contact Details</h4>
@@ -227,12 +242,12 @@
                         <li><i class="fas fa-phone text-gold mr-2"></i> +27 61 496 4840</li>
                         <li><i class="fas fa-envelope text-gold mr-2"></i> info@shgroup.cloud</li>
                         <li class="pt-2">
-                            <a href="https://wa.me/27693937899" target="_blank" class="hover:text-white transition flex items-center gap-2">
+                            <a href="https://wa.me/27693937899" target="_blank" class="hover:text-white transition flex items-center justify-center md:justify-start gap-2">
                                 <i class="fab fa-whatsapp text-xl text-green-500"></i> WhatsApp HQ
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.instagram.com/sh_events_projects_consulting/" target="_blank" class="hover:text-white transition flex items-center gap-2">
+                            <a href="https://www.instagram.com/sh_events_projects_consulting/" target="_blank" class="hover:text-white transition flex items-center justify-center md:justify-start gap-2">
                                 <i class="fab fa-instagram text-xl text-pink-500"></i> Instagram
                             </a>
                         </li>
@@ -241,7 +256,7 @@
                 <div>
                     <h4 class="text-gold font-bold uppercase text-xs tracking-widest mb-6">Compliance</h4>
                     <ul class="text-gray-400 text-sm space-y-4">
-                        <li class="text-white font-bold">B-BBEE LEVEL 1</li>
+                        <li class="text-white font-bold uppercase">B-BBEE LEVEL 1</li>
                         <li>ISO 9001:2015 Compliant</li>
                         <li>Registration: 2023/XXXXXX/07</li>
                     </ul>
@@ -254,12 +269,12 @@
         </div>
     </footer>
 
-    <button onclick="toggleChat()" class="fixed bottom-8 right-8 z-50 bg-gold text-white px-6 h-14 rounded-full shadow-2xl flex items-center justify-center gap-3 hover:scale-105 transition duration-300 ring-4 ring-white/30 group">
-        <i class="fas fa-comment-dots text-lg"></i>
-        <span class="text-xs font-bold uppercase tracking-widest">Chat Live</span>
+    <button onclick="toggleChat()" class="fixed bottom-8 right-8 z-50 bg-gold text-white px-5 h-12 md:h-14 rounded-full shadow-2xl flex items-center justify-center gap-3 hover:scale-105 transition duration-300 ring-4 ring-white/30 group">
+        <i class="fas fa-comment-dots text-base md:text-lg"></i>
+        <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest">Chat Live</span>
     </button>
 
-    <div id="chat-window" class="fixed bottom-24 right-8 w-85 md:w-96 bg-slate-900 rounded-lg shadow-2xl z-50 border border-gray-700 transition-all duration-300 chat-closed flex flex-col h-[500px] overflow-hidden">
+    <div id="chat-window" class="fixed bottom-24 right-4 md:right-8 w-[calc(100%-2rem)] md:w-96 bg-slate-900 rounded-lg shadow-2xl z-50 border border-gray-700 transition-all duration-300 chat-closed flex flex-col h-[450px] md:h-[500px] overflow-hidden">
         <div class="bg-black p-4 flex items-center justify-between border-b border-gray-800">
             <span class="font-bold tracking-wide text-xs uppercase text-white">S&H Digital Desk</span>
             <button onclick="toggleChat()" class="text-gray-500 hover:text-white"><i class="fas fa-times"></i></button>
@@ -279,7 +294,16 @@
     </div>
 
     <script>
-        function toggleChat() { document.getElementById('chat-window').classList.toggle('chat-closed'); document.getElementById('chat-window').classList.toggle('chat-open'); }
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+            document.getElementById('mobile-menu').classList.toggle('py-4');
+        }
+
+        function toggleChat() { 
+            document.getElementById('chat-window').classList.toggle('chat-closed'); 
+            document.getElementById('chat-window').classList.toggle('chat-open'); 
+        }
+
         async function sendMessage(e) {
             e.preventDefault();
             const input = document.getElementById('user-input');
@@ -292,7 +316,6 @@
             const loadingId = 'loading-' + Date.now();
             messagesDiv.innerHTML += `<div id="${loadingId}" class="flex items-start space-x-2"><div class="w-8 h-8 rounded bg-slate-700 flex items-center justify-center text-gold text-[10px] font-bold">...</div><div class="bg-slate-700 p-3 rounded-lg border border-slate-600 text-gray-400 italic">Connecting...</div></div>`;
             try {
-                // Determine if we should use the production or test webhook
                 const isTestMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
                 const webhookUrl = isTestMode 
                     ? 'https://n8n.automania.cloud/webhook-test/SH' 
@@ -315,4 +338,3 @@
     </script>
 </body>
 </html>
-
