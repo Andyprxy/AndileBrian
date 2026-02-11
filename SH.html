@@ -315,8 +315,15 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             const loadingId = 'loading-' + Date.now();
             messagesDiv.innerHTML += `<div id="${loadingId}" class="flex items-start space-x-2"><div class="w-8 h-8 rounded bg-slate-700 flex items-center justify-center text-gold text-[10px] font-bold">...</div><div class="bg-slate-700 p-3 rounded-lg border border-slate-600 text-gray-400 italic">Connecting...</div></div>`;
+            
             try {
-                const isTestMode = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const isTestMode = window.location.hostname === 'localhost' || 
+                                 window.location.hostname === '127.0.0.1' || 
+                                 window.location.hostname.includes('github.io') || 
+                                 window.location.hostname.includes('AndileBrian.Online');
+                
+                // Communication logic: If development environment, use test webhook. 
+                // If live domain, use production webhook.
                 const webhookUrl = isTestMode 
                     ? 'https://n8n.automania.cloud/webhook-test/SH' 
                     : 'https://n8n.automania.cloud/webhook/SH';
@@ -326,6 +333,7 @@
                     headers: { 'Content-Type': 'application/json' }, 
                     body: JSON.stringify({ chatInput: message }) 
                 });
+                
                 const data = await response.json();
                 document.getElementById(loadingId).remove();
                 messagesDiv.innerHTML += `<div class="flex items-start space-x-2"><div class="w-8 h-8 rounded bg-slate-700 flex items-center justify-center text-gold text-[10px] font-bold">S&H</div><div class="bg-slate-700 p-3 rounded-lg text-gray-200">${data.output || data.text || "Message received."}</div></div>`;
