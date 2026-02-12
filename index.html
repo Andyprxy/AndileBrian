@@ -14,27 +14,35 @@
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
         .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .gradient-text { background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, rgba(15,23,42,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        
+        /* Optimized glow for mobile (prevent overflow) */
+        .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, rgba(15,23,42,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 0; }
+        
+        /* Seamless blend for the image */
+        .image-blend {
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col selection:bg-blue-500 selection:text-white">
+<body class="antialiased min-h-screen flex flex-col selection:bg-blue-500 selection:text-white overflow-x-hidden">
 
     <nav class="fixed top-0 w-full z-50 glass-panel border-b border-slate-800">
         <div class="max-w-6xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-            <a href="index.html" class="font-bold text-lg md:text-xl tracking-tight text-white truncate uppercase">Brian Maphumulo</a>
+            <a href="index.html" class="font-bold text-base md:text-xl tracking-tight text-white truncate uppercase">Brian Maphumulo</a>
             
-            <div class="flex items-center space-x-6 md:space-x-8 text-xs md:text-sm font-medium">
-                <a href="index.html" class="text-white">Home</a>
+            <div class="flex items-center space-x-4 md:space-x-8 text-xs md:text-sm font-medium">
+                <a href="index.html" class="text-white hidden sm:block">Home</a>
                 <a href="projects.html" class="text-slate-400 hover:text-white transition">Projects</a>
                 
-                <div class="relative group h-full flex items-center cursor-pointer">
-                    <span class="flex items-center gap-1 text-slate-400 group-hover:text-white transition">
+                <div class="relative group h-full flex items-center cursor-pointer focus-within:text-white" tabindex="0">
+                    <span class="flex items-center gap-1 text-slate-400 group-hover:text-white group-focus-within:text-white transition select-none">
                         WebDev
                         <svg class="w-3 h-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </span>
                     
-                    <div class="absolute right-0 top-10 w-48 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
-                        <div class="glass-panel rounded-xl border border-slate-700 overflow-hidden shadow-2xl flex flex-col backdrop-blur-xl bg-slate-900/90">
+                    <div class="absolute right-0 top-10 w-48 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 group-focus-within:translate-y-0 z-50">
+                        <div class="glass-panel rounded-xl border border-slate-700 overflow-hidden shadow-2xl flex flex-col backdrop-blur-xl bg-slate-900/95">
                             <div class="px-4 py-2 text-[10px] uppercase tracking-wider text-slate-500 font-bold bg-slate-800/50">Client Demos</div>
                             
                             <a href="SH.html" class="block px-4 py-3 text-[#b89b5e] hover:bg-slate-700/50 hover:text-[#d4b574] transition border-b border-slate-700/50">
@@ -51,12 +59,12 @@
         </div>
     </nav>
 
-    <header class="pt-28 md:pt-36 pb-12 md:pb-20 px-4 md:px-6 relative overflow-hidden flex-grow flex items-center">
+    <header class="pt-24 md:pt-36 pb-12 md:pb-20 px-4 md:px-6 relative overflow-hidden flex-grow flex items-center">
         <div class="hero-glow"></div>
         
         <div class="max-w-6xl mx-auto relative z-10 flex flex-col-reverse md:flex-row items-center justify-between w-full">
             
-            <div class="flex-1 text-left md:mr-12 mt-10 md:mt-0">
+            <div class="flex-1 text-left md:mr-12 mt-8 md:mt-0 w-full">
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 mb-6 md:mb-8 text-[10px] md:text-xs font-semibold tracking-wider text-emerald-400 uppercase bg-emerald-900/30 rounded-full border border-emerald-500/20">
                     <span class="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-400 rounded-full animate-pulse"></span>
                     International Techathon Winner (SDGs)
@@ -66,22 +74,22 @@
                     Engineering <br> the <span class="gradient-text">Digital Factory.</span>
                 </h1>
                 
-                <p class="text-base md:text-xl text-slate-400 max-w-2xl leading-relaxed mb-8 md:mb-10">
+                <p class="text-sm md:text-xl text-slate-400 max-w-2xl leading-relaxed mb-8 md:mb-10">
                     I am an Industrial Engineer & Honours Candidate bridging the gap between physical operations and digital intelligence. Founder of <strong>Automania</strong>.
                 </p>
                 
-                <div class="flex flex-col sm:flex-row gap-3 md:gap-4">
+                <div class="flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto">
                     <a href="projects.html" class="w-full sm:w-auto px-8 py-3 md:py-4 text-sm md:text-base font-bold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition shadow-lg shadow-blue-500/25 text-center">
                         View My Engineering Series
                     </a>
-                    <a href="https://linkedin.com/in/your-profile" target="_blank" class="w-full sm:w-auto px-8 py-3 md:py-4 text-sm md:text-base font-bold text-slate-300 bg-slate-800 rounded-full hover:bg-slate-700 transition border border-slate-700 text-center">
+                    <a href="https://www.linkedin.com/in/brian-maphumulo-aa634b3a2/" target="_blank" class="w-full sm:w-auto px-8 py-3 md:py-4 text-sm md:text-base font-bold text-slate-300 bg-slate-800 rounded-full hover:bg-slate-700 transition border border-slate-700 text-center">
                         LinkedIn
                     </a>
                 </div>
             </div>
 
-            <div class="flex-1 relative">
-                <img src="brian-portrait.png" alt="Brian Maphumulo Portrait" class="w-full max-w-md md:max-w-xl mx-auto md:mx-0 relative z-10 md:-mt-10 lg:-mt-20">
+            <div class="flex-1 relative w-full flex justify-center md:justify-end">
+                <img src="brian-portrait.png" alt="Brian Maphumulo Portrait" class="w-full max-w-[280px] md:max-w-xl relative z-10 md:-mt-10 lg:-mt-20 rounded-[2.5rem] image-blend shadow-2xl shadow-blue-500/10 object-cover">
             </div>
 
         </div>
