@@ -2,45 +2,193 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Booking Confirmed | Adowa Living</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
-        :root { --adowa-orange: #d35c24; --adowa-green: #a4bc5c; }
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap');
+        
+        :root { 
+            --adowa-orange: #d35c24; 
+            --adowa-green: #a4bc5c; 
+            --text-main: #2d3436;
+        }
+
         body { 
-            font-family: 'Nunito', sans-serif; margin: 0; padding: 20px; box-sizing: border-box; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh;
-            background-image: url('adowa2.png'); background-size: cover; background-position: center; background-attachment: fixed;
+            font-family: 'Nunito', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            /* Hardcoded absolute path to ensure the background loads from anywhere */
+            background-image: url('https://andilebrian.online/adowa/adowa2.png'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
         }
-        .logo { height: 40px; margin-bottom: 30px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+
+        /* Larger, more prominent logo with a soft prestige shadow */
+        .logo { 
+            height: 85px; 
+            margin-bottom: 35px; 
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15)); 
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        /* Premium Glass Card with enhanced blur and dimensional shadows */
         .card { 
-            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
-            padding: 50px 40px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            text-align: center; max-width: 450px; width: 100%; border-top: 8px solid var(--adowa-green);
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(32px) saturate(200%); 
+            -webkit-backdrop-filter: blur(32px) saturate(200%);
+            padding: 50px 40px; 
+            border-radius: 32px; 
+            border: 1px solid rgba(255, 255, 255, 0.9); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.5);
+            text-align: center; 
+            max-width: 450px; 
+            width: 100%; 
+            border-top: 8px solid var(--adowa-green);
+            box-sizing: border-box;
         }
-        .icon { font-size: 64px; margin-bottom: 10px; }
-        h1 { color: var(--adowa-orange); font-size: 2.2rem; margin-bottom: 8px; font-weight: 800; }
-        p { color: #444; font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px; font-weight: 700; }
-        .machine-label { font-size: 0.9rem; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        .icon { 
+            font-size: 60px; 
+            margin-bottom: 5px; 
+            filter: drop-shadow(0 4px 10px rgba(164, 188, 92, 0.3));
+        }
+
+        h1 { 
+            color: var(--adowa-orange); 
+            font-size: 2.4rem; 
+            margin-bottom: 5px; 
+            font-weight: 900; 
+            letter-spacing: -0.5px;
+        }
+
+        p { 
+            color: #555; 
+            font-size: 1.05rem; 
+            line-height: 1.5; 
+            margin-bottom: 25px; 
+            font-weight: 700; 
+        }
+
+        /* Sub-container for Date & Time to organize information cleanly */
+        .details-box {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            font-weight: 800;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .machine-label { 
+            font-size: 0.9rem; 
+            font-weight: 800; 
+            color: #888; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+        }
+
+        /* Sleeker, bolder machine number badge */
         .machine-num { 
-            background: var(--adowa-orange); color: white; font-size: 4rem; font-weight: 800; 
-            padding: 15px 50px; border-radius: 24px; display: inline-block; margin: 10px 0 30px 0; box-shadow: 0 10px 20px rgba(211, 92, 36, 0.3);
+            background: linear-gradient(135deg, var(--adowa-orange), #e66b33);
+            color: white; 
+            font-size: 4.5rem; 
+            font-weight: 900; 
+            padding: 15px 50px; 
+            border-radius: 28px; 
+            display: inline-block; 
+            margin: 10px 0 35px 0; 
+            box-shadow: 0 15px 30px rgba(211, 92, 36, 0.35), inset 0 2px 4px rgba(255,255,255,0.3);
+            letter-spacing: -2px;
         }
-        .btn { background: var(--adowa-green); color: white; text-decoration: none; padding: 16px 40px; border-radius: 35px; font-weight: 800; display: block; transition: 0.3s; font-size: 1.1rem; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(164, 188, 92, 0.4); }
+
+        .btn { 
+            background: var(--adowa-green); 
+            color: white; 
+            text-decoration: none; 
+            padding: 18px 40px; 
+            border-radius: 35px; 
+            font-weight: 800; 
+            display: block; 
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            font-size: 1.15rem; 
+            box-shadow: 0 8px 20px rgba(164, 188, 92, 0.25);
+        }
+
+        .btn:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(164, 188, 92, 0.4); 
+            background: #9ab353;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 600px) {
+            .logo { height: 65px; margin-bottom: 25px; }
+            .card { padding: 40px 25px; border-radius: 28px; }
+            h1 { font-size: 2.1rem; }
+            .machine-num { font-size: 3.8rem; padding: 12px 40px; margin-bottom: 25px;}
+            .btn { padding: 16px 30px; font-size: 1.1rem; }
+            .details-box { gap: 15px; padding: 12px; }
+            .detail-value { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
-    <img src="adowa.png" alt="Adowa Living" class="logo" onerror="this.style.display='none'">
+    <img src="https://andilebrian.online/adowa/adowa.png" alt="Adowa Living" class="logo" onerror="this.style.display='none'">
+    
     <div class="card">
         <div class="icon">✅</div>
         <h1>Locked In!</h1>
-        <p>Your slot is secured for <span id="displayDate"></span> at <span id="displayTime"></span>. Head down to the laundry room at your scheduled time.</p>
+        <p>Your premium laundry slot is secured. Head down to the facility at your scheduled time.</p>
         
-        <span class="machine-label">Your Machine</span><br>
-        <div class="machine-num" id="machineDisplay">Loading...</div>
+        <div class="details-box">
+            <div class="detail-item">
+                <span class="detail-label">Date</span>
+                <span class="detail-value" id="displayDate">Syncing...</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Time</span>
+                <span class="detail-value" id="displayTime">Syncing...</span>
+            </div>
+        </div>
+        
+        <span class="machine-label">Assigned Machine</span><br>
+        <div class="machine-num" id="machineDisplay">...</div>
 
-        <a href="index.html" class="btn">Back to Home</a>
+        <a href="https://andilebrian.online/adowa" class="btn">Make Another Booking</a>
     </div>
 
     <script>
@@ -52,8 +200,8 @@
 
         // Display them on the screen
         document.getElementById('machineDisplay').innerText = machineNum ? `#${machineNum}` : 'Ready';
-        document.getElementById('displayDate').innerText = dateStr || 'your selected date';
-        document.getElementById('displayTime').innerText = timeStr || 'your time slot';
+        document.getElementById('displayDate').innerText = dateStr || 'Your Selected Date';
+        document.getElementById('displayTime').innerText = timeStr || 'Your Time Slot';
     </script>
 </body>
 </html>
