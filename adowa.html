@@ -296,7 +296,7 @@
 
         let lastSubmissionTime = 0; 
 
-        // PRODUCTION WEBHOOK URLS (Removed "-test")
+        // PRODUCTION WEBHOOK URLS
         const URL_CHECK_AVAILABILITY = 'https://n8n.automania.cloud/webhook/Q';
         const URL_BOOK_SLOT = 'https://n8n.automania.cloud/webhook/P';
 
@@ -372,15 +372,15 @@
                 const response = await fetch(`${URL_CHECK_AVAILABILITY}?date=${state.date}&type=${state.machineType}`);
                 const data = await response.json(); 
                 
-                // AUTOMANIA UNPACKER: Safely unpacks the JSON array regardless of formatting
-                let fullSlots = [];
-                if (Array.isArray(data) && data[0] && data[0].locked_slots) fullSlots = data[0].locked_slots;
-                else if (data.locked_slots) fullSlots = data.locked_slots;
-                else if (Array.isArray(data)) fullSlots = data;
+                // THE AUTOMANIA AGGRESSIVE SIEVE
+                // We convert whatever n8n sent into raw text to bypass any complex JSON parsing issues.
+                const rawData = JSON.stringify(data);
 
                 timeSlots.forEach(slot => {
                     slot.classList.remove('active', 'booked');
-                    if (fullSlots.includes(slot.dataset.time)) {
+                    
+                    // If the n8n text contains the exact time string (like "09:00"), lock it down instantly.
+                    if (rawData.includes(`"${slot.dataset.time}"`)) {
                         slot.classList.add('booked');
                     }
                 });
