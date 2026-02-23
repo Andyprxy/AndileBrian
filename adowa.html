@@ -354,7 +354,6 @@
 
                 dateSelector.appendChild(card);
 
-                // Set initial state date to "Today" automatically
                 if (i === 0) {
                     state.date = formattedDate; 
                 }
@@ -373,13 +372,11 @@
                 const data = await response.json(); 
                 
                 // THE AUTOMANIA AGGRESSIVE SIEVE
-                // We convert whatever n8n sent into raw text to bypass any complex JSON parsing issues.
                 const rawData = JSON.stringify(data);
 
                 timeSlots.forEach(slot => {
                     slot.classList.remove('active', 'booked');
                     
-                    // If the n8n text contains the exact time string (like "09:00"), lock it down instantly.
                     if (rawData.includes(`"${slot.dataset.time}"`)) {
                         slot.classList.add('booked');
                     }
@@ -394,8 +391,8 @@
             }
         }
 
-        // --- 2. Submit Booking (Workflow B) ---
-        async function submitBooking(event) {
+        // --- 2. Submit Booking (Workflow B) - Redirect to n8n HTML Page ---
+        function submitBooking(event) {
             if(event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -413,46 +410,33 @@
             
             confirmBtn.disabled = true;
             confirmBtn.style.pointerEvents = "none"; 
-            confirmBtn.innerText = "Assigning...";
+            confirmBtn.innerText = "Securing Machine...";
             
             loadingOverlay.style.display = 'flex';
-            loaderText.innerText = "Securing your machine...";
+            loaderText.innerText = "Processing...";
 
-            const payload = {
+            // Create a hidden form that physically redirects the user to the n8n webhook's HTML page
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = URL_BOOK_SLOT;
+
+            const data = {
                 studentId: state.studentId,
                 machineType: state.machineType,
                 date: state.date,
                 timeSlot: state.timeSlot
             };
 
-            try {
-                const response = await fetch(URL_BOOK_SLOT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                if (result.status === 'success' || result.machineNum) {
-                    const mNum = result.machineNum || result.machineNumber;
-                    alert(`✅ SUCCESS!\n\nBooking confirmed for ${state.date} at ${state.timeSlot}.\n\nYOUR MACHINE: #${mNum}`);
-                    
-                    state.timeSlot = null;
-                    await fetchAvailability();
-                } else {
-                    alert(`❌ Booking failed: ${result.message || 'Slot might have just filled up.'}`);
-                }
-
-            } catch (error) {
-                alert("❌ Connection error. Please try again.");
-            } finally {
-                state.isSubmitting = false;
-                confirmBtn.style.pointerEvents = "auto";
-                confirmBtn.innerText = "Confirm Booking";
-                loadingOverlay.style.display = 'none';
-                updateSummary();
+            for (const key in data) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = data[key];
+                form.appendChild(input);
             }
+
+            document.body.appendChild(form);
+            form.submit(); // This sends the user straight to n8n
         }
 
         // --- 3. UI logic ---
