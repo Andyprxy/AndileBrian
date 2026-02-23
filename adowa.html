@@ -5,233 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adowa Living | Laundry Booking</title>
     <style>
-        /* Typography & Variables */
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
 
         :root {
             --adowa-orange: #d35c24;
-            --adowa-orange-light: #f5e6df;
             --adowa-green: #a4bc5c;
-            --adowa-green-hover: #92aa4e;
-            --bg-color: #fbf9f6;
-            --text-dark: #4a4a4a;
-            --text-light: #888;
-            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
+        /* Full Screen Background Image */
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
+            background-image: url('adowa2.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-dark);
         }
 
-        /* Navigation */
+        /* Floating Glass Navigation */
         nav {
-            width: 100%;
-            background: #fff;
-            padding: 15px 40px;
+            width: 90%;
+            max-width: 900px;
+            margin-top: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 12px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            box-shadow: var(--glass-shadow);
             box-sizing: border-box;
+            z-index: 10;
         }
 
-        nav img { height: 40px; }
+        nav img { height: 35px; }
 
         .nav-links {
             display: flex;
             gap: 20px;
             align-items: center;
-            font-weight: 700;
-            color: var(--adowa-orange);
+            font-weight: 800;
         }
 
         .btn-logout {
             background-color: var(--adowa-orange);
             color: white;
-            padding: 8px 20px;
+            padding: 8px 24px;
             border-radius: 20px;
             text-decoration: none;
-            transition: opacity 0.3s;
+            transition: 0.3s;
         }
+        .btn-logout:hover { box-shadow: 0 5px 15px rgba(211, 92, 36, 0.4); transform: translateY(-2px); }
 
-        .btn-logout:hover { opacity: 0.8; }
-
-        /* Main Container */
+        /* Main Liquid Glass Container */
         .container {
             max-width: 800px;
             width: 90%;
-            margin: 40px auto;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
+            margin: 30px auto 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
             padding: 40px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+            box-shadow: var(--glass-shadow);
             box-sizing: border-box;
         }
 
         .header-section { text-align: center; margin-bottom: 30px; }
-        .header-section h1 { color: var(--adowa-orange); font-size: 2.2rem; margin-bottom: 5px; }
-        .header-section p { color: var(--text-light); font-size: 1.1rem; margin-top: 0; }
+        .header-section h1 { color: var(--adowa-orange); font-size: 2.4rem; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(255,255,255,0.5); }
+        .header-section p { color: var(--text-dark); font-size: 1.1rem; margin-top: 0; font-weight: 700; }
 
-        /* Section Titles */
         .section-title { font-weight: 800; color: var(--adowa-orange); font-size: 1.2rem; margin-bottom: 15px; }
         
-        /* Date Selector */
-        .date-selector {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
+        /* Glass Buttons & Cards */
+        .date-selector { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
         .date-card {
-            min-width: 80px;
-            padding: 15px 10px;
-            background: #fff;
-            border: 2px solid #eee;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            min-width: 80px; padding: 15px 10px; text-align: center; cursor: pointer; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.8); border: 2px solid transparent; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
+        .date-card.active { border-color: var(--adowa-green); background: #fff; box-shadow: 0 8px 20px rgba(164, 188, 92, 0.2); transform: translateY(-3px); }
+        .date-day { font-size: 0.9rem; color: var(--text-light); font-weight: 800;}
+        .date-num { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); display: block; margin-top: 2px;}
 
-        .date-card.active { border-color: var(--adowa-green); background: rgba(164, 188, 92, 0.1); }
-        .date-day { font-size: 0.9rem; color: var(--text-light); font-weight: 700;}
-        .date-num { font-size: 1.5rem; font-weight: 800; color: var(--text-dark);}
-
-        /* Time Slots Grid */
-        .time-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
+        .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; margin-bottom: 30px; }
         .time-slot {
-            padding: 12px;
-            background: #fff;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.95rem;
+            padding: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 0.95rem; text-align: center;
+            background: rgba(255, 255, 255, 0.8); border: 2px solid transparent; border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
+        .time-slot:hover:not(.booked) { transform: translateY(-2px); background: #fff; }
+        .time-slot.active { background: var(--adowa-green); color: #fff; box-shadow: 0 8px 15px rgba(164, 188, 92, 0.3); }
+        .time-slot.booked { background: rgba(255, 255, 255, 0.4); color: #aaa; text-decoration: line-through; cursor: not-allowed; }
 
-        .time-slot:hover:not(.booked) { border-color: var(--adowa-green); transform: translateY(-2px); }
-        .time-slot.active { background: var(--adowa-green); color: #fff; border-color: var(--adowa-green); }
-        
-        /* Full Capacity State (Grey Out) */
-        .time-slot.booked {
-            background: #f5f5f5;
-            color: #ccc;
-            text-decoration: line-through;
-            cursor: not-allowed;
-            border-color: #eee;
-        }
-
-        /* Machine Type Toggle */
         .machine-toggle {
-            display: flex;
-            background: #fff;
-            border-radius: 30px;
-            padding: 5px;
-            margin-bottom: 25px;
-            border: 2px solid #eee;
-            width: fit-content;
+            display: flex; background: rgba(255, 255, 255, 0.6); border-radius: 30px; padding: 6px; margin-bottom: 25px; width: fit-content; border: 1px solid var(--glass-border);
         }
+        .machine-btn { padding: 10px 25px; border: none; background: transparent; font-family: inherit; font-weight: 800; font-size: 1rem; color: var(--text-light); border-radius: 25px; cursor: pointer; transition: 0.3s; }
+        .machine-btn.active { background: var(--adowa-orange); color: #fff; box-shadow: 0 6px 15px rgba(211, 92, 36, 0.3); }
 
-        .machine-btn {
-            padding: 10px 25px;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text-light);
-            border-radius: 25px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .machine-btn.active { background: var(--adowa-orange); color: #fff; }
-
-        /* Action Area */
-        .action-area {
-            border-top: 2px solid #eee;
-            padding-top: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .summary { font-size: 0.95rem; }
-        .summary span { font-weight: 800; color: var(--adowa-orange); }
+        .action-area { border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .summary { font-size: 0.95rem; font-weight: 700; }
+        .summary span { font-weight: 800; color: var(--adowa-orange); font-size: 1.1rem; display: block; margin-top: 4px; }
 
         .btn-confirm {
-            background: var(--adowa-green);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
+            background: var(--adowa-green); color: white; border: none; padding: 16px 35px; font-size: 1.1rem; font-weight: 800; border-radius: 30px; cursor: pointer; transition: 0.3s; font-family: inherit;
         }
+        .btn-confirm:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(164, 188, 92, 0.4); }
+        .btn-confirm:disabled { background: #cbd5c0; cursor: not-allowed; }
 
-        .btn-confirm:hover:not(:disabled) {
-            background: var(--adowa-green-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(164, 188, 92, 0.4);
-        }
-
-        .btn-confirm:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        /* Loading Overlay */
         #loadingOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,255,255,0.8);
-            z-index: 9999; 
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: var(--adowa-orange);
-            backdrop-filter: blur(5px);
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.4); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: var(--adowa-orange);
+            backdrop-filter: blur(10px); font-weight: 800; font-size: 1.2rem;
         }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--adowa-orange-light);
-            border-top: 4px solid var(--adowa-orange);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 10px;
-        }
-
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(211, 92, 36, 0.2); border-top: 5px solid var(--adowa-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 600px) {
-            .action-area { flex-direction: column; gap: 15px; text-align: center; }
-            .btn-confirm { width: 100%; }
-        }
+        @media (max-width: 600px) { .action-area { flex-direction: column; gap: 15px; text-align: center; } .btn-confirm { width: 100%; } }
     </style>
 </head>
 <body>
@@ -242,17 +145,17 @@
     </div>
 
     <nav>
-        <img src="adowa.png" alt="Adowa Living Logo" onerror="this.style.display='none'">
+        <img src="adowa.png" alt="Adowa Living" onerror="this.style.display='none'">
         <div class="nav-links">
-            <span style="color: var(--text-dark);">Hi, Student</span>
-            <a href="#" class="btn-logout">My Bookings</a>
+            <span>Hi, Student</span>
+            <a href="#" class="btn-logout">Bookings</a>
         </div>
     </nav>
 
     <div class="container">
         <div class="header-section">
             <h1>Laundry for daysssss.</h1>
-            <p>Skip the queue. Book your washer and dryer below.</p>
+            <p>Skip the queue. Secure your slot below.</p>
         </div>
 
         <div class="machine-toggle">
@@ -263,7 +166,7 @@
         <div class="section-title">Select Date</div>
         <div class="date-selector" id="dateSelector"></div>
 
-        <div class="section-title">Select Time Slot</div>
+        <div class="section-title">Select Time</div>
         <div class="time-grid" id="timeGrid">
             <div class="time-slot" data-time="08:00">08:00 AM</div>
             <div class="time-slot" data-time="09:00">09:00 AM</div>
@@ -279,7 +182,7 @@
 
         <div class="action-area">
             <div class="summary">
-                Booking: <br><span id="summaryText">Select a time slot</span>
+                Selected Booking: <br><span id="summaryText">Waiting for selection...</span>
             </div>
             <button class="btn-confirm" id="confirmBtn" disabled>Confirm Booking</button>
         </div>
@@ -289,7 +192,7 @@
         const state = {
             studentId: 'STU-98765', 
             machineType: 'Wash',
-            date: '', // Will be set automatically by generateDynamicDates()
+            date: '', 
             timeSlot: null,
             isSubmitting: false 
         };
@@ -307,24 +210,17 @@
         const loadingOverlay = document.getElementById('loadingOverlay');
         const loaderText = document.getElementById('loaderText');
 
-        // --- AUTOMANIA: SAST Timezone Generator ---
         function generateDynamicDates() {
             const dateSelector = document.getElementById('dateSelector');
             dateSelector.innerHTML = ''; 
-
             const now = new Date();
 
             for (let i = 0; i < 3; i++) {
                 const targetDate = new Date(now.getTime());
                 targetDate.setDate(now.getDate() + i);
 
-                // Strictly enforce South African Standard Time
                 const parts = new Intl.DateTimeFormat('en-GB', { 
-                    timeZone: 'Africa/Johannesburg', 
-                    year: 'numeric', 
-                    month: '2-digit', 
-                    day: '2-digit',
-                    weekday: 'short'
+                    timeZone: 'Africa/Johannesburg', year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short'
                 }).formatToParts(targetDate);
 
                 let year, month, dayStr, dayName;
@@ -336,14 +232,10 @@
                 });
 
                 const formattedDate = `${year}-${month}-${dayStr}`; 
-
                 const card = document.createElement('div');
                 card.className = `date-card ${i === 0 ? 'active' : ''}`;
                 card.dataset.date = formattedDate;
-                card.innerHTML = `
-                    <span class="date-day">${dayName}</span>
-                    <span class="date-num">${dayStr}</span>
-                `;
+                card.innerHTML = `<span class="date-day">${dayName}</span><span class="date-num">${dayStr}</span>`;
 
                 card.addEventListener('click', function() {
                     document.querySelectorAll('.date-card').forEach(c => c.classList.remove('active'));
@@ -353,33 +245,23 @@
                 });
 
                 dateSelector.appendChild(card);
-
-                if (i === 0) {
-                    state.date = formattedDate; 
-                }
+                if (i === 0) state.date = formattedDate; 
             }
         }
 
-        // --- 1. Fetch Availability (Workflow A) ---
         async function fetchAvailability() {
             if (state.isSubmitting) return;
-            
             loadingOverlay.style.display = 'flex';
-            loaderText.innerText = "Checking availability...";
+            loaderText.innerText = "Scanning machines...";
             
             try {
                 const response = await fetch(`${URL_CHECK_AVAILABILITY}?date=${state.date}&type=${state.machineType}`);
                 const data = await response.json(); 
-                
-                // THE AUTOMANIA AGGRESSIVE SIEVE
                 const rawData = JSON.stringify(data);
 
                 timeSlots.forEach(slot => {
                     slot.classList.remove('active', 'booked');
-                    
-                    if (rawData.includes(`"${slot.dataset.time}"`)) {
-                        slot.classList.add('booked');
-                    }
+                    if (rawData.includes(`"${slot.dataset.time}"`)) slot.classList.add('booked');
                 });
 
                 state.timeSlot = null;
@@ -391,18 +273,10 @@
             }
         }
 
-        // --- 2. Submit Booking (Workflow B) - Redirect to n8n HTML Page ---
         function submitBooking(event) {
-            if(event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
+            if(event) { event.preventDefault(); event.stopPropagation(); }
             const timeNow = Date.now();
-            if (timeNow - lastSubmissionTime < 5000) {
-                return; 
-            }
-
+            if (timeNow - lastSubmissionTime < 5000) return; 
             if (state.isSubmitting || !state.timeSlot) return;
 
             lastSubmissionTime = timeNow; 
@@ -413,19 +287,13 @@
             confirmBtn.innerText = "Securing Machine...";
             
             loadingOverlay.style.display = 'flex';
-            loaderText.innerText = "Processing...";
+            loaderText.innerText = "Connecting to server...";
 
-            // Create a hidden form that physically redirects the user to the n8n webhook's HTML page
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = URL_BOOK_SLOT;
 
-            const data = {
-                studentId: state.studentId,
-                machineType: state.machineType,
-                date: state.date,
-                timeSlot: state.timeSlot
-            };
+            const data = { studentId: state.studentId, machineType: state.machineType, date: state.date, timeSlot: state.timeSlot };
 
             for (const key in data) {
                 const input = document.createElement('input');
@@ -436,17 +304,16 @@
             }
 
             document.body.appendChild(form);
-            form.submit(); // This sends the user straight to n8n
+            form.submit(); 
         }
 
-        // --- 3. UI logic ---
         function updateSummary() {
             if (state.timeSlot) {
                 const typeText = state.machineType === 'Wash' ? 'Washer' : 'Dryer';
-                summaryText.innerHTML = `${typeText} &bull; <span>${state.date}, ${state.timeSlot}</span>`;
+                summaryText.innerHTML = `${typeText} <span>${state.date} at ${state.timeSlot}</span>`;
                 confirmBtn.disabled = false;
             } else {
-                summaryText.innerHTML = "Select a time slot";
+                summaryText.innerHTML = "Waiting for selection...";
                 confirmBtn.disabled = true;
             }
         }
@@ -472,9 +339,8 @@
 
         confirmBtn.onclick = submitBooking;
 
-        // --- Initialize App ---
-        generateDynamicDates(); // 1. Build the SAST date cards
-        fetchAvailability();    // 2. Scan the database for the active date
+        generateDynamicDates(); 
+        fetchAvailability();    
     </script>
 </body>
 </html>
