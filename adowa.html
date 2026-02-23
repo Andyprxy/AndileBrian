@@ -338,11 +338,11 @@
 
                 if (result.status === 'success' || result.machineNum) {
                     const mNum = result.machineNum || result.machineNumber;
-                    // Instantly redirect to the local success page with URL parameters
-                    window.location.href = `success.html?machine=${mNum}&date=${state.date}&time=${state.timeSlot}`;
+                    // Instantly redirect to the local success page using the absolute path
+                    window.location.href = `/adowa/success.html?machine=${mNum}&date=${state.date}&time=${state.timeSlot}`;
                 } else {
-                    // Instantly redirect to the local failed page
-                    window.location.href = `failed.html`;
+                    // Instantly redirect to the local failed page using the absolute path
+                    window.location.href = `/adowa/failed.html`;
                 }
 
             } catch (error) {
