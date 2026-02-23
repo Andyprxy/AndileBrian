@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed | Adowa Living</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
+        :root { --adowa-orange: #d35c24; --adowa-green: #a4bc5c; }
+        body { 
+            font-family: 'Nunito', sans-serif; margin: 0; padding: 20px; box-sizing: border-box; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh;
+            background-image: url('adowa2.png'); background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .logo { height: 40px; margin-bottom: 30px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .card { 
+            background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
+            padding: 50px 40px; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            text-align: center; max-width: 450px; width: 100%; border-top: 8px solid var(--adowa-green);
+        }
+        .icon { font-size: 64px; margin-bottom: 10px; }
+        h1 { color: var(--adowa-orange); font-size: 2.2rem; margin-bottom: 8px; font-weight: 800; }
+        p { color: #444; font-size: 1.1rem; line-height: 1.5; margin-bottom: 25px; font-weight: 700; }
+        .machine-label { font-size: 0.9rem; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+        .machine-num { 
+            background: var(--adowa-orange); color: white; font-size: 4rem; font-weight: 800; 
+            padding: 15px 50px; border-radius: 24px; display: inline-block; margin: 10px 0 30px 0; box-shadow: 0 10px 20px rgba(211, 92, 36, 0.3);
+        }
+        .btn { background: var(--adowa-green); color: white; text-decoration: none; padding: 16px 40px; border-radius: 35px; font-weight: 800; display: block; transition: 0.3s; font-size: 1.1rem; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(164, 188, 92, 0.4); }
+    </style>
+</head>
+<body>
+    <img src="adowa.png" alt="Adowa Living" class="logo" onerror="this.style.display='none'">
+    <div class="card">
+        <div class="icon">✅</div>
+        <h1>Locked In!</h1>
+        <p>Your slot is secured for <span id="displayDate"></span> at <span id="displayTime"></span>. Head down to the laundry room at your scheduled time.</p>
+        
+        <span class="machine-label">Your Machine</span><br>
+        <div class="machine-num" id="machineDisplay">Loading...</div>
+
+        <a href="index.html" class="btn">Back to Home</a>
+    </div>
+
+    <script>
+        // Extract the parameters from the URL sent by index.html
+        const urlParams = new URLSearchParams(window.location.search);
+        const machineNum = urlParams.get('machine');
+        const dateStr = urlParams.get('date');
+        const timeStr = urlParams.get('time');
+
+        // Display them on the screen
+        document.getElementById('machineDisplay').innerText = machineNum ? `#${machineNum}` : 'Ready';
+        document.getElementById('displayDate').innerText = dateStr || 'your selected date';
+        document.getElementById('displayTime').innerText = timeStr || 'your time slot';
+    </script>
+</body>
+</html>
