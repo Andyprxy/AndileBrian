@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Adowa Living | Laundry Booking</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
@@ -31,6 +31,7 @@
             background-position: center;
             background-attachment: fixed;
             color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
         }
 
         /* Floating Glass Navigation */
@@ -93,16 +94,17 @@
         .section-title { font-weight: 800; color: var(--adowa-orange); font-size: 1.2rem; margin-bottom: 15px; }
         
         /* Glass Buttons & Cards */
-        .date-selector { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
+        .date-selector { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+        .date-selector::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean UI */
         .date-card {
-            min-width: 80px; padding: 15px 10px; text-align: center; cursor: pointer; transition: 0.3s;
+            min-width: 80px; flex: 1; padding: 15px 10px; text-align: center; cursor: pointer; transition: 0.3s;
             background: rgba(255, 255, 255, 0.8); border: 2px solid transparent; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .date-card.active { border-color: var(--adowa-green); background: #fff; box-shadow: 0 8px 20px rgba(164, 188, 92, 0.2); transform: translateY(-3px); }
         .date-day { font-size: 0.9rem; color: var(--text-light); font-weight: 800;}
         .date-num { font-size: 1.6rem; font-weight: 800; color: var(--text-dark); display: block; margin-top: 2px;}
 
-        .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; margin-bottom: 30px; }
+        .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; margin-bottom: 30px; }
         .time-slot {
             padding: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 0.95rem; text-align: center;
             background: rgba(255, 255, 255, 0.8); border: 2px solid transparent; border-radius: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);
@@ -114,7 +116,7 @@
         .machine-toggle {
             display: flex; background: rgba(255, 255, 255, 0.6); border-radius: 30px; padding: 6px; margin-bottom: 25px; width: fit-content; border: 1px solid var(--glass-border);
         }
-        .machine-btn { padding: 10px 25px; border: none; background: transparent; font-family: inherit; font-weight: 800; font-size: 1rem; color: var(--text-light); border-radius: 25px; cursor: pointer; transition: 0.3s; }
+        .machine-btn { padding: 10px 25px; border: none; background: transparent; font-family: inherit; font-weight: 800; font-size: 1rem; color: var(--text-light); border-radius: 25px; cursor: pointer; transition: 0.3s; flex: 1; text-align: center;}
         .machine-btn.active { background: var(--adowa-orange); color: #fff; box-shadow: 0 6px 15px rgba(211, 92, 36, 0.3); }
 
         .action-area { border-top: 1px solid rgba(0,0,0,0.1); padding-top: 25px; display: flex; justify-content: space-between; align-items: center; }
@@ -127,14 +129,42 @@
         .btn-confirm:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(164, 188, 92, 0.4); }
         .btn-confirm:disabled { background: #cbd5c0; cursor: not-allowed; }
 
+        /* Loading Overlay */
         #loadingOverlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.4); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: var(--adowa-orange);
             backdrop-filter: blur(10px); font-weight: 800; font-size: 1.2rem;
         }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(211, 92, 36, 0.2); border-top: 5px solid var(--adowa-orange); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 600px) { .action-area { flex-direction: column; gap: 15px; text-align: center; } .btn-confirm { width: 100%; } }
+        /* --- MOBILE RESPONSIVENESS (Automania Standard) --- */
+        @media (max-width: 600px) {
+            nav { padding: 12px 20px; width: 95%; border-radius: 20px; }
+            nav img { height: 28px; }
+            .btn-logout { padding: 6px 16px; font-size: 0.9rem; }
+            
+            .container { padding: 25px 20px; width: 95%; margin-top: 20px; border-radius: 24px; }
+            .header-section h1 { font-size: 2rem; }
+            .header-section p { font-size: 1rem; }
+            
+            .machine-toggle { width: 100%; display: flex; }
+            .machine-btn { padding: 10px 10px; font-size: 0.95rem; }
+            
+            .date-card { min-width: 70px; padding: 12px 8px; }
+            .date-day { font-size: 0.8rem; }
+            .date-num { font-size: 1.4rem; }
+            
+            /* Locks grid into a perfect 3-column layout on phones for easy thumb tapping */
+            .time-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .time-slot { padding: 10px; font-size: 0.9rem; }
+            
+            .action-area { flex-direction: column; gap: 20px; text-align: center; }
+            .btn-confirm { width: 100%; padding: 18px; font-size: 1.15rem; }
+        }
+
+        /* Ultra-small phones */
+        @media (max-width: 400px) {
+            .time-grid { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
@@ -147,8 +177,7 @@
     <nav>
         <img src="adowa.png" alt="Adowa Living" onerror="this.style.display='none'">
         <div class="nav-links">
-            <span>Hi, Student</span>
-            <a href="#" class="btn-logout">Bookings</a>
+            <a href="#" class="btn-logout">My Bookings</a>
         </div>
     </nav>
 
@@ -273,7 +302,8 @@
             }
         }
 
-        function submitBooking(event) {
+        // --- 2. Submit Booking (Workflow B) - Seamless Local Redirect ---
+        async function submitBooking(event) {
             if(event) { event.preventDefault(); event.stopPropagation(); }
             const timeNow = Date.now();
             if (timeNow - lastSubmissionTime < 5000) return; 
@@ -287,24 +317,42 @@
             confirmBtn.innerText = "Securing Machine...";
             
             loadingOverlay.style.display = 'flex';
-            loaderText.innerText = "Connecting to server...";
+            loaderText.innerText = "Processing...";
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = URL_BOOK_SLOT;
+            const payload = {
+                studentId: state.studentId,
+                machineType: state.machineType,
+                date: state.date,
+                timeSlot: state.timeSlot
+            };
 
-            const data = { studentId: state.studentId, machineType: state.machineType, date: state.date, timeSlot: state.timeSlot };
+            try {
+                // Background POST to n8n Workflow B
+                const response = await fetch(URL_BOOK_SLOT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
 
-            for (const key in data) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = data[key];
-                form.appendChild(input);
+                const result = await response.json();
+
+                if (result.status === 'success' || result.machineNum) {
+                    const mNum = result.machineNum || result.machineNumber;
+                    // Instantly redirect to the local success page with URL parameters
+                    window.location.href = `success.html?machine=${mNum}&date=${state.date}&time=${state.timeSlot}`;
+                } else {
+                    // Instantly redirect to the local failed page
+                    window.location.href = `failed.html`;
+                }
+
+            } catch (error) {
+                alert("❌ Connection error. Please check your internet and try again.");
+                state.isSubmitting = false;
+                confirmBtn.style.pointerEvents = "auto";
+                confirmBtn.innerText = "Confirm Booking";
+                loadingOverlay.style.display = 'none';
+                updateSummary();
             }
-
-            document.body.appendChild(form);
-            form.submit(); 
         }
 
         function updateSummary() {
