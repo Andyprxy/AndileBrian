@@ -95,7 +95,7 @@
         
         /* Glass Buttons & Cards */
         .date-selector { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
-        .date-selector::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean UI */
+        .date-selector::-webkit-scrollbar { display: none; } 
         .date-card {
             min-width: 80px; flex: 1; padding: 15px 10px; text-align: center; cursor: pointer; transition: 0.3s;
             background: rgba(255, 255, 255, 0.8); border: 2px solid transparent; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -153,7 +153,6 @@
             .date-day { font-size: 0.8rem; }
             .date-num { font-size: 1.4rem; }
             
-            /* Locks grid into a perfect 3-column layout on phones for easy thumb tapping */
             .time-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
             .time-slot { padding: 10px; font-size: 0.9rem; }
             
@@ -161,7 +160,6 @@
             .btn-confirm { width: 100%; padding: 18px; font-size: 1.15rem; }
         }
 
-        /* Ultra-small phones */
         @media (max-width: 400px) {
             .time-grid { grid-template-columns: repeat(2, 1fr); }
         }
@@ -338,11 +336,11 @@
 
                 if (result.status === 'success' || result.machineNum) {
                     const mNum = result.machineNum || result.machineNumber;
-                    // Instantly redirect to the local success page using the absolute path
-                    window.location.href = `/adowa/success.html?machine=${mNum}&date=${state.date}&time=${state.timeSlot}`;
+                    // Instantly redirect to the exact absolute URL for the success page
+                    window.location.href = `https://andilebrian.online/success?machine=${mNum}&date=${state.date}&time=${state.timeSlot}`;
                 } else {
-                    // Instantly redirect to the local failed page using the absolute path
-                    window.location.href = `/adowa/failed.html`;
+                    // Instantly redirect to the exact absolute URL for the failed page
+                    window.location.href = `https://andilebrian.online/failed`;
                 }
 
             } catch (error) {
