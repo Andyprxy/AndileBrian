@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adowa Living | Laundry Booking</title>
+    <style>
+        /* Typography & Variables */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
+
+        :root {
+            --adowa-orange: #d35c24;
+            --adowa-orange-light: #f5e6df;
+            --adowa-green: #a4bc5c;
+            --adowa-green-hover: #92aa4e;
+            --bg-color: #fbf9f6;
+            --text-dark: #4a4a4a;
+            --text-light: #888;
+            --card-bg: rgba(255, 255, 255, 0.85);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navigation */
+        nav {
+            width: 100%;
+            background: #fff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            box-sizing: border-box;
+        }
+
+        nav img { height: 40px; }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            font-weight: 700;
+            color: var(--adowa-orange);
+        }
+
+        .btn-logout {
+            background-color: var(--adowa-orange);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .btn-logout:hover { opacity: 0.8; }
+
+        /* Main Container - Premium Glassmorphism */
+        .container {
+            max-width: 800px;
+            width: 90%;
+            margin: 40px auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+            box-sizing: border-box;
+        }
+
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .header-section h1 { color: var(--adowa-orange); font-size: 2.2rem; margin-bottom: 5px; }
+        .header-section p { color: var(--text-light); font-size: 1.1rem; margin-top: 0; }
+
+        /* Section Titles */
+        .section-title { font-weight: 800; color: var(--adowa-orange); font-size: 1.2rem; margin-bottom: 15px; }
+        
+        /* Date Selector */
+        .date-selector {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .date-card {
+            min-width: 80px;
+            padding: 15px 10px;
+            background: #fff;
+            border: 2px solid #eee;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .date-card.active { border-color: var(--adowa-green); background: rgba(164, 188, 92, 0.1); }
+        .date-day { font-size: 0.9rem; color: var(--text-light); font-weight: 700;}
+        .date-num { font-size: 1.5rem; font-weight: 800; color: var(--text-dark);}
+
+        /* Time Slots Grid */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            background: #fff;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .time-slot:hover:not(.booked) { border-color: var(--adowa-green); transform: translateY(-2px); }
+        .time-slot.active { background: var(--adowa-green); color: #fff; border-color: var(--adowa-green); }
+        
+        /* Full Capacity State */
+        .time-slot.booked {
+            background: #f5f5f5;
+            color: #ccc;
+            text-decoration: line-through;
+            cursor: not-allowed;
+            border-color: #eee;
+        }
+
+        /* Machine Type Toggle */
+        .machine-toggle {
+            display: flex;
+            background: #fff;
+            border-radius: 30px;
+            padding: 5px;
+            margin-bottom: 25px;
+            border: 2px solid #eee;
+            width: fit-content;
+        }
+
+        .machine-btn {
+            padding: 10px 25px;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-light);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .machine-btn.active { background: var(--adowa-orange); color: #fff; }
+
+        /* Action Area */
+        .action-area {
+            border-top: 2px solid #eee;
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .summary { font-size: 0.95rem; }
+        .summary span { font-weight: 800; color: var(--adowa-orange); }
+
+        .btn-confirm {
+            background: var(--adowa-green);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .btn-confirm:hover:not(:disabled) {
+            background: var(--adowa-green-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(164, 188, 92, 0.4);
+        }
+
+        .btn-confirm:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Loading Overlay (Max Priority) */
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8);
+            z-index: 9999; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--adowa-orange);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Simple Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--adowa-orange-light);
+            border-top: 4px solid var(--adowa-orange);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 600px) {
+            .action-area { flex-direction: column; gap: 15px; text-align: center; }
+            .btn-confirm { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <span id="loaderText">Syncing...</span>
+    </div>
+
+    <nav>
+        <img src="adowa.png" alt="Adowa Living Logo" onerror="this.style.display='none'">
+        <div class="nav-links">
+            <span style="color: var(--text-dark);">Hi, Student</span>
+            <a href="#" class="btn-logout">My Bookings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Laundry for daysssss.</h1>
+            <p>Skip the queue. Book your washer and dryer below.</p>
+        </div>
+
+        <div class="machine-toggle">
+            <button class="machine-btn active" data-type="Wash">Washing Machine</button>
+            <button class="machine-btn" data-type="Dry">Tumble Dryer</button>
+        </div>
+
+        <div class="section-title">Select Date</div>
+        <div class="date-selector">
+            <div class="date-card active" data-date="2026-02-23">
+                <span class="date-day">MON</span>
+                <span class="date-num">23</span>
+            </div>
+            <div class="date-card" data-date="2026-02-24">
+                <span class="date-day">TUE</span>
+                <span class="date-num">24</span>
+            </div>
+            <div class="date-card" data-date="2026-02-25">
+                <span class="date-day">WED</span>
+                <span class="date-num">25</span>
+            </div>
+        </div>
+
+        <div class="section-title">Select Time Slot</div>
+        <div class="time-grid" id="timeGrid">
+            <div class="time-slot" data-time="08:00">08:00 AM</div>
+            <div class="time-slot" data-time="09:00">09:00 AM</div>
+            <div class="time-slot" data-time="10:00">10:00 AM</div>
+            <div class="time-slot" data-time="11:00">11:00 AM</div>
+            <div class="time-slot" data-time="12:00">12:00 PM</div>
+            <div class="time-slot" data-time="13:00">01:00 PM</div>
+            <div class="time-slot" data-time="14:00">02:00 PM</div>
+            <div class="time-slot" data-time="15:00">03:00 PM</div>
+            <div class="time-slot" data-time="16:00">04:00 PM</div>
+            <div class="time-slot" data-time="17:00">05:00 PM</div>
+        </div>
+
+        <div class="action-area">
+            <div class="summary">
+                Booking: <br><span id="summaryText">Select a time slot</span>
+            </div>
+            <button class="btn-confirm" id="confirmBtn" disabled>Confirm Booking</button>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            studentId: 'STU-98765', // To be linked to actual login later
+            machineType: 'Wash',
+            date: '2026-02-23',
+            timeSlot: null,
+            isSubmitting: false 
+        };
+
+        // The Hard Interlock Timestamp
+        let lastSubmissionTime = 0; 
+
+        // IMPORTANT: Once you activate your n8n workflows, change "webhook-test" to "webhook" in these URLs
+        const URL_CHECK_AVAILABILITY = 'https://n8n.automania.cloud/webhook-test/Q';
+        const URL_BOOK_SLOT = 'https://n8n.automania.cloud/webhook-test/P';
+
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const machineBtns = document.querySelectorAll('.machine-btn');
+        const dateCards = document.querySelectorAll('.date-card');
+        const summaryText = document.getElementById('summaryText');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loaderText = document.getElementById('loaderText');
+
+        // --- 1. Fetch Availability (Workflow A) ---
+        async function fetchAvailability() {
+            if (state.isSubmitting) return;
+            
+            loadingOverlay.style.display = 'flex';
+            loaderText.innerText = "Checking availability...";
+            
+            try {
+                const response = await fetch(`${URL_CHECK_AVAILABILITY}?date=${state.date}&type=${state.machineType}`);
+                const data = await response.json(); 
+                
+                // Safely extract the array whether n8n sent it raw or inside an object
+                const fullSlots = data.locked_slots || data || [];
+
+                timeSlots.forEach(slot => {
+                    slot.classList.remove('active', 'booked');
+                    // If this specific time slot is in the fullSlots array, cross it out
+                    if (Array.isArray(fullSlots) && fullSlots.includes(slot.dataset.time)) {
+                        slot.classList.add('booked');
+                    }
+                });
+
+                state.timeSlot = null;
+                updateSummary();
+            } catch (error) {
+                console.error("Availability error:", error);
+            } finally {
+                loadingOverlay.style.display = 'none';
+            }
+        }
+
+        // --- 2. Submit Booking (Workflow B with Hard Interlock) ---
+        async function submitBooking(event) {
+            // Stop any default button behaviors
+            if(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            // AUTOMANIA SECURITY CHECK: Has it been less than 5 seconds since the last click?
+            const timeNow = Date.now();
+            if (timeNow - lastSubmissionTime < 5000) {
+                console.log("Spam click prevented by Hard Interlock.");
+                return; 
+            }
+
+            if (state.isSubmitting || !state.timeSlot) return;
+
+            // LOCK SYSTEM
+            lastSubmissionTime = timeNow; 
+            state.isSubmitting = true;
+            
+            // Physically lock the button so no secondary clicks register
+            confirmBtn.disabled = true;
+            confirmBtn.style.pointerEvents = "none"; 
+            confirmBtn.innerText = "Assigning...";
+            
+            loadingOverlay.style.display = 'flex';
+            loaderText.innerText = "Securing your machine...";
+
+            const payload = {
+                studentId: state.studentId,
+                machineType: state.machineType,
+                date: state.date,
+                timeSlot: state.timeSlot
+            };
+
+            try {
+                const response = await fetch(URL_BOOK_SLOT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success' || result.machineNum) {
+                    const mNum = result.machineNum || result.machineNumber;
+                    alert(`✅ SUCCESS!\n\nBooking confirmed for ${state.date} at ${state.timeSlot}.\n\nYOUR MACHINE: #${mNum}`);
+                    
+                    state.timeSlot = null;
+                    // Re-scan availability so if this was the 7th machine, it immediately grays out
+                    await fetchAvailability();
+                } else {
+                    alert(`❌ Booking failed: ${result.message || 'Slot might have just filled up.'}`);
+                }
+
+            } catch (error) {
+                alert("❌ Connection error. Please try again.");
+            } finally {
+                // RELEASE SYSTEM
+                state.isSubmitting = false;
+                confirmBtn.style.pointerEvents = "auto";
+                confirmBtn.innerText = "Confirm Booking";
+                loadingOverlay.style.display = 'none';
+                updateSummary();
+            }
+        }
+
+        // --- 3. UI logic ---
+        function updateSummary() {
+            if (state.timeSlot) {
+                const typeText = state.machineType === 'Wash' ? 'Washer' : 'Dryer';
+                summaryText.innerHTML = `${typeText} &bull; <span>${state.date}, ${state.timeSlot}</span>`;
+                confirmBtn.disabled = false;
+            } else {
+                summaryText.innerHTML = "Select a time slot";
+                confirmBtn.disabled = true;
+            }
+        }
+
+        // Event Listeners
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                if (this.classList.contains('booked')) return;
+                timeSlots.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+                state.timeSlot = this.dataset.time;
+                updateSummary();
+            });
+        });
+
+        machineBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                machineBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                state.machineType = this.dataset.type;
+                fetchAvailability();
+            });
+        });
+
+        dateCards.forEach(card => {
+            card.addEventListener('click', function() {
+                dateCards.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                state.date = this.dataset.date;
+                fetchAvailability();
+            });
+        });
+
+        // The Single Operator Rule: strict overwrite to prevent stacking
+        confirmBtn.onclick = submitBooking;
+
+        // Initial Load: Scan the database the moment the page opens
+        fetchAvailability(); 
+    </script>
+</body>
+</html>
