@@ -1,0 +1,47 @@
+<script>
+        document.getElementById('agriForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Sending...';
+            submitBtn.style.opacity = '0.8';
+
+            // 1. Package the data from the form
+            const payload = {
+                timestamp: new Date().toLocaleString(), 
+                house: "House A",
+                feed_bags: document.getElementById('feed').value,
+                mortalities: document.getElementById('mortality').value,
+                egg_trays: document.getElementById('eggs').value
+            };
+
+            // 2. Your live Google Apps Script Web App URL
+            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbwylErXqtvugXxXWWg6C9VM9T-bXBqyHqXnYAuu3xgK7Ma8MhDhQiSGoXBg9qE8Ii0/exec';
+
+            // 3. Send the payload to Google Sheets
+            fetch(googleScriptUrl, {
+                method: 'POST',
+                // Using text/plain avoids strict CORS blocks when testing locally
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.status === "success") {
+                    alert('Success! Data logged to Google Sheets.');
+                    document.getElementById('agriForm').reset();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                alert('Connection failed. Check browser console.');
+            })
+            .finally(() => {
+                // Reset button UI
+                submitBtn.textContent = 'Submit Data';
+                submitBtn.style.opacity = '1';
+            });
+        });
+    </script>
