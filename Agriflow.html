@@ -21,7 +21,7 @@
             color: var(--text-main);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Changed to allow scrolling */
+            align-items: flex-start;
             min-height: 100vh;
             margin: 0;
             padding: 40px 20px;
@@ -33,12 +33,18 @@
             max-width: 420px;
         }
 
-        /* Logo Styling */
+        /* Top Navigation & Hamburger Menu */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
         .brand-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
         }
 
         .brand-header svg {
@@ -55,6 +61,59 @@
             letter-spacing: -0.5px;
             color: var(--text-main);
         }
+
+        .menu-container {
+            position: relative;
+        }
+
+        .hamburger {
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger svg {
+            fill: var(--text-main);
+            transition: fill 0.2s ease;
+        }
+
+        .hamburger:hover svg { fill: var(--accent); }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            z-index: 100;
+            min-width: 180px;
+            border: 1px solid var(--border-light);
+        }
+
+        .dropdown-menu.active { display: block; }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 14px 20px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid #f9f9f9;
+            transition: background 0.2s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f5f5f7;
+            color: var(--accent);
+        }
+
+        .dropdown-menu a:last-child { border-bottom: none; }
 
         /* Card Styling */
         .glass-card {
@@ -77,9 +136,7 @@
             padding-bottom: 10px;
         }
 
-        .input-group {
-            margin-bottom: 16px;
-        }
+        .input-group { margin-bottom: 16px; }
 
         label {
             display: block;
@@ -123,13 +180,8 @@
         button:hover { background-color: var(--accent-hover); }
         button:active { transform: scale(0.98); }
 
-        /* History Section Styling */
-        .history-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
+        /* History Section */
+        .history-list { list-style: none; padding: 0; margin: 0; }
         .history-item {
             background: #ffffff;
             border: 1px solid var(--border-light);
@@ -140,41 +192,35 @@
             display: flex;
             flex-direction: column;
         }
-
         .history-item:last-child { margin-bottom: 0; }
-
-        .history-time {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .history-data {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-main);
-            font-weight: 500;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-style: italic;
-            padding: 10px 0;
-        }
+        .history-time { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; }
+        .history-data { display: flex; justify-content: space-between; color: var(--text-main); font-weight: 500; }
+        .empty-state { text-align: center; color: var(--text-muted); font-size: 13px; font-style: italic; padding: 10px 0; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <div class="brand-header">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 22C12 22 20 18 20 11.5C20 8.5 17.5 6 14.5 6C13.2 6 12.1 6.5 11.3 7.3C10.5 6.5 9.4 6 8.1 6C5.1 6 2.6 8.5 2.6 11.5C2.6 18 10.6 22 10.6 22L12 22ZM12 4C14.2 4 16 2.2 16 0H14C14 1.1 13.1 2 12 2C10.9 2 10 1.1 10 0H8C8 2.2 9.8 4 12 4Z"/>
-            </svg>
-            <h1>AgriFlow</h1>
+        <div class="top-nav">
+            <div class="brand-header">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 22C12 22 20 18 20 11.5C20 8.5 17.5 6 14.5 6C13.2 6 12.1 6.5 11.3 7.3C10.5 6.5 9.4 6 8.1 6C5.1 6 2.6 8.5 2.6 11.5C2.6 18 10.6 22 10.6 22L12 22ZM12 4C14.2 4 16 2.2 16 0H14C14 1.1 13.1 2 12 2C10.9 2 10 1.1 10 0H8C8 2.2 9.8 4 12 4Z"/>
+                </svg>
+                <h1>AgriFlow</h1>
+            </div>
+
+            <div class="menu-container">
+                <div class="hamburger" id="hamburgerBtn">
+                    <svg viewBox="0 0 24 24" width="28" height="28">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="index.html">Daily Log Input</a>
+                    <a href="Logs.html">Historical Ledger</a>
+                    <a href="Flowboard.html">Management BI</a>
+                </div>
+            </div>
         </div>
 
         <div class="glass-card">
@@ -184,17 +230,14 @@
                     <label for="feed">Feed Used (Bags)</label>
                     <input type="number" id="feed" placeholder="e.g. 12" required min="0">
                 </div>
-
                 <div class="input-group">
                     <label for="mortality">Mortalities (Birds)</label>
                     <input type="number" id="mortality" placeholder="e.g. 2" required min="0">
                 </div>
-
                 <div class="input-group">
                     <label for="eggs">Eggs Collected (Trays)</label>
                     <input type="number" id="eggs" placeholder="e.g. 150" required min="0">
                 </div>
-
                 <button type="submit" id="submitBtn">Submit Data</button>
             </form>
         </div>
@@ -208,19 +251,26 @@
     </div>
 
     <script>
-        // --- 1. History UI Functions ---
+        // Hamburger Menu Logic
+        document.getElementById('hamburgerBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('active');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.menu-container')) {
+                document.getElementById('dropdownMenu').classList.remove('active');
+            }
+        });
+
+        // History UI Functions
         const historyList = document.getElementById('historyList');
 
-        // Load logs from Local Storage
         function loadHistory() {
             const logs = JSON.parse(localStorage.getItem('agriLogs')) || [];
             if (logs.length === 0) return;
-
-            historyList.innerHTML = ''; // Clear empty state
-            
-            // Show only the 3 most recent logs
+            historyList.innerHTML = ''; 
             const recentLogs = logs.slice(0, 3);
-
             recentLogs.forEach(log => {
                 const li = document.createElement('li');
                 li.className = 'history-item';
@@ -236,35 +286,27 @@
             });
         }
 
-        // Save new log to Local Storage
         function saveToHistory(feed, mortality, eggs) {
             const logs = JSON.parse(localStorage.getItem('agriLogs')) || [];
-            
-            // Create short time string (e.g., "11:40 AM")
             const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            logs.unshift({ time: timeString, feed, mortality, eggs }); // Add to start of array
+            logs.unshift({ time: timeString, feed, mortality, eggs });
             localStorage.setItem('agriLogs', JSON.stringify(logs));
-            loadHistory(); // Refresh the UI
+            loadHistory();
         }
 
-        // Initialize history on page load
         loadHistory();
 
-        // --- 2. Form Submission & Google Sheets Fetch ---
+        // Form Submission
         document.getElementById('agriForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.textContent = 'Sending...';
             submitBtn.style.opacity = '0.8';
 
-            // Capture Values
             const feedVal = document.getElementById('feed').value;
             const mortalityVal = document.getElementById('mortality').value;
             const eggsVal = document.getElementById('eggs').value;
 
-            // Package Payload
             const payload = {
                 timestamp: new Date().toLocaleString(), 
                 house: "House A",
@@ -273,10 +315,8 @@
                 egg_trays: eggsVal
             };
 
-            // Your live Google Apps Script Web App URL
-            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbwylErXqtvugXxXWWg6C9VM9T-bXBqyHqXnYAuu3xgK7Ma8MhDhQiSGoXBg9qE8Ii0/exec';
+            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycby4_5u7incerK4D2SrF4GHMm0vw8A29aEVfIHUFvbHFr9bNfA-4yRNzNNAz4pCGqs8/exec';
 
-            // Send to Google Sheets
             fetch(googleScriptUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -285,7 +325,6 @@
             .then(response => response.json())
             .then(data => {
                 if(data.status === "success") {
-                    // Save to local UI history ONLY if Google Sheet was successful
                     saveToHistory(feedVal, mortalityVal, eggsVal);
                     document.getElementById('agriForm').reset();
                 } else {
