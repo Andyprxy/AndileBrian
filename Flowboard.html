@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriFlow - Management Dashboard</title>
+    <title>AgriFlow - Live Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -21,7 +21,7 @@
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 30px; }
         .dashboard-container { max-width: 1000px; margin: 0 auto; }
 
-        /* Top Navigation & Hamburger Menu */
+        /* Navigation */
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); position: relative; }
         .brand-header { display: flex; align-items: center; gap: 15px; }
         .brand-header svg { width: 36px; height: 36px; fill: var(--accent); }
@@ -39,7 +39,6 @@
         .dropdown-menu a svg { width: 18px; height: 18px; fill: var(--text-muted); transition: fill 0.2s ease;}
         .dropdown-menu a:hover { background: #f5f5f7; color: var(--accent); }
         .dropdown-menu a:hover svg { fill: var(--accent); }
-        .dropdown-menu a:last-child { border-bottom: none; }
 
         /* KPI Cards */
         .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
@@ -47,13 +46,13 @@
         .kpi-card:hover { transform: translateY(-2px); }
         .kpi-title { font-size: 14px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
         .kpi-value { font-size: 32px; font-weight: 700; margin: 0; }
-        .kpi-trend { font-size: 13px; font-weight: 500; margin-top: 8px; }
-        .trend-up { color: var(--success); }
-        .trend-down { color: var(--danger); }
+        
+        .loading-state { font-size: 16px; color: var(--text-muted); font-style: italic; }
 
-        /* Main Chart Section */
+        /* Chart Section */
         .chart-section { background: var(--card-bg); border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); border: 1px solid #e5e5ea; }
-        .chart-header { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+        .chart-header { font-size: 18px; font-weight: 600; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;}
+        .sync-status { font-size: 12px; color: var(--success); font-weight: 500; padding: 4px 10px; background: rgba(52, 199, 89, 0.1); border-radius: 12px;}
     </style>
 </head>
 <body>
@@ -73,18 +72,9 @@
                     <svg viewBox="0 0 24 24" width="28" height="28"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
                 </div>
                 <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="Agriflow.html">
-                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
-                        Daily Log Input
-                    </a>
-                    <a href="Logs.html">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                        Historical Ledger
-                    </a>
-                    <a href="Flowboard.html">
-                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
-                        Management BI
-                    </a>
+                    <a href="Agriflow.html"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>Daily Log Input</a>
+                    <a href="Logs.html"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>Historical Ledger</a>
+                    <a href="Flowboard.html"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>Management BI</a>
                 </div>
             </div>
         </div>
@@ -92,25 +82,23 @@
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-title">Current Feed Inventory</div>
-                <p class="kpi-value">245 Bags</p>
-                <div class="kpi-trend trend-down">↓ 12 used today</div>
+                <p class="kpi-value" id="kpi-feed"><span class="loading-state">Syncing...</span></p>
             </div>
-
             <div class="kpi-card">
-                <div class="kpi-title">Daily Egg Production</div>
-                <p class="kpi-value">150 Trays</p>
-                <div class="kpi-trend trend-up">↑ 2% vs yesterday</div>
+                <div class="kpi-title">Latest Daily Eggs</div>
+                <p class="kpi-value" id="kpi-eggs"><span class="loading-state">Syncing...</span></p>
             </div>
-
             <div class="kpi-card">
-                <div class="kpi-title">Mortality Rate (7 Day)</div>
-                <p class="kpi-value" style="color: var(--danger);">0.8%</p>
-                <div class="kpi-trend trend-down">Action Required</div>
+                <div class="kpi-title">Total Mortality Rate</div>
+                <p class="kpi-value" id="kpi-mortality" style="color: var(--danger);"><span class="loading-state">Syncing...</span></p>
             </div>
         </div>
 
         <div class="chart-section">
-            <div class="chart-header">Feed vs. Yield Conversion Trend</div>
+            <div class="chart-header">
+                Production vs. Consumption Trend
+                <span class="sync-status" id="syncStatus">Fetching Data...</span>
+            </div>
             <canvas id="yieldChart" height="100"></canvas>
         </div>
     </div>
@@ -127,45 +115,139 @@
             }
         });
 
-        // Chart.js Configuration
-        const ctx = document.getElementById('yieldChart').getContext('2d');
-        const yieldChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [
-                    {
-                        label: 'Eggs Collected (Trays)',
-                        data: [145, 148, 146, 150, 152, 149, 150],
-                        borderColor: '#0071e3',
-                        backgroundColor: 'rgba(0, 113, 227, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        yAxisID: 'y'
-                    },
-                    {
-                        label: 'Feed Used (Bags)',
-                        data: [11, 11, 12, 12, 12, 13, 12],
-                        borderColor: '#ff9f0a',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        tension: 0.4,
-                        fill: false,
-                        yAxisID: 'y1'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                interaction: { mode: 'index', intersect: false },
-                plugins: { legend: { position: 'top' } },
-                scales: {
-                    y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Egg Trays' } },
-                    y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Feed Bags' }, grid: { drawOnChartArea: false } }
+        // HARDCODED API URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycby4_5u7incerK4D2SrF4GHMm0vw8A29aEVfIHUFvbHFr9bNfA-4yRNzNNAz4pCGqs8/exec';
+
+        // Variables for our Chart
+        let agriChart;
+
+        async function fetchDashboardData() {
+            try {
+                const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    processData(result.data);
+                    document.getElementById('syncStatus').innerText = "Live Synced";
+                } else {
+                    document.getElementById('syncStatus').innerText = "Sync Error";
+                    document.getElementById('syncStatus').style.color = "var(--danger)";
                 }
+            } catch (error) {
+                console.error("Fetch error:", error);
+                document.getElementById('syncStatus').innerText = "Connection Failed";
             }
-        });
+        }
+
+        function processData(data) {
+            // Sort data chronologically to ensure the graph goes left to right
+            data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+            let totalFeedUsed = 0;
+            let totalMortalities = 0;
+            let latestEggs = 0;
+            
+            // For graphing, we group by Date (in case of multiple logs per day)
+            const dailyData = {};
+
+            data.forEach(row => {
+                // Parse numbers safely
+                const feed = parseInt(row.feed_bags) || 0;
+                const eggs = parseInt(row.egg_trays) || 0;
+                const dead = parseInt(row.mortalities) || 0;
+
+                // Create a clean date label (e.g., "3/24/2026")
+                const dateStr = new Date(row.timestamp).toLocaleDateString();
+
+                if (!dailyData[dateStr]) {
+                    dailyData[dateStr] = { feed: 0, eggs: 0, mortalities: 0 };
+                }
+
+                dailyData[dateStr].feed += feed;
+                dailyData[dateStr].eggs += eggs;
+                dailyData[dateStr].mortalities += dead;
+
+                totalFeedUsed += feed;
+                totalMortalities += dead;
+                latestEggs = eggs; // This will overwrite until the last (newest) row
+            });
+
+            // 2. CALCULATE KPIs based on business baselines
+            const STARTING_FEED_INVENTORY = 500; // Baseline bags
+            const STARTING_FLOCK_SIZE = 5000;    // Baseline birds
+
+            const currentFeed = STARTING_FEED_INVENTORY - totalFeedUsed;
+            const mortalityRate = ((totalMortalities / STARTING_FLOCK_SIZE) * 100).toFixed(2);
+
+            // 3. INJECT LIVE DATA INTO UI
+            document.getElementById('kpi-feed').innerText = `${currentFeed} Bags`;
+            document.getElementById('kpi-eggs').innerText = `${latestEggs} Trays`;
+            document.getElementById('kpi-mortality').innerText = `${mortalityRate}%`;
+
+            // 4. PREPARE DATA FOR CHART
+            const labels = Object.keys(dailyData);
+            const eggData = labels.map(date => dailyData[date].eggs);
+            const feedData = labels.map(date => dailyData[date].feed);
+            const mortData = labels.map(date => dailyData[date].mortalities);
+
+            renderChart(labels, eggData, feedData, mortData);
+        }
+
+        function renderChart(labels, eggData, feedData, mortData) {
+            const ctx = document.getElementById('yieldChart').getContext('2d');
+            
+            // Destroy existing chart if it exists so we can redraw it
+            if (agriChart) { agriChart.destroy(); }
+
+            agriChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Eggs Collected (Trays)',
+                            data: eggData,
+                            borderColor: '#0071e3',
+                            backgroundColor: 'rgba(0, 113, 227, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Feed Used (Bags)',
+                            data: feedData,
+                            borderColor: '#ff9f0a',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: false,
+                            yAxisID: 'y1'
+                        },
+                        {
+                            label: 'Mortalities',
+                            type: 'bar', // Mixing chart types to make mortalities clear
+                            data: mortData,
+                            backgroundColor: 'rgba(255, 59, 48, 0.7)',
+                            yAxisID: 'y2'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { position: 'top' } },
+                    scales: {
+                        y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Eggs' } },
+                        y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Feed' }, grid: { drawOnChartArea: false } },
+                        y2: { type: 'linear', display: false, position: 'right', min: 0, suggestedMax: 20 } // Hidden axis for mortalities to keep scale clean
+                    }
+                }
+            });
+        }
+
+        // Run fetch on load
+        window.onload = fetchDashboardData;
     </script>
 </body>
 </html>
