@@ -18,7 +18,14 @@
             --border-color: rgba(0, 0, 0, 0.1);
         }
 
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 30px; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 30px; 
+        }
+        
         .dashboard-container { max-width: 1000px; margin: 0 auto; }
 
         /* Navigation */
@@ -53,6 +60,30 @@
         .chart-section { background: var(--card-bg); border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); border: 1px solid #e5e5ea; }
         .chart-header { font-size: 18px; font-weight: 600; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;}
         .sync-status { font-size: 12px; color: var(--success); font-weight: 500; padding: 4px 10px; background: rgba(52, 199, 89, 0.1); border-radius: 12px;}
+        
+        /* Mobile Chart Wrapper */
+        .chart-container {
+            position: relative;
+            height: 50vh; /* Scales dynamically based on screen height */
+            min-height: 300px; /* Prevents it from getting too squished on small phones */
+            width: 100%;
+        }
+
+        /* Mobile Adjustments (Phones) */
+        @media (max-width: 600px) {
+            body { padding: 15px; } /* Reduce padding on small screens */
+            .header-titles h1 { font-size: 20px; }
+            .kpi-grid { grid-template-columns: 1fr; gap: 15px; } /* Stack cards completely */
+            .kpi-card { padding: 20px; }
+            .chart-section { padding: 15px; }
+            
+            /* Stack header elements if they get cramped */
+            .chart-header { flex-direction: column; align-items: flex-start; gap: 10px; font-size: 16px; }
+            .sync-status { align-self: flex-start; }
+            
+            /* Give chart more vertical breathing room on mobile */
+            .chart-container { min-height: 350px; }
+        }
     </style>
 </head>
 <body>
@@ -99,7 +130,9 @@
                 Production vs. Consumption Trend
                 <span class="sync-status" id="syncStatus">Fetching Data...</span>
             </div>
-            <canvas id="yieldChart" height="100"></canvas>
+            <div class="chart-container">
+                <canvas id="yieldChart"></canvas>
+            </div>
         </div>
     </div>
 
@@ -115,7 +148,7 @@
             }
         });
 
-        // NEW API URL
+        // YOUR LIVE API URL
         const API_URL = 'https://script.google.com/macros/s/AKfycbxWVj3aa3pAvaIsUBBqIQRhk4cBK4F5o231dgpuIYK7MsGwtrVfncNA-mkiTMsjRQ/exec';
 
         // Variables for our Chart
@@ -140,24 +173,20 @@
         }
 
         function processData(data) {
-            // Sort data chronologically to ensure the graph goes left to right
             data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
             let totalFeedUsed = 0;
             let totalMortalities = 0;
             let latestEggs = 0;
             
-            // For graphing, we group by Date (in case of multiple logs per day)
             const dailyData = {};
 
             data.forEach(row => {
-                // Parse numbers safely
                 const feed = parseInt(row.feed_bags) || 0;
                 const eggs = parseInt(row.egg_trays) || 0;
                 const dead = parseInt(row.mortalities) || 0;
 
-                // Create a clean date label (e.g., "3/24/2026")
-                const dateStr = new Date(row.timestamp).toLocaleDateString();
+                const dateStr = new Date(row.timestamp).toLocaleDateString([], { month: 'short', day: 'numeric' });
 
                 if (!dailyData[dateStr]) {
                     dailyData[dateStr] = { feed: 0, eggs: 0, mortalities: 0 };
@@ -169,22 +198,19 @@
 
                 totalFeedUsed += feed;
                 totalMortalities += dead;
-                latestEggs = eggs; // This will overwrite until the last (newest) row
+                latestEggs = eggs; 
             });
 
-            // 2. CALCULATE KPIs based on business baselines
-            const STARTING_FEED_INVENTORY = 500; // Baseline bags
-            const STARTING_FLOCK_SIZE = 5000;    // Baseline birds
+            const STARTING_FEED_INVENTORY = 500; 
+            const STARTING_FLOCK_SIZE = 5000;    
 
             const currentFeed = STARTING_FEED_INVENTORY - totalFeedUsed;
             const mortalityRate = ((totalMortalities / STARTING_FLOCK_SIZE) * 100).toFixed(2);
 
-            // 3. INJECT LIVE DATA INTO UI
             document.getElementById('kpi-feed').innerText = `${currentFeed} Bags`;
             document.getElementById('kpi-eggs').innerText = `${latestEggs} Trays`;
             document.getElementById('kpi-mortality').innerText = `${mortalityRate}%`;
 
-            // 4. PREPARE DATA FOR CHART
             const labels = Object.keys(dailyData);
             const eggData = labels.map(date => dailyData[date].eggs);
             const feedData = labels.map(date => dailyData[date].feed);
@@ -196,7 +222,6 @@
         function renderChart(labels, eggData, feedData, mortData) {
             const ctx = document.getElementById('yieldChart').getContext('2d');
             
-            // Destroy existing chart if it exists so we can redraw it
             if (agriChart) { agriChart.destroy(); }
 
             agriChart = new Chart(ctx, {
@@ -205,7 +230,7 @@
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Eggs Collected (Trays)',
+                            label: 'Eggs Collected',
                             data: eggData,
                             borderColor: '#0071e3',
                             backgroundColor: 'rgba(0, 113, 227, 0.1)',
@@ -215,7 +240,7 @@
                             yAxisID: 'y'
                         },
                         {
-                            label: 'Feed Used (Bags)',
+                            label: 'Feed Used',
                             data: feedData,
                             borderColor: '#ff9f0a',
                             borderWidth: 2,
@@ -226,7 +251,7 @@
                         },
                         {
                             label: 'Mortalities',
-                            type: 'bar', // Mixing chart types to make mortalities clear
+                            type: 'bar', 
                             data: mortData,
                             backgroundColor: 'rgba(255, 59, 48, 0.7)',
                             yAxisID: 'y2'
@@ -235,18 +260,26 @@
                 },
                 options: {
                     responsive: true,
+                    maintainAspectRatio: false, // CRITICAL FOR MOBILE: Allows the height wrapper to take control
                     interaction: { mode: 'index', intersect: false },
-                    plugins: { legend: { position: 'top' } },
+                    plugins: { 
+                        legend: { 
+                            position: 'top',
+                            labels: {
+                                boxWidth: 12, // Slightly smaller legend boxes for mobile
+                                font: { size: 11 }
+                            }
+                        } 
+                    },
                     scales: {
                         y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Eggs' } },
                         y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Feed' }, grid: { drawOnChartArea: false } },
-                        y2: { type: 'linear', display: false, position: 'right', min: 0, suggestedMax: 20 } // Hidden axis for mortalities to keep scale clean
+                        y2: { type: 'linear', display: false, position: 'right', min: 0, suggestedMax: 20 }
                     }
                 }
             });
         }
 
-        // Run fetch on load
         window.onload = fetchDashboardData;
     </script>
 </body>
