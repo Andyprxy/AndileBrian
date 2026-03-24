@@ -28,57 +28,17 @@
             box-sizing: border-box;
         }
 
-        .app-container {
-            width: 100%;
-            max-width: 420px;
-        }
+        .app-container { width: 100%; max-width: 420px; }
 
         /* Top Navigation & Hamburger Menu */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .brand-header {
-            display: flex;
-            align-items: center;
-        }
-
-        .brand-header svg {
-            width: 28px;
-            height: 28px;
-            margin-right: 10px;
-            fill: var(--accent);
-        }
-
-        .brand-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.5px;
-            color: var(--text-main);
-        }
-
-        .menu-container {
-            position: relative;
-        }
-
-        .hamburger {
-            cursor: pointer;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hamburger svg {
-            fill: var(--text-main);
-            transition: fill 0.2s ease;
-        }
-
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative; }
+        .brand-header { display: flex; align-items: center; }
+        .brand-header svg { width: 28px; height: 28px; margin-right: 10px; fill: var(--accent); }
+        .brand-header h1 { font-size: 24px; font-weight: 700; margin: 0; letter-spacing: -0.5px; color: var(--text-main); }
+        
+        .menu-container { position: relative; }
+        .hamburger { cursor: pointer; padding: 5px; display: flex; align-items: center; justify-content: center; }
+        .hamburger svg { fill: var(--text-main); transition: fill 0.2s ease; }
         .hamburger:hover svg { fill: var(--accent); }
 
         .dropdown-menu {
@@ -91,28 +51,34 @@
             border-radius: 12px;
             overflow: hidden;
             z-index: 100;
-            min-width: 180px;
+            min-width: 200px;
             border: 1px solid var(--border-light);
         }
 
         .dropdown-menu.active { display: block; }
-
+        
         .dropdown-menu a {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             padding: 14px 20px;
             text-decoration: none;
             color: var(--text-main);
             font-size: 14px;
             font-weight: 500;
             border-bottom: 1px solid #f9f9f9;
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
-        .dropdown-menu a:hover {
-            background: #f5f5f7;
-            color: var(--accent);
+        .dropdown-menu a svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--text-muted);
+            transition: fill 0.2s ease;
         }
 
+        .dropdown-menu a:hover { background: #f5f5f7; color: var(--accent); }
+        .dropdown-menu a:hover svg { fill: var(--accent); }
         .dropdown-menu a:last-child { border-bottom: none; }
 
         /* Card Styling */
@@ -127,71 +93,19 @@
             margin-bottom: 20px;
         }
 
-        h2 {
-            margin-top: 0;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 10px;
-        }
-
+        h2 { margin-top: 0; font-size: 18px; font-weight: 600; margin-bottom: 20px; border-bottom: 1px solid var(--border-light); padding-bottom: 10px; }
         .input-group { margin-bottom: 16px; }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: 1px solid #d2d2d7;
-            background: #ffffff;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.2s ease;
-        }
-
-        input[type="number"]:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
-        }
-
-        button {
-            width: 100%;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s ease;
-        }
-
+        label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--text-muted); }
+        input[type="number"] { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #d2d2d7; background: #ffffff; font-size: 16px; box-sizing: border-box; transition: border-color 0.2s ease; }
+        input[type="number"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1); }
+        
+        button { width: 100%; background-color: var(--accent); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: all 0.2s ease; }
         button:hover { background-color: var(--accent-hover); }
         button:active { transform: scale(0.98); }
 
         /* History Section */
         .history-list { list-style: none; padding: 0; margin: 0; }
-        .history-item {
-            background: #ffffff;
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            display: flex;
-            flex-direction: column;
-        }
+        .history-item { background: #ffffff; border: 1px solid var(--border-light); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; font-size: 13px; display: flex; flex-direction: column; }
         .history-item:last-child { margin-bottom: 0; }
         .history-time { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; text-transform: uppercase; }
         .history-data { display: flex; justify-content: space-between; color: var(--text-main); font-weight: 500; }
@@ -203,22 +117,27 @@
     <div class="app-container">
         <div class="top-nav">
             <div class="brand-header">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 22C12 22 20 18 20 11.5C20 8.5 17.5 6 14.5 6C13.2 6 12.1 6.5 11.3 7.3C10.5 6.5 9.4 6 8.1 6C5.1 6 2.6 8.5 2.6 11.5C2.6 18 10.6 22 10.6 22L12 22ZM12 4C14.2 4 16 2.2 16 0H14C14 1.1 13.1 2 12 2C10.9 2 10 1.1 10 0H8C8 2.2 9.8 4 12 4Z"/>
-                </svg>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C12 22 20 18 20 11.5C20 8.5 17.5 6 14.5 6C13.2 6 12.1 6.5 11.3 7.3C10.5 6.5 9.4 6 8.1 6C5.1 6 2.6 8.5 2.6 11.5C2.6 18 10.6 22 10.6 22L12 22ZM12 4C14.2 4 16 2.2 16 0H14C14 1.1 13.1 2 12 2C10.9 2 10 1.1 10 0H8C8 2.2 9.8 4 12 4Z"/></svg>
                 <h1>AgriFlow</h1>
             </div>
 
             <div class="menu-container">
                 <div class="hamburger" id="hamburgerBtn">
-                    <svg viewBox="0 0 24 24" width="28" height="28">
-                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24" width="28" height="28"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
                 </div>
                 <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="index.html">Daily Log Input</a>
-                    <a href="Logs.html">Historical Ledger</a>
-                    <a href="Flowboard.html">Management BI</a>
+                    <a href="Agriflow.html">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                        Daily Log Input
+                    </a>
+                    <a href="Logs.html">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Historical Ledger
+                    </a>
+                    <a href="Flowboard.html">
+                        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                        Management BI
+                    </a>
                 </div>
             </div>
         </div>
@@ -256,7 +175,6 @@
             e.stopPropagation();
             document.getElementById('dropdownMenu').classList.toggle('active');
         });
-
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.menu-container')) {
                 document.getElementById('dropdownMenu').classList.remove('active');
@@ -265,7 +183,6 @@
 
         // History UI Functions
         const historyList = document.getElementById('historyList');
-
         function loadHistory() {
             const logs = JSON.parse(localStorage.getItem('agriLogs')) || [];
             if (logs.length === 0) return;
@@ -293,7 +210,6 @@
             localStorage.setItem('agriLogs', JSON.stringify(logs));
             loadHistory();
         }
-
         loadHistory();
 
         // Form Submission
@@ -315,7 +231,8 @@
                 egg_trays: eggsVal
             };
 
-            const googleScriptUrl = 'https://script.google.com/macros/s/AKfycby4_5u7incerK4D2SrF4GHMm0vw8A29aEVfIHUFvbHFr9bNfA-4yRNzNNAz4pCGqs8/exec';
+            // PASTE YOUR BRAND NEW GOOGLE SCRIPT URL HERE
+            const googleScriptUrl = 'YOUR_NEW_WEB_APP_URL_HERE';
 
             fetch(googleScriptUrl, {
                 method: 'POST',
