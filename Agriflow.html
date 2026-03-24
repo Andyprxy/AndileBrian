@@ -1,4 +1,257 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriFlow - Daily Log</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f7;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --accent: #0071e3;
+            --accent-hover: #005bb5;
+            --border-light: rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Changed to allow scrolling */
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        /* Logo Styling */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .brand-header svg {
+            width: 28px;
+            height: 28px;
+            margin-right: 10px;
+            fill: var(--accent);
+        }
+
+        .brand-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        /* Card Styling */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #d2d2d7;
+            background: #ffffff;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover { background-color: var(--accent-hover); }
+        button:active { transform: scale(0.98); }
+
+        /* History Section Styling */
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .history-item {
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-item:last-child { margin-bottom: 0; }
+
+        .history-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .history-data {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-style: italic;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="brand-header">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C12 22 20 18 20 11.5C20 8.5 17.5 6 14.5 6C13.2 6 12.1 6.5 11.3 7.3C10.5 6.5 9.4 6 8.1 6C5.1 6 2.6 8.5 2.6 11.5C2.6 18 10.6 22 10.6 22L12 22ZM12 4C14.2 4 16 2.2 16 0H14C14 1.1 13.1 2 12 2C10.9 2 10 1.1 10 0H8C8 2.2 9.8 4 12 4Z"/>
+            </svg>
+            <h1>AgriFlow</h1>
+        </div>
+
+        <div class="glass-card">
+            <h2>House A - Daily Input</h2>
+            <form id="agriForm">
+                <div class="input-group">
+                    <label for="feed">Feed Used (Bags)</label>
+                    <input type="number" id="feed" placeholder="e.g. 12" required min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="mortality">Mortalities (Birds)</label>
+                    <input type="number" id="mortality" placeholder="e.g. 2" required min="0">
+                </div>
+
+                <div class="input-group">
+                    <label for="eggs">Eggs Collected (Trays)</label>
+                    <input type="number" id="eggs" placeholder="e.g. 150" required min="0">
+                </div>
+
+                <button type="submit" id="submitBtn">Submit Data</button>
+            </form>
+        </div>
+
+        <div class="glass-card">
+            <h2>Recent Submissions</h2>
+            <ul class="history-list" id="historyList">
+                <div class="empty-state">No logs yet. Submit data to see history.</div>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. History UI Functions ---
+        const historyList = document.getElementById('historyList');
+
+        // Load logs from Local Storage
+        function loadHistory() {
+            const logs = JSON.parse(localStorage.getItem('agriLogs')) || [];
+            if (logs.length === 0) return;
+
+            historyList.innerHTML = ''; // Clear empty state
+            
+            // Show only the 3 most recent logs
+            const recentLogs = logs.slice(0, 3);
+
+            recentLogs.forEach(log => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <span class="history-time">${log.time}</span>
+                    <div class="history-data">
+                        <span>Feed: ${log.feed}</span>
+                        <span>Dead: ${log.mortality}</span>
+                        <span>Eggs: ${log.eggs}</span>
+                    </div>
+                `;
+                historyList.appendChild(li);
+            });
+        }
+
+        // Save new log to Local Storage
+        function saveToHistory(feed, mortality, eggs) {
+            const logs = JSON.parse(localStorage.getItem('agriLogs')) || [];
+            
+            // Create short time string (e.g., "11:40 AM")
+            const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            logs.unshift({ time: timeString, feed, mortality, eggs }); // Add to start of array
+            localStorage.setItem('agriLogs', JSON.stringify(logs));
+            loadHistory(); // Refresh the UI
+        }
+
+        // Initialize history on page load
+        loadHistory();
+
+        // --- 2. Form Submission & Google Sheets Fetch ---
         document.getElementById('agriForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -6,29 +259,34 @@
             submitBtn.textContent = 'Sending...';
             submitBtn.style.opacity = '0.8';
 
-            // 1. Package the data from the form
+            // Capture Values
+            const feedVal = document.getElementById('feed').value;
+            const mortalityVal = document.getElementById('mortality').value;
+            const eggsVal = document.getElementById('eggs').value;
+
+            // Package Payload
             const payload = {
                 timestamp: new Date().toLocaleString(), 
                 house: "House A",
-                feed_bags: document.getElementById('feed').value,
-                mortalities: document.getElementById('mortality').value,
-                egg_trays: document.getElementById('eggs').value
+                feed_bags: feedVal,
+                mortalities: mortalityVal,
+                egg_trays: eggsVal
             };
 
-            // 2. Your live Google Apps Script Web App URL
+            // Your live Google Apps Script Web App URL
             const googleScriptUrl = 'https://script.google.com/macros/s/AKfycbwylErXqtvugXxXWWg6C9VM9T-bXBqyHqXnYAuu3xgK7Ma8MhDhQiSGoXBg9qE8Ii0/exec';
 
-            // 3. Send the payload to Google Sheets
+            // Send to Google Sheets
             fetch(googleScriptUrl, {
                 method: 'POST',
-                // Using text/plain avoids strict CORS blocks when testing locally
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
             })
             .then(response => response.json())
             .then(data => {
                 if(data.status === "success") {
-                    alert('Success! Data logged to Google Sheets.');
+                    // Save to local UI history ONLY if Google Sheet was successful
+                    saveToHistory(feedVal, mortalityVal, eggsVal);
                     document.getElementById('agriForm').reset();
                 } else {
                     alert('Error: ' + data.message);
@@ -39,9 +297,10 @@
                 alert('Connection failed. Check browser console.');
             })
             .finally(() => {
-                // Reset button UI
                 submitBtn.textContent = 'Submit Data';
                 submitBtn.style.opacity = '1';
             });
         });
     </script>
+</body>
+</html>
