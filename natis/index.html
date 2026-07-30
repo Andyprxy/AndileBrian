@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaTIS Online - Premium Booking Portal</title>
+    <style>
+        /* Modernized Premium Brand Styles */
+        :root {
+            --natis-blue: #2c6ba4;
+            --natis-blue-dark: #1a4971;
+            --natis-green: #739c41;
+            --natis-green-dark: #5c7e34;
+            --bg-color: #f0f4f8;
+            --surface-color: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --border-light: #e2e8f0;
+        }
+
+        body { 
+            font-family: 'Segoe UI', 'Arial', sans-serif; 
+            margin: 0; 
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            color: var(--text-main); 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-bar { 
+            background-color: var(--natis-green); 
+            color: white; 
+            text-align: right; 
+            padding: 10px 40px; 
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        header { 
+            background-color: var(--natis-blue); 
+            color: white; 
+            padding: 24px 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 12px rgba(44, 107, 164, 0.2);
+            position: relative;
+            z-index: 9;
+        }
+
+        header h1 { 
+            margin: 0; 
+            font-size: 26px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .prototype-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            backdrop-filter: blur(4px);
+        }
+
+        .container { 
+            max-width: 640px; 
+            margin: 60px auto; 
+            background: var(--surface-color); 
+            padding: 45px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.03); 
+            border-top: 6px solid var(--natis-blue);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h2 { 
+            color: var(--natis-blue); 
+            text-align: center; 
+            margin-top: 0;
+            margin-bottom: 35px; 
+            font-size: 28px;
+        }
+
+        .form-group { margin-bottom: 24px; }
+        
+        label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            color: var(--text-main);
+            font-size: 14px;
+        }
+
+        select, input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 2px solid var(--border-light); 
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-family: inherit; 
+            font-size: 15px;
+            background-color: #f8fafc;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--natis-blue);
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 4px rgba(44, 107, 164, 0.15);
+            outline: none;
+        }
+
+        button { 
+            width: 100%; 
+            padding: 16px; 
+            background: linear-gradient(135deg, var(--natis-green) 0%, var(--natis-green-dark) 100%); 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 16px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(115, 156, 65, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(115, 156, 65, 0.4); 
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .modal-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .modal { 
+            background: var(--surface-color); 
+            padding: 45px; 
+            border-radius: 16px; 
+            max-width: 480px; 
+            width: 90%;
+            text-align: center; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
+            position: relative;
+            transform: scale(0.95);
+            animation: scaleUp 0.3s forwards;
+        }
+
+        .modal h3 { 
+            font-size: 26px;
+            margin-top: 0;
+        }
+        
+        .ai-badge { 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, var(--natis-blue), #4299e1); 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 30px; 
+            font-size: 12px; 
+            margin-bottom: 20px; 
+            font-weight: 700; 
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(44, 107, 164, 0.3);
+        }
+
+        .ai-box {
+            background: #f0fdf4; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 25px 0; 
+            border-left: 5px solid var(--natis-green);
+            text-align: left;
+        }
+
+        .ai-box p {
+            margin: 0; 
+            font-size: 15px; 
+            color: var(--natis-green-dark);
+            line-height: 1.6;
+        }
+
+        .btn-accept { 
+            background: linear-gradient(135deg, var(--natis-blue) 0%, var(--natis-blue-dark) 100%); 
+            box-shadow: 0 4px 15px rgba(44, 107, 164, 0.3);
+            margin-top: 10px; 
+        }
+        .btn-accept:hover { box-shadow: 0 6px 20px rgba(44, 107, 164, 0.4); }
+        
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .loader { 
+            border: 4px solid rgba(44, 107, 164, 0.2); 
+            border-top: 4px solid var(--natis-blue); 
+            border-radius: 50%; 
+            width: 48px; height: 48px; 
+            animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+        }
+
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @keyframes scaleUp {
+            to { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        Talk to us: 0861 762 847 (08617NaTIS) | onlinesupport@rtmc.co.za
+    </div>
+    
+    <header>
+        <h1>NaTIS Online Services</h1>
+        <div class="prototype-badge">SAIIE AI PROTOTYPE</div>
+    </header>
+
+    <div class="container">
+        <h2>Book an Appointment</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="idNumber">Identity Number</label>
+                <input type="text" id="idNumber" placeholder="Enter 13-digit ID Number" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="applicant@example.com" required autocomplete="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="serviceType">Service Required</label>
+                <select id="serviceType" required>
+                    <option value="" disabled selected>Select a Service...</option>
+                    <option value="renewal">Driver's Licence Renewal</option>
+                    <option value="prdp">PrDP Application</option>
+                    <option value="learner">Learner's Licence Test</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Preferred Date</label>
+                <input type="date" id="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="dltc">Preferred Testing Centre (DLTC)</label>
+                <select id="dltc" required>
+                    <option value="" disabled selected>Select a Location...</option>
+                    <option value="Centurion">Centurion DLTC</option>
+                    <option value="Midrand">Midrand DLTC</option>
+                    <option value="Pretoria">Pretoria DLTC</option>
+                    <option value="Waltloo">Waltloo DLTC</option>
+                </select>
+            </div>
+
+            <button type="submit" id="submitBtn">Check Availability & Book</button>
+        </form>
+    </div>
+
+    <!-- AI Intervention Modal -->
+    <div class="modal-overlay" id="aiModal">
+        <div class="modal">
+            
+            <div class="loader-container" id="loadingSpinner">
+                <div class="loader"></div>
+                <p style="color: var(--natis-blue); font-weight: 600; margin: 0;">Transmitting to AI Engine...</p>
+            </div>
+            
+            <div id="successContent" style="display: none;">
+                <div class="ai-badge">✦ REQUEST SECURED</div>
+                <h3 style="color: var(--natis-green);">Thank You</h3>
+                
+                <p style="font-size: 16px; margin-bottom: 5px;">Your appointment request for <strong><span id="popupDltc"></span></strong> on <strong><span id="popupDate"></span></strong> has been logged successfully.</p>
+                
+                <div class="ai-box">
+                    <p><strong>Next Steps:</strong><br>
+                    Please check your emails shortly. Our system is currently processing live queue data and will email you with final availability or smart routing recommendations.</p>
+                </div>
+                
+                <button class="btn-accept" onclick="closeModal()">Close Window</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+            
+            const payload = {
+                idNumber: document.getElementById('idNumber').value,
+                email: document.getElementById('email').value,
+                serviceType: document.getElementById('serviceType').value,
+                date: document.getElementById('date').value,
+                dltc: document.getElementById('dltc').value
+            };
+
+            const modal = document.getElementById('aiModal');
+            const spinner = document.getElementById('loadingSpinner');
+            const successContent = document.getElementById('successContent');
+            
+            // Populate the dynamic text in the modal
+            document.getElementById('popupDltc').innerText = payload.dltc;
+            document.getElementById('popupDate').innerText = payload.date;
+
+            // Open modal and show loader
+            modal.classList.add('active');
+            spinner.style.display = 'flex';
+            successContent.style.display = 'none';
+
+            try {
+                // Post to n8n Webhook
+                await fetch('https://n8n.automania.cloud/webhook-test/NaTIS', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+            } catch (error) {
+                console.error("Webhook transmission status:", error);
+            }
+
+            // Hide spinner and show the success message
+            spinner.style.display = 'none';
+            successContent.style.display = 'block';
+        });
+
+        function closeModal() {
+            document.getElementById('aiModal').classList.remove('active');
+            document.getElementById('bookingForm').reset();
+        }
+    </script>
+</body>
+</html>
