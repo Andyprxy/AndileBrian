@@ -141,23 +141,23 @@
         </div>
     </div>
 
-    <!-- 3. ABOUT SECTION -->
-    <section id="about" class="max-w-7xl mx-auto py-12 md:py-24 px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-        <!-- Text Left-Aligned -->
-        <div class="text-left space-y-3 md:space-y-6">
-            <h2 class="text-3xl md:text-5xl serif text-[#2c1e16] leading-tight">Elevating Beauty <br><span class="italic text-[#e6a8b7]">For Everyone.</span></h2>
-            <p class="text-[#2c1e16]/80 font-light leading-relaxed text-sm md:text-lg">
+    <!-- 3. ABOUT SECTION (Side-by-Side Mobile Layout) -->
+    <section id="about" class="max-w-7xl mx-auto py-12 md:py-24 px-4 md:px-6 grid grid-cols-12 gap-3 md:gap-16 items-center">
+        <!-- Text Left-Aligned (7 columns on mobile, 6 on desktop) -->
+        <div class="text-left space-y-2 md:space-y-6 col-span-7 md:col-span-6 pr-1 md:pr-0">
+            <h2 class="text-2xl md:text-5xl serif text-[#2c1e16] leading-tight">Elevating Beauty <br><span class="italic text-[#e6a8b7]">For Everyone.</span></h2>
+            <p class="text-[#2c1e16]/80 font-light leading-relaxed text-xs md:text-lg">
                 At Twinkle Tots, we blend high-end aesthetic artistry with a uniquely welcoming atmosphere. From flawless frontals to specialized grooming for the little ones, we deliver uncompromising quality. 
             </p>
-            <p class="text-[#2c1e16]/80 font-light leading-relaxed text-sm md:text-lg hidden sm:block">
+            <p class="text-[#2c1e16]/80 font-light leading-relaxed text-xs md:text-lg hidden sm:block">
                 Experience Pretoria's premier destination where premium luxury and joyful family care coexist beautifully.
             </p>
         </div>
-        <!-- Image Right-Aligned (1440x1920 ratio) -->
-        <div class="relative w-full max-w-sm mx-auto md:max-w-none md:ml-auto md:w-4/5 mt-4 md:mt-0">
-            <div class="absolute inset-0 bg-[#cca650]/20 translate-x-3 translate-y-3 md:translate-x-4 md:translate-y-4 rounded-xl md:rounded-[2rem] -z-10"></div>
+        <!-- Image Right-Aligned (5 columns on mobile, 6 on desktop) -->
+        <div class="relative w-full ml-auto md:w-4/5 col-span-5 md:col-span-6">
+            <div class="absolute inset-0 bg-[#cca650]/20 translate-x-2 translate-y-2 md:translate-x-4 md:translate-y-4 rounded-xl md:rounded-[2rem] -z-10"></div>
             <!-- Using aspect-[3/4] to perfectly frame a portrait 1440x1920 image -->
-            <img src="about-interior.jpg" alt="Salon Interior" class="w-full aspect-[3/4] object-cover rounded-xl md:rounded-[2rem] shadow-xl border-4 border-white">
+            <img src="about-interior.jpg" alt="Salon Interior" class="w-full aspect-[3/4] object-cover rounded-xl md:rounded-[2rem] shadow-xl border-2 md:border-4 border-white">
         </div>
     </section>
 
