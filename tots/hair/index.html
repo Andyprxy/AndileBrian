@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Service | Twinkle Tots</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #faf8f5; color: #2c1e16; overflow-x: hidden; }
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+        .playful { font-family: 'Caveat', cursive; }
+        
+        /* APPLE-STYLE LIQUID GLASS */
+        .apple-glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        /* MAGLE STYLE SLIDE-OVER PANEL */
+        .slide-over-panel { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .slide-over-panel.open { transform: translateX(0); }
+        .slide-over-overlay { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide-over-overlay.open { opacity: 1; pointer-events: auto; }
+
+        /* FLOATING ANIMATIONS FOR SUCCESS MODAL */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-15px) rotate(15deg) scale(1.1); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        .animate-float-delay { animation: float 5s ease-in-out infinite 2s; }
+
+        /* FILE UPLOAD STYLING */
+        input[type="file"]::file-selector-button { 
+            background: #faf8f5; border: 1px solid #cca650; border-radius: 999px;
+            padding: 8px 16px; color: #2c1e16; cursor: pointer; font-size: 11px; font-weight: 600; 
+            text-transform: uppercase; transition: all 0.3s; 
+        }
+        input[type="file"]::file-selector-button:hover { background: #cca650; color: white; }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#cca650] selection:text-white">
+
+    <!-- FLOATING NAVIGATION BAR -->
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-40 w-[95%] max-w-5xl">
+        <div class="bg-white rounded-full px-5 py-2.5 md:px-8 md:py-4 flex justify-between items-center shadow-2xl shadow-black/5 border border-white/50">
+            <!-- Points backward to the main tots/index.html -->
+            <a href="../index.html" class="flex items-center gap-2">
+                <i class="fas fa-crown text-[#cca650] text-sm md:text-xl"></i>
+                <span class="serif font-bold text-[#2c1e16] tracking-wide text-sm md:text-lg">Twinkle Tots</span>
+            </a>
+            <div class="hidden md:flex space-x-8 items-center text-sm font-medium text-gray-500">
+                <a href="../index.html" class="hover:text-black transition duration-300">Home</a>
+                <a href="#services" class="text-black transition duration-300">Services</a>
+                <a href="#contact" class="hover:text-black transition duration-300">Contact</a>
+            </div>
+            <a href="https://wa.me/27600000000" class="bg-black text-white px-4 py-2 md:px-6 md:py-2.5 rounded-full text-[10px] md:text-xs font-semibold tracking-wide hover:bg-[#cca650] transition shadow-lg flex items-center gap-2">
+                <i class="fab fa-whatsapp"></i> Chat
+            </a>
+        </div>
+    </nav>
+
+    <!-- HEADER SECTION -->
+    <section class="pt-32 pb-10 px-4 md:px-6 max-w-7xl mx-auto text-center relative">
+        <i class="fas fa-star absolute top-20 left-10 text-[#cca650]/20 text-3xl animate-float"></i>
+        <i class="fas fa-star absolute bottom-0 right-10 text-[#e6a8b7]/30 text-4xl animate-float-delay"></i>
+        
+        <h1 class="text-5xl md:text-7xl playful text-[#cca650] mb-4 drop-shadow-sm">Book Your Slot</h1>
+        <p class="text-[#2c1e16]/60 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">Select a service below to schedule your appointment. We offer high-end styling and specialized kid-friendly grooming in a beautiful environment.</p>
+    </section>
+
+    <!-- SERVICES GRID -->
+    <section id="services" class="pb-24 px-4 md:px-6 max-w-7xl mx-auto relative z-10">
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+            
+            <!-- Hair Wash -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="wash.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Hair wash</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 60</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Fresh, clean and ready to shine! A gentle wash and condition for happy, healthy-looking hair.</p>
+                    </div>
+                    <button onclick="openBooking('Hair wash', 'R 60.00', 'wash.jpg', 'standard')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#e6a8b7] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Braiding -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="braids.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Braiding</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 650</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Beautiful braids made with care. Choose from fun, stylish and protective looks.</p>
+                    </div>
+                    <button onclick="openBooking('Braiding', 'R 650.00', 'braids.jpg', 'braids')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#cca650] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Cornrows -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="cornrows.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Cornrows</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 350</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Neat, creative and effortlessly cool. Cornrows designed to keep your hair looking fabulous.</p>
+                    </div>
+                    <button onclick="openBooking('Cornrows', 'R 350.00', 'cornrows.jpg', 'standard')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#e6a8b7] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Unplaiting -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="unplait.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Unplaiting</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 50</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Time for a fresh start. Gentle removal of braids and plaits while taking care of natural hair.</p>
+                    </div>
+                    <button onclick="openBooking('Unplaiting', 'R 50.00', 'unplait.jpg', 'unplait')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#cca650] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Styling and beads -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="styling.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Styling & Beads</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 350</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Add a little sparkle. Fun hairstyles finished with colourful beads and accessories.</p>
+                    </div>
+                    <button onclick="openBooking('Styling and beads', 'R 350.00', 'styling.jpg', 'standard')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#e6a8b7] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Hair treatment -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="treatment.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Hair treatment</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 150</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Give your hair some TLC. A nourishing treatment chosen to leave hair softer and manageable.</p>
+                    </div>
+                    <button onclick="openBooking('Hair treatment', 'R 150.00', 'treatment.jpg', 'standard')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#cca650] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Haircuts and dye -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="haircut.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Haircuts & Dye</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 150</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Fresh cut, fresh colour, fresh vibes. Create a look that's uniquely you.</p>
+                    </div>
+                    <button onclick="openBooking('Haircuts and dye', 'R 150.00', 'haircut.jpg', 'standard')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#e6a8b7] transition">Book Slot</button>
+                </div>
+            </div>
+
+            <!-- Natural hair care -->
+            <div class="apple-glass rounded-3xl md:rounded-[2.5rem] p-3 md:p-5 flex flex-col group hover:-translate-y-1 transition duration-300 shadow-sm hover:shadow-xl">
+                <div class="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-inner relative bg-white/50">
+                    <img src="natural.jpg" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                </div>
+                <div class="flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-base md:text-xl font-bold text-[#2c1e16] leading-tight">Natural hair care</h3>
+                            <span class="text-[#cca650] font-bold text-xs md:text-sm whitespace-nowrap ml-2">R 150</span>
+                        </div>
+                        <p class="text-[#2c1e16]/60 text-[9px] md:text-xs leading-snug mb-4 line-clamp-3">Love your natural hair. Gentle care, moisture and styling designed to let your beauty shine.</p>
+                    </div>
+                    <button onclick="openBooking('Natural hair care', 'R 150.00', 'natural.jpg', 'standard')" class="w-full bg-[#2c1e16] text-white py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider hover:bg-[#cca650] transition">Book Slot</button>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- SLIDE-OUT BOOKING PANEL -->
+    <div id="slideOverOverlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 slide-over-overlay" onclick="closePanel()"></div>
+    
+    <div id="slideOverPanel" class="fixed right-0 top-0 h-full w-full max-w-md bg-[#faf8f5] z-50 shadow-2xl slide-over-panel overflow-y-auto flex flex-col border-l border-white/50">
+        <div class="flex justify-between items-center p-5 md:p-6 bg-white border-b border-gray-100 sticky top-0 z-10 shadow-sm">
+            <h2 class="text-xl md:text-2xl playful text-[#cca650]">Schedule Appointment</h2>
+            <button onclick="closePanel()" class="text-[#2c1e16]/40 hover:text-[#e6a8b7] transition-colors bg-[#faf8f5] w-8 h-8 rounded-full flex items-center justify-center">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="p-5 md:p-6 flex-grow">
+            <div class="flex items-center gap-4 bg-white p-3 rounded-2xl shadow-sm border border-gray-100 mb-6">
+                <img id="panelImage" src="" alt="Service" class="w-16 h-16 object-cover rounded-xl shadow-inner">
+                <div>
+                    <h3 id="panelTitle" class="text-base font-bold text-[#2c1e16] leading-tight">Service Name</h3>
+                    <p id="panelPrice" class="text-sm font-bold text-[#e6a8b7] mt-1">R 0.00</p>
+                </div>
+            </div>
+            
+            <form id="bookingForm" onsubmit="submitBooking(event)" class="space-y-4">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Full Name *</label>
+                        <input type="text" id="b-name" required placeholder="Jane Doe" class="w-full bg-white border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Email</label>
+                            <input type="email" placeholder="jane@email.com" class="w-full bg-white border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Phone *</label>
+                            <input type="tel" required placeholder="082 000 0000" class="w-full bg-white border border-gray-200 p-3 text-sm focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <div>
+                        <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Date *</label>
+                        <input type="date" required class="w-full bg-white border border-gray-200 p-3 text-sm text-[#2c1e16]/80 focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Time Slot *</label>
+                        <select required class="w-full bg-white border border-gray-200 p-3 text-sm text-[#2c1e16]/80 focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition appearance-none">
+                            <option value="">Select Time...</option>
+                            <option value="Morning">Morning (09:00 - 12:00)</option>
+                            <option value="Mid-day">Mid-day (12:00 - 15:00)</option>
+                            <option value="Afternoon">Afternoon (15:00 - 18:00)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="dynamic-fields" class="pt-2"></div>
+
+                <div class="pt-2">
+                    <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Upload Reference Style (Optional)</label>
+                    <div class="w-full bg-white border border-dashed border-gray-300 p-4 rounded-xl text-center hover:border-[#cca650] transition">
+                        <input type="file" id="fileUpload" accept="image/*" class="w-full text-gray-500 text-xs focus:outline-none mx-auto">
+                    </div>
+                </div>
+                
+                <div class="pt-6 pb-8">
+                    <button type="submit" class="w-full bg-[#2c1e16] text-white py-3.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl shadow-[#2c1e16]/20 hover:bg-[#cca650] transition transform hover:-translate-y-1">
+                        Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS CONFIRMATION MODAL -->
+    <div id="successOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden items-center justify-center px-4">
+        <div class="apple-glass w-full max-w-sm rounded-[3rem] p-10 text-center relative overflow-hidden transform scale-95 transition-transform duration-300" id="successModal">
+            
+            <i class="fas fa-star absolute top-8 left-8 text-[#cca650] text-3xl animate-float"></i>
+            <i class="fas fa-star absolute bottom-12 right-8 text-[#e6a8b7] text-4xl animate-float-delay"></i>
+            <i class="fas fa-star absolute top-1/2 left-4 text-[#8fb8ed] text-xl animate-float-slow"></i>
+
+            <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-md border-4 border-[#faf8f5]">
+                <i class="fas fa-check text-3xl text-[#cca650]"></i>
+            </div>
+            
+            <h2 class="text-4xl playful text-[#2c1e16] mb-2">Thank you, <br><span id="successName" class="text-[#1e3a8a] font-bold drop-shadow-sm">Guest</span>!</h2>
+            <p class="text-[#2c1e16]/70 text-sm mb-8 leading-relaxed relative z-10">Your slot has been successfully booked. We've sent a confirmation to your email. We can't wait to see you soon!</p>
+            
+            <button onclick="closeSuccess()" class="bg-[#2c1e16] text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider hover:bg-[#cca650] transition relative z-10 shadow-lg">
+                Back to Home
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function openBooking(title, price, imageSrc, type) {
+            document.getElementById('panelTitle').innerText = title;
+            document.getElementById('panelPrice').innerText = price;
+            document.getElementById('panelImage').src = imageSrc;
+            
+            const dynamicFields = document.getElementById('dynamic-fields');
+            dynamicFields.innerHTML = ''; 
+
+            if (type === 'braids') {
+                dynamicFields.innerHTML = `
+                    <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Extension Colour Preference *</label>
+                    <select required class="w-full bg-white border border-gray-200 p-3 text-sm text-[#2c1e16]/80 focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition appearance-none">
+                        <option value="">Choose Colour...</option>
+                        <option value="1B">1B (Natural Black)</option>
+                        <option value="4">4 (Dark Brown)</option>
+                        <option value="27">27 (Honey Blonde)</option>
+                        <option value="30">30 (Auburn / Copper)</option>
+                        <option value="Custom">Custom (Specify at arrival)</option>
+                    </select>
+                `;
+            } else if (type === 'unplait') {
+                dynamicFields.innerHTML = `
+                    <label class="block text-[10px] md:text-[11px] font-bold uppercase tracking-wider text-[#2c1e16] mb-1.5 ml-1">Current Hair State *</label>
+                    <select required class="w-full bg-white border border-gray-200 p-3 text-sm text-[#2c1e16]/80 focus:outline-none focus:border-[#cca650] focus:ring-1 focus:ring-[#cca650] rounded-xl transition appearance-none">
+                        <option value="">What are we unplaiting?...</option>
+                        <option value="Knotless Braids">Knotless Braids</option>
+                        <option value="Box Braids">Box Braids</option>
+                        <option value="Cornrows">Cornrows / Straight Backs</option>
+                        <option value="Faux Locs">Faux Locs</option>
+                        <option value="Other">Other</option>
+                    </select>
+                `;
+            }
+
+            document.getElementById('slideOverOverlay').classList.add('open');
+            document.getElementById('slideOverPanel').classList.add('open');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closePanel() {
+            document.getElementById('slideOverOverlay').classList.remove('open');
+            document.getElementById('slideOverPanel').classList.remove('open');
+            document.body.style.overflow = 'auto'; 
+        }
+
+        function submitBooking(event) {
+            event.preventDefault(); 
+            
+            const nameInput = document.getElementById('b-name').value;
+            const firstName = nameInput.split(' ')[0] || 'Guest'; 
+            
+            document.getElementById('successName').innerText = firstName;
+            
+            closePanel();
+            
+            const overlay = document.getElementById('successOverlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+            
+            setTimeout(() => {
+                document.getElementById('successModal').classList.remove('scale-95');
+                document.getElementById('successModal').classList.add('scale-100');
+            }, 10);
+            
+            document.getElementById('bookingForm').reset();
+        }
+
+        function closeSuccess() {
+            document.getElementById('successModal').classList.remove('scale-100');
+            document.getElementById('successModal').classList.add('scale-95');
+            
+            setTimeout(() => {
+                const overlay = document.getElementById('successOverlay');
+                overlay.classList.remove('flex');
+                overlay.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
