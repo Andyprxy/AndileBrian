@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#052c54">
+  <title>Billion Group · People operations</title>
+  <meta name="description" content="Billion Group employee leave applications and approval workspace.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-admin="true">
+  <div id="app">
+    <div class="loading">Opening your leave workspace…</div>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal"></dialog>
+
+  <script>
+  'use strict';
+
+  /* ==========================================================================
+     N8N WEBHOOK CONFIGURATION (Change path names here if needed)
+     ========================================================================== */
+  const N8N_BASE_URL = 'https://n8n.automania.cloud/webhook';
+  const WEBHOOKS = {
+    getLeaves: `${N8N_BASE_URL}/billion-leave-list`,
+    updateDecision: `${N8N_BASE_URL}/billion-leave-decision`
+  };
+
+  const admin = true;
+  const base = '../';
+  const app = document.querySelector('#app');
+  const modal = document.querySelector('#modal');
+
+  let state = null;
+  let view = 'overview';
+  let query = '';
+  let filter = 'All';
+  let calOffset = 0;
+  let selected = null;
+  let logoData = '';
+
+  const STORAGE_KEYS = {
+    requests: 'bg-leave-requests-cache',
+    holidays: 'bg-leave-holidays',
+    members: 'bg-leave-members'
+  };
+
+  const icons = {
+    grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+    file: '<path d="M14 2H5v20h14V7zM14 2v6h5M8 12h8M8 16h8"/>',
+    calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18M7 15h3M14 15h3"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/>',
+    check: '<circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/>',
+    people: '<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6M18 15q4 0 4 6"/>',
+    help: '<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 1 1 3 3v3M12 17v1"/>'
+  };
+
+  const ic = n => `<span class="icon"><svg viewBox="0 0 24 24" aria-hidden="true">${icons[n] || icons.file}</svg></span>`;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = s => s ? new Date(String(s).slice(0, 10) + 'T12:00:00').toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+  const stamp = s => s ? new Date(s).toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg', dateStyle: 'medium', timeStyle: 'short' }) + ' SAST' : '—';
+  const today = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'Africa/Johannesburg' }).format(new Date());
+  const button = (s, act, cls = '') => `<button class="btn ${cls}" data-action="${act}">${s}</button>`;
+
+  function toast(s) {
+    const t = document.querySelector('#toast');
+    t.textContent = s;
+    t.className = 'show';
+    setTimeout(() => t.className = '', 4000);
+  }
+
+  function error(form, s) {
+    const el = form.querySelector('.error');
+    if (el) el.textContent = s;
+  }
+
+  function dayCount(a, b) {
+    let n = 0;
+    if (!a || !b || a > b) return 0;
+    const holidays = state?.holidays || [];
+    for (let t = Date.parse(a), end = Date.parse(b); t <= end && t <= Date.parse(a) + 366 * 86400000; t += 86400000) {
+      const d = new Date(t);
+      if (d.getUTCDay() !== 0 && d.getUTCDay() !== 6 && !holidays.includes(d.toISOString().slice(0, 10))) n++;
+    }
+    return n;
+  }
+
+  // Empty "status" cell on Google Sheets automatically becomes "Pending" on the UI
+  function normalizeStatus(rawStatus) {
+    const s = String(rawStatus ?? '').trim().toLowerCase();
+    if (!s || s === 'pending' || s === 'pending approval' || s === 'awaiting') return 'Pending';
+    if (s === 'approved' || s === 'approve') return 'Approved';
+    if (s === 'rejected' || s === 'reject' || s === 'not approved' || s === 'declined') return 'Rejected';
+    if (s === 'withdrawn') return 'Withdrawn';
+    return 'Pending';
+  }
+
+  function normalizeSheetRow(raw, idx = 0) {
+    if (!raw || typeof raw !== 'object') return null;
+    const p = raw.payload || {};
+    const d = raw.decision || {};
+
+    const start = String(raw.start || raw['Start Date'] || raw.startDate || p.start || today()).slice(0, 10);
+    const end = String(raw.end || raw['End Date'] || raw.endDate || p.end || start).slice(0, 10);
+    const status = normalizeStatus(raw.status ?? raw.Status ?? raw.STATUS ?? '');
+    const email = String(raw.email || raw['Employee Email'] || raw.employeeEmail || p.email || '').trim();
+    const name = String(raw.name || raw['Employee Name'] || raw['Name and Surname'] || p.name || 'Employee').trim();
+    const daysVal = Number(raw.days ?? raw['Working Days'] ?? raw['Amount of days'] ?? p.days ?? dayCount(start, end)) || 1;
+
+    const id = String(
+      raw.id || raw.ID || raw.reference || raw.Reference || raw.row_id || `BG-${1000 + idx}`
+    ).trim();
+
+    const managerName = String(raw.managerName || raw['Manager Name'] || d.name || '').trim();
+    const decisionReason = String(raw.decisionReason || raw['Decision Reason'] || raw.managerReason || d.reason || '').trim();
+    const managerSignature = String(raw.managerSignature || raw['Manager Signature'] || d.signature || managerName).trim();
+    const decisionAt = raw.decisionAt || raw['Decision Date'] || d.at || null;
+
+    return {
+      id,
+      row_number: raw.row_number ?? raw.rowNumber ?? null,
+      owner: email ? email.toLowerCase() : `emp-${idx}`,
+      email,
+      status,
+      start,
+      end,
+      created: raw.created || raw.Created || raw.submittedAt || raw.timestamp || new Date().toISOString(),
+      payload: {
+        name,
+        email,
+        company: String(raw.company || raw.Company || p.company || 'Billion Group').trim(),
+        position: String(raw.position || raw.Position || p.position || 'Staff Member').trim(),
+        department: String(raw.department || raw.Department || p.department || 'Operations').trim(),
+        type: String(raw.type || raw['Leave Type'] || raw.leaveType || p.type || 'Annual leave').trim(),
+        other: String(raw.other || raw['Other Leave Type'] || p.other || '').trim(),
+        start,
+        end,
+        days: daysVal,
+        reason: String(raw.reason || raw['Reason for Leave'] || p.reason || '').trim(),
+        address: String(raw.address || raw.Address || p.address || '').trim(),
+        cell: String(raw.cell || raw.Cell || raw.mobile || p.cell || '').trim(),
+        tel: String(raw.tel || raw.Tel || raw.telephone || p.tel || '').trim(),
+        emergencyName: String(raw.emergencyName || raw['Emergency Contact Name'] || p.emergencyName || '').trim(),
+        emergencyPhone: String(raw.emergencyPhone || raw['Emergency Contact Number'] || p.emergencyPhone || '').trim(),
+        signature: String(raw.signature || raw['Applicant Signature'] || p.signature || name).trim()
+      },
+      decision: (status === 'Approved' || status === 'Rejected') ? {
+        name: managerName || 'People Operations',
+        signature: managerSignature || managerName || 'People Operations',
+        email: String(raw.managerEmail || d.email || 'hr@billiongroup.co.za').trim(),
+        at: decisionAt || new Date().toISOString(),
+        reason: decisionReason || (status === 'Approved' ? 'Approved by management.' : 'Not approved.')
+      } : null
+    };
+  }
+
+  function getCachedRequests() {
+    try {
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEYS.requests) || '[]');
+      return Array.isArray(list) ? list.map(normalizeSheetRow).filter(Boolean) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function setCachedRequests(list) {
+    localStorage.setItem(STORAGE_KEYS.requests, JSON.stringify(list));
+  }
+
+  function header() {
+    return `<header>
+      <div class="brand">
+        <button class="mobile-menu" aria-label="Toggle navigation" data-action="menu">☰</button>
+        <a href="index.html"><img src="${base}assets/billion-group.png" alt="Billion Group"></a>
+        <span>People & culture</span>
+      </div>
+      <div class="top-actions">
+        <a href="../billion-leave-application/index.html">Employee portal ↗</a>
+        <button class="btn small" data-action="theme" aria-label="Toggle dark mode">◐</button>
+        <span class="avatar" title="People Operations Admin">P</span>
+      </div>
+    </header>`;
+  }
+
+  async function load() {
+    const holidays = JSON.parse(localStorage.getItem(STORAGE_KEYS.holidays) || '[]');
+    const members = JSON.parse(localStorage.getItem(STORAGE_KEYS.members) || '[]');
+
+    state = {
+      user: {
+        id: 'billion-admin',
+        name: 'People Operations',
+        email: 'hr@billiongroup.co.za',
+        role: 'admin',
+        position: 'People Operations Manager',
+        department: 'People & Culture'
+      },
+      requests: getCachedRequests(),
+      holidays,
+      members
+    };
+
+    render();
+
+    try {
+      const res = await fetch(WEBHOOKS.getLeaves, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-store'
+      });
+
+      if (!res.ok) throw Error(`GET webhook returned ${res.status}`);
+      const data = await res.json();
+
+      const rawList = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.data)
+          ? data.data
+          : Array.isArray(data?.rows)
+            ? data.rows
+            : Array.isArray(data?.requests)
+              ? data.requests
+              : (data && typeof data === 'object' && (data.id || data.name || data.email || data.start))
+                ? [data]
+                : [];
+
+      const normalized = rawList
+        .map((r, i) => normalizeSheetRow(r, i))
+        .filter(r => r && (r.email || r.payload?.name));
+
+      state.requests = normalized;
+      setCachedRequests(normalized);
+      render();
+    } catch (err) {
+      toast('Showing cached applications (awaiting n8n GET webhook response)');
+    }
+  }
+
+  async function mutate(b) {
+    if (b.action === 'decide') {
+      const r = state.requests.find(x => x.id === b.id);
+      if (!r) throw Error('Application record not found.');
+      if (!b.reason.trim()) throw Error('Please enter a decision reason.');
+
+      const decisionAt = new Date().toISOString();
+      const decisionObj = {
+        name: b.signature.trim() || state.user.name,
+        email: state.user.email,
+        signature: b.signature.trim(),
+        reason: b.reason.trim(),
+        at: decisionAt
+      };
+
+      const webhookPayload = {
+        action: 'decide',
+        id: r.id,
+        row_id: r.id,
+        row_number: r.row_number,
+        email: r.email || r.payload.email,
+        name: r.payload.name,
+        type: r.payload.type,
+        start: r.start,
+        end: r.end,
+        days: r.payload.days,
+        status: b.status, // "Approved" or "Rejected"
+        decisionReason: b.reason.trim(),
+        reason: b.reason.trim(),
+        managerName: decisionObj.name,
+        managerEmail: state.user.email,
+        managerSignature: decisionObj.signature,
+        signature: decisionObj.signature,
+        decisionAt
+      };
+
+      const res = await fetch(WEBHOOKS.updateDecision, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(webhookPayload)
+      });
+
+      if (!res.ok) {
+        const errText = await res.text().catch(() => '');
+        throw Error(`Failed to update Google Sheet via n8n (${res.status}). ${errText}`);
+      }
+
+      // Immediately update UI state & cache
+      r.status = b.status;
+      r.decision = decisionObj;
+      setCachedRequests(state.requests);
+      return { ok: true };
+    }
+
+    if (b.action === 'member') {
+      const ms = state.members.filter(x => x.email !== b.email);
+      ms.push(b);
+      state.members = ms;
+      localStorage.setItem(STORAGE_KEYS.members, JSON.stringify(ms));
+      return { ok: true };
+    }
+
+    if (b.action === 'holidays') {
+      if (b.holidays.some(x => !/^\d{4}-\d{2}-\d{2}$/.test(x) || isNaN(Date.parse(x)))) {
+        throw Error('Enter dates as YYYY-MM-DD.');
+      }
+      state.holidays = b.holidays;
+      localStorage.setItem(STORAGE_KEYS.holidays, JSON.stringify(b.holidays));
+      return { ok: true };
+    }
+  }
+
+  function ownRequests() {
+    return state?.requests || [];
+  }
+
+  function render() {
+    const navItems = [
+      ['overview', 'Overview', 'grid'],
+      ['requests', 'Leave requests', 'file'],
+      ['calendar', 'Leave calendar', 'calendar'],
+      ['team', 'Employees', 'people'],
+      ['policy', 'Workspace settings', 'help']
+    ];
+
+    app.innerHTML = header() + `<div class="layout">
+      <aside>
+        <div class="nav-label">PEOPLE OPERATIONS</div>
+        <nav>${navItems.map(([v, label, icon]) => `<button class="nav ${view === v ? 'active' : ''}" data-view="${v}">${ic(icon)}${label}</button>`).join('')}</nav>
+        <div class="side-bottom">
+          <strong>Here for our people.</strong>
+          Integrity. Respect. Teamwork.<br>
+          <a href="https://www.billiongroup.co.za/" target="_blank" rel="noopener">Billion Group ↗</a>
+        </div>
+      </aside>
+      <main>
+        ${content()}
+        <footer>
+          <span>© ${new Date().getFullYear()} Billion Group · People & culture</span>
+          <span>Secure leave workspace &nbsp; • &nbsp; South Africa</span>
+        </footer>
+      </main>
+    </div>`;
+
+    if (view === 'team') bindMembers();
+    if (view === 'policy') bindPolicy();
+  }
+
+  function heading(title, sub) {
+    return `<div class="page-heading">
+      <div>
+        <div class="eyebrow" style="margin-bottom:9px">PEOPLE OPERATIONS</div>
+        <h1>${title}</h1>
+        <p class="sub">${sub}</p>
+      </div>
+      <span class="date-label">${new Date().toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+    </div>`;
+  }
+
+  function content() {
+    if (view === 'team') return team();
+    if (view === 'policy') return policy();
+    if (view === 'calendar') {
+      return heading('Time away, together.', 'Approved leave at a glance. Select a request below to view its details.') +
+        `<div class="panel calendar-wide">${calendar()}</div>
+         <div class="panel" style="margin-top:22px">${list(ownRequests().filter(r => r.status === 'Approved'))}</div>`;
+    }
+
+    const rows = ownRequests();
+    const pending = rows.filter(r => r.status === 'Pending').length;
+    const approved = rows.filter(r => r.status === 'Approved').length;
+
+    return heading(
+      view === 'requests' ? 'Leave requests.' : 'A clear view of your team.',
+      'Review requests, coordinate time away, and keep every decision on record.'
+    ) + (view === 'overview' ? `
+      <section class="hero">
+        <div>
+          <div class="eyebrow">YOUR TEAM, IN BALANCE</div>
+          <h2>Good decisions start here.</h2>
+          <p>Keep leave moving with a clear approval process and automatically prepared decision documents.</p>
+          ${button('Review pending requests →', 'pending', 'light')}
+        </div>
+        <div class="hero-mark">
+          ${ic('people')}
+          <b>${pending}</b>
+          <span>awaiting a decision</span>
+        </div>
+      </section>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-top">Awaiting review${ic('clock')}</div>
+          <b>${pending.toString().padStart(2, '0')}</b>
+          <small>Awaiting a manager’s decision</small>
+        </div>
+        <div class="stat">
+          <div class="stat-top">Approved requests${ic('check')}</div>
+          <b>${approved.toString().padStart(2, '0')}</b>
+          <small>Confirmed time away</small>
+        </div>
+        <div class="stat">
+          <div class="stat-top">Total requests${ic('calendar')}</div>
+          <b>${rows.length}</b>
+          <small>Across your workspace</small>
+        </div>
+      </div>` : '') + `
+      <div class="columns">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>${view === 'overview' ? 'Recent activity' : 'All applications'}</h2>
+              <p>Every request. One clear next step.</p>
+            </div>
+            ${button('Refresh from Sheets', 'refresh', 'small')}
+          </div>
+          <div class="toolbar">
+            <input id="search" class="search" aria-label="Search requests" placeholder="Search name, type or ticket…" value="${esc(query)}">
+            <select id="filter" aria-label="Filter requests by status">
+              ${['All', 'Pending', 'Approved', 'Rejected', 'Withdrawn'].map(s => `<option ${filter === s ? 'selected' : ''}>${s}</option>`).join('')}
+            </select>
+          </div>
+          <div id="request-list">${filteredList()}</div>
+          <div class="row-note">Select a request to view its details and review the decision document.</div>
+        </section>
+        <div class="right-rail">
+          <div class="panel mini-cal">${calendar()}</div>
+          <div class="panel help-card">
+            <div class="eyebrow" style="margin-bottom:12px">A LITTLE GUIDANCE</div>
+            <h3>Consider the whole picture.</h3>
+            <p>Check team coverage and the applicable employment contract before deciding. Record a clear explanation for the employee.</p>
+            <a href="#" data-action="policy">View leave guidance →</a>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function filteredList() {
+    return list(
+      ownRequests()
+        .filter(r => (filter === 'All' || r.status === filter) && [r.id, r.payload.name, r.payload.type, r.email].join(' ').toLowerCase().includes(query.toLowerCase()))
+        .slice(0, view === 'overview' && !query && filter === 'All' ? 6 : undefined)
+    );
+  }
+
+  function list(rows) {
+    if (!rows.length) {
+      return `<div class="empty">
+        ${ic('file')}
+        <b>No requests to show</b>
+        ${query || filter !== 'All' ? 'Try another search or status filter.' : 'New employee applications from Google Sheets will appear here.'}
+      </div>`;
+    }
+    return rows.map(r => `<div class="request" role="button" tabindex="0" data-request="${esc(r.id)}" aria-label="Open ${esc(r.payload.type)} request, ${r.status}">
+      <div class="day-tile">
+        <strong>${new Date(r.start + 'T12:00:00').getDate()}</strong>
+        <small>${new Date(r.start + 'T12:00:00').toLocaleDateString('en', { month: 'short' }).toUpperCase()}</small>
+      </div>
+      <div class="request-main">
+        <h3>${esc(r.payload.name)} · ${esc(r.payload.type)}</h3>
+        <p>${fmt(r.start)} – ${fmt(r.end)} &nbsp; · &nbsp; ${r.payload.days} working day${r.payload.days === 1 ? '' : 's'}</p>
+      </div>
+      <span class="badge ${r.status}">${r.status === 'Pending' ? 'Pending' : r.status}</span>
+      <span class="chevron">›</span>
+    </div>`).join('');
+  }
+
+  function calendar() {
+    const dt = new Date();
+    dt.setDate(1);
+    dt.setMonth(dt.getMonth() + calOffset);
+    const year = dt.getFullYear(), month = dt.getMonth(), count = new Date(year, month + 1, 0).getDate(), lead = (dt.getDay() + 6) % 7;
+    const approved = ownRequests().filter(r => r.status === 'Approved');
+    let cells = ['M', 'T', 'W', 'T', 'F', 'S', 'S'].map(x => `<span class="weekday">${x}</span>`).join('') + '<span></span>'.repeat(lead);
+    for (let d = 1; d <= count; d++) {
+      const key = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const people = approved.filter(r => r.start <= key && r.end >= key);
+      cells += `<span class="${key === today() ? 'today ' : ''}${people.length ? 'onleave' : ''}" title="${esc(people.map(r => r.payload.name).join(', '))}">${d}</span>`;
+    }
+    return `<div class="cal-head">
+      <span>${dt.toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' })}</span>
+      <div>
+        <button data-action="prev-month" aria-label="Previous month">‹</button>
+        <button data-action="next-month" aria-label="Next month">›</button>
+      </div>
+    </div>
+    <div class="cal-grid">${cells}</div>
+    <div class="cal-note">● &nbsp; Approved leave periods</div>`;
+  }
+
+  function field(label, name, type = 'text', required = true, value = '') {
+    return `<div>
+      <label for="${name}">${label}${required ? ' *' : ''}</label>
+      <input id="${name}" name="${name}" type="${type}" ${required ? 'required' : ''} maxlength="200" value="${esc(value)}">
+    </div>`;
+  }
+
+  async function saveForm(f, b, done) {
+    const btn = f.querySelector('[type="submit"]');
+    btn.disabled = true;
+    error(f, '');
+    try {
+      await mutate(b);
+      done?.();
+      render();
+    } catch (e) {
+      error(f, e.message);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  function team() {
+    return heading('The people behind it all.', 'Register the exact sign-in email for each employee or administrator.') +
+      `<div class="split">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Employee directory</h2>
+            <span class="badge Approved">${state.members.length} registered</span>
+          </div>
+          ${state.members.map(m => `<div class="member-row">
+            <div>
+              <b>${esc(m.name)}</b>
+              <small>${esc(m.email)}</small>
+              <small>${esc(m.position)} ·${esc(m.department)}</small>
+            </div>
+            <span class="badge ${m.role === 'admin' ? 'Approved' : 'Withdrawn'}">${m.role}</span>
+          </div>`).join('') || '<div class="empty">No employees added yet.</div>'}
+        </section>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Add or update an employee</h2>
+              <p>Existing email addresses update the same member.</p>
+            </div>
+          </div>
+          <form id="members" class="form-body">
+            <div class="form-grid">
+              ${field('Full name', 'name')}
+              ${field('Sign-in email', 'email', 'email')}
+              ${field('Position', 'position')}
+              ${field('Department', 'department')}
+              <div class="full">
+                <label for="role">Access role</label>
+                <select name="role" id="role">
+                  <option value="employee">Employee · own requests only</option>
+                  <option value="admin">Administrator · all requests & decisions</option>
+                </select>
+              </div>
+            </div>
+            <div class="error" role="alert"></div>
+            <div class="actions"><button class="btn primary" type="submit">Save employee</button></div>
+          </form>
+        </section>
+      </div>`;
+  }
+
+  function bindMembers() {
+    const f = document.querySelector('#members');
+    if (!f) return;
+    f.onsubmit = e => {
+      e.preventDefault();
+      saveForm(f, { action: 'member', ...Object.fromEntries(new FormData(f)) }, () => toast('Employee details saved'));
+    };
+  }
+
+  function policy() {
+    return heading('A workspace that fits.', 'Guidance from the supplied leave form, alongside the applicable employment contract.') +
+      `<div class="split">
+        <section class="panel help-card">
+          <h3>Plan, apply, confirm.</h3>
+          <p>Choose a leave type and dates, complete your contact details and submit your declaration. Your request starts as pending. An administrator records an approval or rejection, and your decision document becomes available.</p>
+          <h3 style="margin-top:23px">Supporting documentation</h3>
+          <p>The supplied form calls for a medical certificate for sick leave exceeding two consecutive days. Share supporting documents through your company’s approved HR channel; this version does not upload medical documents.</p>
+          <h3 style="margin-top:23px">Your contract remains the reference</h3>
+          <p>Leave entitlements and eligibility must be checked against your employment contract and company policy. The approved-days counter is a record total, not an accrued or remaining leave balance.</p>
+          <a href="${base}assets/original-leave-form.pdf" target="_blank">Open the original leave form ↗</a>
+        </section>
+        <section class="panel help-card">
+          <h3>How days are counted</h3>
+          <p>The system counts Monday to Friday, excluding dates configured by an administrator. It does not automatically import South African public holidays. HR should verify holidays and any employee-specific shift schedule before making a decision. The calculated day count is saved with each application.</p>
+          <form id="holidays">
+            <label for="holidays-list" style="margin-top:25px">Excluded holidays · one date per line</label>
+            <textarea name="holidays" id="holidays-list" placeholder="YYYY-MM-DD" rows="6">${esc(state.holidays.join('\n'))}</textarea>
+            <p class="hint">Changes apply to new applications; existing records retain their submitted day count.</p>
+            <div class="error" role="alert"></div>
+            <div class="actions"><button class="btn primary" type="submit">Save calendar dates</button></div>
+          </form>
+          <h3 style="margin-top:25px">Decision records</h3>
+          <p>Final decisions cannot be edited through this portal. Typed names record acknowledgements, not cryptographic digital signatures. Contact HR if a correction or cancellation is needed after approval.</p>
+        </section>
+      </div>`;
+  }
+
+  function bindPolicy() {
+    const f = document.querySelector('#holidays');
+    if (!f) return;
+    f.onsubmit = e => {
+      e.preventDefault();
+      saveForm(f, { action: 'holidays', holidays: f.holidays.value.split('\n').map(s => s.trim()).filter(Boolean) }, () => toast('Holiday calendar saved'));
+    };
+  }
+
+  function detail(label, value) {
+    return `<div class="detail-line"><small>${label}</small><span class="details-text">${esc(value || '—')}</span></div>`;
+  }
+
+  function openRequest(id) {
+    selected = state.requests.find(r => r.id === id);
+    if (!selected) return;
+    const r = selected, p = r.payload, canDecide = r.status === 'Pending';
+
+    modal.innerHTML = `<div class="modal-top">
+      <div>
+        <h2>Application details</h2>
+        <p class="hint">${esc(r.id)}</p>
+      </div>
+      <button data-action="close" aria-label="Close request">×</button>
+    </div>
+    <div class="review-grid">
+      <section>
+        <span class="badge ${r.status}" style="margin-bottom:20px">${r.status === 'Pending' ? 'Pending' : r.status}</span>
+        ${detail('Employee', p.name)}
+        ${detail('Email', r.email || p.email)}
+        ${detail('Position & Dept', [p.position, p.department].filter(Boolean).join(' · '))}
+        ${detail('Leave type', p.type + (p.other ? ' · ' + p.other : ''))}
+        ${detail('Leave period', fmt(r.start) + ' – ' + fmt(r.end))}
+        ${detail('Working days', p.days)}
+        ${detail('Reason for leave', p.reason)}
+        ${detail('Submitted', stamp(r.created))}
+        ${canDecide ? `<form id="decision">
+          <div class="section-title">Manager’s decision</div>
+          <label for="decision-status">Decision *</label>
+          <select id="decision-status" name="status">
+            <option value="Approved">Approve application</option>
+            <option value="Rejected">Reject application</option>
+          </select>
+          <label for="decision-reason" style="margin-top:15px">Reason / manager’s comments *</label>
+          <textarea id="decision-reason" name="reason" required maxlength="2000" placeholder="Explain your decision. This appears on the employee’s document."></textarea>
+          <label for="decision-signature" style="margin-top:15px">Type your full name *</label>
+          <input id="decision-signature" name="signature" required maxlength="200" value="${esc(state.user.name)}">
+          <label class="check" style="margin-top:15px">
+            <input type="checkbox" required>
+            <span>I have reviewed this application and confirm this final decision.</span>
+          </label>
+          <div class="error" role="alert"></div>
+          <div class="actions">
+            <button type="submit" class="btn primary">Confirm decision</button>
+          </div>
+          <p class="hint">The document updates as you type. A draft is not an approval.</p>
+        </form>` : r.decision ? detail('Manager / record owner', r.decision.name) + detail('Decision reason', r.decision.reason) : ''}
+      </section>
+      <section>
+        <div class="document-actions">
+          ${button('↓ Download document', 'download', 'small')}
+          ${button('Print / Save as PDF', 'print', 'small')}
+        </div>
+        <div class="document-preview">
+          <iframe id="document-frame" title="Live leave application document" sandbox="allow-same-origin allow-modals"></iframe>
+        </div>
+      </section>
+    </div>`;
+
+    updateDocument();
+
+    if (canDecide) {
+      const f = modal.querySelector('#decision');
+      f.addEventListener('input', updateDocument);
+      f.onsubmit = async e => {
+        e.preventDefault();
+        const b = { action: 'decide', id: r.id, ...Object.fromEntries(new FormData(f)) };
+        await saveForm(f, b, () => {
+          modal.close();
+          toast(`Application ${b.status.toLowerCase()} and synced to Google Sheets.`);
+        });
+      };
+    }
+    modal.showModal();
+  }
+
+  function documentRecord() {
+    const r = structuredClone(selected);
+    const f = modal.querySelector('#decision');
+    if (f) {
+      r.draft = true;
+      r.proposed = f.status.value;
+      r.decision = {
+        name: f.signature.value || state.user.name,
+        signature: f.signature.value,
+        reason: f.reason.value,
+        at: new Date().toISOString(),
+        email: state.user.email
+      };
+    }
+    return r;
+  }
+
+  function documentHTML(r) {
+    const p = r.payload, d = r.decision, status = r.draft ? 'DRAFT · ' + r.proposed : r.status;
+    const row = (a, b) => `<div class="field"><label>${a}</label><div>${esc(b || '—')}</div></div>`;
+    return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${esc(r.id)} · Leave application</title><style>@page{size:A4;margin:16mm}*{box-sizing:border-box}body{font:11px Arial,sans-serif;color:#203b54;margin:0;padding:28px;background:white;line-height:1.55}.top{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #052c54;padding-bottom:19px}.top img{width:115px;height:65px;object-fit:contain}.top small{color:#7b8b99;letter-spacing:2px;font-size:8px}h1{font-size:23px;margin:22px 0 5px;font-weight:500;color:#052c54}.meta{font-size:9px;color:#6c8092;word-break:break-all}.status{display:inline-block;padding:7px 12px;border:1px solid #aabbc9;background:#eff4f8;color:#052c54;font-size:10px;font-weight:bold;margin:15px 0}.section{font-size:10px;font-weight:bold;letter-spacing:1px;border-bottom:1px solid #dce4eb;margin:19px 0 12px;padding-bottom:6px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:13px 25px}.field{break-inside:avoid;overflow-wrap:anywhere}.field label{display:block;color:#7c8b98;font-size:8px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px}.field div{white-space:pre-wrap}.full{grid-column:1/-1}.note{background:#f3f6f9;padding:12px;font-size:9px;color:#667e91;margin-top:17px}.footer{border-top:1px solid #dce4eb;margin-top:24px;padding-top:10px;font-size:8px;color:#8191a0;line-height:1.7}.sign{border-top:1px solid #c8d4df;padding-top:8px;margin-top:17px;break-inside:avoid}@media print{body{padding:0}.section{break-after:avoid}.top{break-inside:avoid}}</style></head><body><div class="top"><img alt="Billion Group" src="${logoData || new URL(base + 'assets/billion-group.png', location.href).href}"><small>PEOPLE & CULTURE<br>LEAVE APPLICATION</small></div><h1>Application for leave</h1><div class="meta">REFERENCE ${esc(r.id)}<br>Submitted ${esc(stamp(r.created))}</div><div class="status">${esc(status.toUpperCase())}</div>${r.draft ? '<div class="note"><b>PREVIEW ONLY — This decision has not been submitted.</b></div>' : ''}<div class="section">01 / EMPLOYEE DETAILS</div><div class="grid">${row('Name and surname', p.name)}${row('Company', p.company)}${row('Position', p.position)}${row('Department', p.department)}${row('Employee email', r.email || p.email)}</div><div class="section">02 / LEAVE REQUEST</div><div class="grid">${row('Leave type', p.type + (p.other ? ' · ' + p.other : ''))}${row('Amount of working days', String(p.days))}${row('From', fmt(r.start))}${row('To', fmt(r.end))}<div class="full">${row('Reason for leave', p.reason)}</div></div><div class="section">03 / CONTACT DETAILS WHILST AWAY</div><div class="grid"><div class="full">${row('Address', p.address)}</div>${row('Cell', p.cell)}${row('Telephone', p.tel)}${row('Emergency contact name', p.emergencyName)}${row('Emergency contact number', p.emergencyPhone)}</div><div class="grid sign">${row('Applicant typed acknowledgement', p.signature)}${row('Date submitted', stamp(r.created))}</div><div class="section">04 / MANAGER’S DECISION</div><div class="grid">${row('Decision', status)}${row('Manager', d?.name)}<div class="full">${row('Reason / manager’s comments', d?.reason)}</div>${row('Manager typed acknowledgement', d?.signature)}${row('Decision date', d?.at ? stamp(d.at) : 'Awaiting decision')}</div><div class="note">Working days use Monday–Friday and the configured holiday calendar at submission. Leave entitlement and supporting documents remain subject to the employment contract and company policy. Typed acknowledgements are not cryptographic digital signatures.</div><div class="footer">Billion Group · Confidential employee record<br>Generated from the leave workspace. Retain with the employee’s HR records. ${r.draft ? 'DRAFT — NOT AN APPROVAL.' : ''}</div></body></html>`;
+  }
+
+  function updateDocument() {
+    const frame = modal.querySelector('#document-frame');
+    if (frame) frame.srcdoc = documentHTML(documentRecord());
+  }
+
+  async function download() {
+    const rec = documentRecord();
+    const blob = new Blob([documentHTML(rec)], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = selected.id + (rec.draft ? '-DRAFT' : '') + '-leave.html';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+  }
+
+  document.addEventListener('click', async e => {
+    const n = e.target.closest('[data-view],[data-action],[data-request]');
+    if (!n) return;
+    if (n.dataset.view) {
+      view = n.dataset.view;
+      query = '';
+      filter = 'All';
+      render();
+      return;
+    }
+    if (n.dataset.request) {
+      openRequest(n.dataset.request);
+      return;
+    }
+    e.preventDefault();
+    const a = n.dataset.action;
+    if (['overview', 'requests', 'policy'].includes(a)) {
+      view = a;
+      render();
+    }
+    if (a === 'pending') {
+      view = 'requests';
+      filter = 'Pending';
+      render();
+    }
+    if (a === 'refresh') {
+      toast('Fetching latest rows from Google Sheets…');
+      await load();
+    }
+    if (a === 'menu') {
+      const side = document.querySelector('aside');
+      side?.classList.toggle('open');
+      n.setAttribute('aria-expanded', String(side?.classList.contains('open')));
+    }
+    if (a === 'theme') {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('bg-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    }
+    if (a === 'prev-month' || a === 'next-month') {
+      calOffset += a === 'prev-month' ? -1 : 1;
+      render();
+    }
+    if (a === 'close') modal.close();
+    if (a === 'download') download();
+    if (a === 'print') {
+      const frame = modal.querySelector('iframe');
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+    }
+  });
+
+  document.addEventListener('input', e => {
+    if (e.target.id === 'search') {
+      query = e.target.value;
+      document.querySelector('#request-list').innerHTML = filteredList();
+    }
+  });
+
+  document.addEventListener('change', e => {
+    if (e.target.id === 'filter') {
+      filter = e.target.value;
+      document.querySelector('#request-list').innerHTML = filteredList();
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset.request) {
+      e.preventDefault();
+      openRequest(e.target.dataset.request);
+    }
+  });
+
+  if (localStorage.getItem('bg-theme') === 'dark') document.body.classList.add('dark');
+  fetch(base + 'assets/billion-group.png')
+    .then(r => r.blob())
+    .then(b => {
+      const reader = new FileReader();
+      reader.onload = () => logoData = reader.result;
+      reader.readAsDataURL(b);
+    })
+    .catch(() => {});
+
+  load();
+  </script>
+</body>
+</html>
